@@ -1,3 +1,0 @@
-testcommit
-
-testcommit line 3
