@@ -1,2 +1,3 @@
-02.03.2016 Task01 Präsentation mit gesamtem Team erstellt.
-04.03.2016 Task02 Präsentation und Projekthandbuch mit gesamtem Team erstellt.
+Datum       Dauer  Aufgaben
+02.03.2016     45  Task01 Präsentation mit gesamtem Team erstellt.
+04.03.2016    120  Task02 Präsentation und Projekthandbuch mit gesamtem Team erstellt.
