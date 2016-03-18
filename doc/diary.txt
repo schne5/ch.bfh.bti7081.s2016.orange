@@ -1,4 +1,5 @@
 Datum       Dauer  Aufgaben
 02.03.2016     45  Task01 Präsentation mit gesamtem Team erstellt.
 04.03.2016    120  Task02 Präsentation und Projekthandbuch mit gesamtem Team erstellt.
-16.03.2016    150  Task03 Design Thinking mit ganzem Team.
+16.03.2016    150  Task03 Design Thinking und Storyboards mit ganzem Team.
+18.03.2016    180  Task03 Erstellen Personas, Prototypen, etc.
