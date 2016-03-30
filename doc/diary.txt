@@ -5,4 +5,4 @@ Datum       Dauer  Aufgaben
 18.03.2016    180  Task03 Erstellen Personas, Prototypen, etc.
 18.03.2016    120  Task03 Interview Termin
 26.03.2016     80  Task03 Nachbesprechung Interview im ganzen Team.
-28.03.2015 	   40  Task03 Präsentation erstellt
+28.03.2015     40  Task03 Präsentation erstellt
