@@ -1,8 +1,10 @@
 Datum       Dauer  Aufgaben
-02.03.2016     45  Task01 Pr‰sentation mit gesamtem Team erstellt.
-04.03.2016    120  Task02 Pr‰sentation und Projekthandbuch mit gesamtem Team erstellt.
+02.03.2016     45  Task01 Pr√§sentation mit gesamtem Team erstellt.
+04.03.2016    120  Task02 Pr√§sentation und Projekthandbuch mit gesamtem Team erstellt.
 16.03.2016    150  Task03 Design Thinking und Storyboards mit ganzem Team.
 18.03.2016    180  Task03 Erstellen Personas, Prototypen, etc.
 18.03.2016    120  Task03 Interview Termin
+24.03.2016    240  Task03 Transkription Interview
 26.03.2016     80  Task03 Nachbesprechung Interview im ganzen Team.
-28.03.2015     40  Task03 Pr‰sentation erstellt
+28.03.2016     40  Task03 Pr√§sentation erstellt
+30.03.2016    100  Task03 Vorbereitung Pr√§sentation
