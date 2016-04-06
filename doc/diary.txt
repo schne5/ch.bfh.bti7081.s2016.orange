@@ -9,3 +9,4 @@ Datum       Dauer  Aufgaben
 28.03.2016     40  Task03 Präsentation erstellt
 30.03.2016    100  Task03 Vorbereitung Präsentation
 01.04.2016    130  Task04 Erstellen Requirements Specification Document
+06.04.2016     30  Task04 Präsentation erstellt
