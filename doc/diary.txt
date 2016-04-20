@@ -10,3 +10,5 @@ Datum       Dauer  Aufgaben
 30.03.2016    100  Task03 Vorbereitung Präsentation
 01.04.2016    130  Task04 Erstellen Requirements Specification Document
 06.04.2016     30  Task04 Präsentation erstellt
+15.04.2016	   60  Task07 Domainmodell, Klassendiagramm, Sequenzdiagramme erstellt
+20.04.2016     60  Task07 Resultate zusammentragen und Präsentation erstellt
