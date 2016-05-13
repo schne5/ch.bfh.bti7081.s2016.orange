@@ -12,3 +12,5 @@ Datum       Dauer  Aufgaben
 06.04.2016     30  Task04 Präsentation erstellt
 15.04.2016	   60  Task07 Domainmodell, Klassendiagramm, Sequenzdiagramme erstellt
 20.04.2016     60  Task07 Resultate zusammentragen und Präsentation erstellt
+11.05.2016    120  Task09 Modellierung Software Architektur und vorbereitung Präsentation
+13.05.2016      5  Task09 Präsentation 
