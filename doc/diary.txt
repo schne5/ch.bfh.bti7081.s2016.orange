@@ -14,3 +14,4 @@ Datum       Dauer  Aufgaben
 20.04.2016     60  Task07 Resultate zusammentragen und Präsentation erstellt
 11.05.2016    120  Task09 Modellierung Software Architektur und vorbereitung Präsentation
 13.05.2016      5  Task09 Präsentation 
+13.05.2016     60  Task10 Scrum Setup (Produkt Planning und 1. Sprint Planung)
