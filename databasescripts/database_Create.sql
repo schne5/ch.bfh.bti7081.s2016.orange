@@ -1,6 +1,15 @@
 create database mentalhealthcare;
 use mentalhealthcare;
 
+create TABLE patient(
+id int not null PRIMARY KEY AUTO_INCREMENT,
+name varchar(50),
+vorname varchar(50),
+gebDatum date,
+svNr varchar(25),
+status int
+);
+
 create TABLE Kontakt (
 id int not null PRIMARY KEY AUTO_INCREMENT,
 name varchar(50),
@@ -51,13 +60,6 @@ FOREIGN KEY (arztId) REFERENCES arzt(id),
 FOREIGN KEY (compMedId) REFERENCES compendiummedikament(id)    
 );
 
-create TABLE patient(
-id int not null PRIMARY KEY AUTO_INCREMENT,
-name varchar(50),
-vorname varchar(50),
-gebDatum date,
-svNr varchar(25),
-status int
-)
+
 
 
