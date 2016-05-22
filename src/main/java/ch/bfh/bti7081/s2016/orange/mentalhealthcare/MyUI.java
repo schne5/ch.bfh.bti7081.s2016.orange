@@ -10,7 +10,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.SearchView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
 
 /**
@@ -30,7 +30,7 @@ public class MyUI extends UI {
 	protected void init(VaadinRequest vaadinRequest) {
 
 		Navigator navigator = new Navigator(this, this);
-		navigator.addView(SearchView.NAME, SearchView.class);
+		navigator.addView(StartView.NAME, StartView.class);
 		navigator.addView(TestView.NAME, TestView.class);
 
 		navigator.navigateTo(TestView.NAME);
