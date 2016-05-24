@@ -5,18 +5,19 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the patient database table.
  * 
  */
 @Entity
-@NamedQuery(name="Patient.findAll", query="SELECT p FROM Patient p")
+@NamedQueries({
+		@NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
+		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.name = :name and p.gebDatum = :gebDatum and p.svNr= :svNr"), })
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Temporal(TemporalType.DATE)
@@ -30,23 +31,24 @@ public class Patient implements Serializable {
 
 	private String vorname;
 
-	//bi-directional many-to-one association to Diagnose
-	@OneToMany(mappedBy="patient")
+	// bi-directional many-to-one association to Diagnose
+	@OneToMany(mappedBy = "patient")
 	private List<Diagnose> diagnoses;
 
-	//bi-directional many-to-one association to Kontakt
-	@OneToMany(mappedBy="patient")
+	// bi-directional many-to-one association to Kontakt
+	@OneToMany(mappedBy = "patient")
 	private List<Kontakt> kontakts;
 
-	//bi-directional many-to-one association to Medikament
-	@OneToMany(mappedBy="patient")
+	// bi-directional many-to-one association to Medikament
+	@OneToMany(mappedBy = "patient")
 	private List<Medikament> medikaments;
-	
-	public Patient(String name,String vorname,String svNr, int status,Date gebDatum ){
-		this.name=name;
-		this.vorname=vorname;
-		this.svNr=svNr;
-		this.gebDatum=gebDatum;
+
+	public Patient(String name, String vorname, String svNr, int status,
+			Date gebDatum) {
+		this.name = name;
+		this.vorname = vorname;
+		this.svNr = svNr;
+		this.gebDatum = gebDatum;
 	}
 
 	Patient() {
