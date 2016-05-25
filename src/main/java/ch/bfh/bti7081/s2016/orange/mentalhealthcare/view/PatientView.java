@@ -67,6 +67,7 @@ public class PatientView extends VerticalLayout implements View {
 		});
 		layout.addComponents(lastName, firstName, assuranceNr, birthDate,
 				saveButton, backButton);
+		layout.setMargin(true);
 		return layout;
 	}
 
