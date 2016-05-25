@@ -2,6 +2,10 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare;
 
 import javax.servlet.annotation.WebServlet;
 
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
@@ -9,9 +13,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -31,6 +32,7 @@ public class MyUI extends UI {
 
 		Navigator navigator = new Navigator(this, this);
 		navigator.addView(StartView.NAME, StartView.class);
+		navigator.addView(PatientView.NAME, PatientView.class);
 		navigator.addView(TestView.NAME, TestView.class);
 
 		navigator.navigateTo(TestView.NAME);

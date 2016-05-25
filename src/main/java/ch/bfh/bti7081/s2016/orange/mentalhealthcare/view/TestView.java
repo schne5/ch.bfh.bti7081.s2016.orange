@@ -18,7 +18,13 @@ public class TestView extends VerticalLayout implements View {
 		button.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		addComponent(button);
+
+		Button buttonPatientBearbeiten = new Button("Go to edit patient ");
+		buttonPatientBearbeiten.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(PatientView.NAME);
+		});
+
+		addComponents(button, buttonPatientBearbeiten);
 	}
 
 	@Override
