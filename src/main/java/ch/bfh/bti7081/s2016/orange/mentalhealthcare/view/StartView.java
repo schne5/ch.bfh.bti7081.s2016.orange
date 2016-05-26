@@ -26,7 +26,7 @@ public class StartView extends VerticalLayout implements View {
 		controller = new StartController();
 		pcontroller = new PatientController();
 
-		final Label title = new Label("Search");
+		final Label title = new Label("Create & Search");
 
 		final TextField lastName = new TextField();
 		lastName.setCaption("Last name:");
