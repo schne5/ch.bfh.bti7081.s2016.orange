@@ -10,6 +10,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
@@ -22,18 +23,48 @@ public class PatientView extends VerticalLayout implements View {
 
 	public PatientView() {
 		controller = new PatientController();
-		patient = new Patient("", "", "", 1, new Date());
-		final Label title = new Label("Edit");
+		// TODO nur zum Testen. Patient nicht mehr setzten, wenn von Suche
+		// übergeben
+		patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
 
 		TabSheet tabsheet = new TabSheet();
 
 		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
+		VerticalLayout tabPatientenUebersicht = getTabPatientenUebersicht();
+		VerticalLayout tabPatientenMedikamente = getTabPatientenMedicaments();
+		VerticalLayout tabPatientenDiagnosen = getTabPatientenDiagnoses();
 
-		addComponents(tabsheet, title, tabPatientenDaten);
+		tabsheet.addTab(tabPatientenDaten).setCaption("Edit");
+		tabsheet.addTab(tabPatientenUebersicht).setCaption("Overview");
+		tabsheet.addTab(tabPatientenMedikamente).setCaption("Medication");
+		tabsheet.addTab(tabPatientenDiagnosen).setCaption("Diagnaoses");
+
+		addComponents(getTop(), tabsheet);
+	}
+
+	private HorizontalLayout getTop() {
+		HorizontalLayout layoutTop = new HorizontalLayout();
+
+		final Label labelLastname = new Label(this.patient.getName());
+		final Label labelFirstName = new Label(this.patient.getVorname());
+		final Label labelSocialAssuranceNumber = new Label(
+				this.patient.getSvNr());
+		final Label labelBirthDate = new Label(this.patient.getGebDatum()
+				.toString());
+
+		layoutTop.addComponents(labelLastname, labelFirstName,
+				labelSocialAssuranceNumber, labelBirthDate);
+		layoutTop.setMargin(true);
+		return layoutTop;
 	}
 
 	private VerticalLayout getTabPatientenDaten() {
-		VerticalLayout layout = new VerticalLayout();
+		VerticalLayout layoutPatientenDaten = new VerticalLayout();
+
+		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(
+				patient.getId());
+		final TextField id = new TextField(propertyId);
+		id.setVisible(false);
 
 		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(
 				patient.getName());
@@ -58,6 +89,10 @@ public class PatientView extends VerticalLayout implements View {
 
 		final Button saveButton = new Button("Save patient");
 		saveButton.addClickListener(e -> {
+			this.patient.setName(propertyLastName.getValue());
+			this.patient.setVorname(propertyFirstName.getValue());
+			this.patient.setSvNr(propertySocialAssuranceNumber.getValue());
+			this.patient.setGebDatum(propertyBirthDate.getValue());
 			controller.update(patient);
 		});
 
@@ -65,10 +100,25 @@ public class PatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		layout.addComponents(lastName, firstName, assuranceNr, birthDate,
-				saveButton, backButton);
-		layout.setMargin(true);
-		return layout;
+		layoutPatientenDaten.addComponents(id, lastName, firstName,
+				assuranceNr, birthDate, saveButton, backButton);
+		layoutPatientenDaten.setMargin(true);
+		return layoutPatientenDaten;
+	}
+
+	private VerticalLayout getTabPatientenUebersicht() {
+		// TODO Auto-generated method stub
+		return new VerticalLayout();
+	}
+
+	private VerticalLayout getTabPatientenMedicaments() {
+		// TODO Auto-generated method stub
+		return new VerticalLayout();
+	}
+
+	private VerticalLayout getTabPatientenDiagnoses() {
+		// TODO Auto-generated method stub
+		return new VerticalLayout();
 	}
 
 	public Patient getPatient() {
