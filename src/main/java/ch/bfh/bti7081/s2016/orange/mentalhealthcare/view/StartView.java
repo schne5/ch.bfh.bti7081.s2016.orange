@@ -30,7 +30,7 @@ public class StartView extends VerticalLayout implements View {
 
 		final TextField lastName = new TextField();
 		lastName.setCaption("Last name:");
-
+		
 		final TextField firstName = new TextField();
 		firstName.setCaption("First name:");
 
@@ -40,6 +40,7 @@ public class StartView extends VerticalLayout implements View {
 		final DateField birthDate = new DateField();
 		birthDate.setCaption("Birth date:");
 
+		
 		final Button searchButton = new Button("Search patient");
 		searchButton.addClickListener(e -> {
 			controller.searchPatient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),
@@ -56,13 +57,14 @@ public class StartView extends VerticalLayout implements View {
 		});
 		
 		
-		final Button saveButton = new Button("Create Patient");
-		saveButton.addClickListener(e -> {
+		final Button createButton = new Button("Create Patient");
+		createButton.addClickListener(e -> {
 			final Patient p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),0, birthDate.getValue());
 			pcontroller.create(p);
+			
 		});
 
-		addComponents(title, lastName, firstName, assuranceNr, birthDate,saveButton, searchButton, select, backButton);
+		addComponents(title, lastName, firstName, assuranceNr, birthDate,createButton, searchButton, select, backButton);
 	}
 
 	@Override
