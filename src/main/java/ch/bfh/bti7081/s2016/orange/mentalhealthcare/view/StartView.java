@@ -9,17 +9,22 @@ import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class StartView extends VerticalLayout implements View {
-	public static final String NAME = "Search";
+	public static final String NAME = "Create & Search";
 
 	private static final long serialVersionUID = -4883635345472877648L;
 
 	private final StartController controller;
+	private final PatientController pcontroller;
+	
 
 	public StartView() {
 		controller = new StartController();
+		pcontroller = new PatientController();
 
 		final Label title = new Label("Search");
 
@@ -49,8 +54,15 @@ public class StartView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
+		
+		
+		final Button saveButton = new Button("Create Patient");
+		saveButton.addClickListener(e -> {
+			final Patient p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),0, birthDate.getValue());
+			pcontroller.create(p);
+		});
 
-		addComponents(title, lastName, firstName, assuranceNr, birthDate, searchButton, select, backButton);
+		addComponents(title, lastName, firstName, assuranceNr, birthDate,saveButton, searchButton, select, backButton);
 	}
 
 	@Override
