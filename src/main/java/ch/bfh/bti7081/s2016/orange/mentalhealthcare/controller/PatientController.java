@@ -19,7 +19,6 @@ public class PatientController {
 		if (isValid(p)) {
 			return repository.update(p);
 		}
-		// TODO Etwas sinnvolles
 		return null;
 	}
 

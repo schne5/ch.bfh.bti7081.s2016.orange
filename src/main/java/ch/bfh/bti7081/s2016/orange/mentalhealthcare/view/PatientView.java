@@ -20,12 +20,14 @@ public class PatientView extends VerticalLayout implements View {
 	public static final String NAME = "PatientEdit";
 	private final PatientController controller;
 	private Patient patient;
+	Label labelFehler = new Label();
 
 	public PatientView() {
 		controller = new PatientController();
 		// TODO nur zum Testen. Patient nicht mehr setzten, wenn von Suche
 		// übergeben
 		patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
+		patient.setId(1);
 
 		TabSheet tabsheet = new TabSheet();
 
@@ -39,22 +41,21 @@ public class PatientView extends VerticalLayout implements View {
 		tabsheet.addTab(tabPatientenMedikamente).setCaption("Medication");
 		tabsheet.addTab(tabPatientenDiagnosen).setCaption("Diagnaoses");
 
-		addComponents(getTop(), tabsheet);
+		addComponents(getTop(), labelFehler, tabsheet);
+		setMargin(true);
 	}
 
 	private HorizontalLayout getTop() {
 		HorizontalLayout layoutTop = new HorizontalLayout();
 
-		final Label labelLastname = new Label(this.patient.getName());
-		final Label labelFirstName = new Label(this.patient.getVorname());
-		final Label labelSocialAssuranceNumber = new Label(
-				this.patient.getSvNr());
-		final Label labelBirthDate = new Label(this.patient.getGebDatum()
-				.toString());
+		Label labelLastname = new Label(this.patient.getName());
+		Label labelFirstName = new Label(this.patient.getVorname());
+		Label labelSocialAssuranceNumber = new Label(this.patient.getSvNr());
+		Label labelBirthDate = new Label(this.patient.getGebDatum().toString());
 
 		layoutTop.addComponents(labelLastname, labelFirstName,
 				labelSocialAssuranceNumber, labelBirthDate);
-		layoutTop.setMargin(true);
+		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
 
@@ -93,7 +94,12 @@ public class PatientView extends VerticalLayout implements View {
 			this.patient.setVorname(propertyFirstName.getValue());
 			this.patient.setSvNr(propertySocialAssuranceNumber.getValue());
 			this.patient.setGebDatum(propertyBirthDate.getValue());
-			controller.update(patient);
+			if (null == controller.update(patient)) {
+				this.labelFehler
+						.setCaption("Daten konnten nicht gespeichert werden.");
+			} else {
+				this.labelFehler.setCaption("Daten gespeichert.");
+			}
 		});
 
 		final Button backButton = new Button("Return to search view");
@@ -102,7 +108,7 @@ public class PatientView extends VerticalLayout implements View {
 		});
 		layoutPatientenDaten.addComponents(id, lastName, firstName,
 				assuranceNr, birthDate, saveButton, backButton);
-		layoutPatientenDaten.setMargin(true);
+		layoutPatientenDaten.setSpacing(true);
 		return layoutPatientenDaten;
 	}
 
