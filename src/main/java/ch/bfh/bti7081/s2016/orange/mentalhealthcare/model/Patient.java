@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
-		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.name = :name and p.gebDatum = :gebDatum and p.svNr= :svNr"), })
+		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.name LIKE :name and p.vorname LIKE :vorname and p.svNr LIKE :svNr"), })
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 

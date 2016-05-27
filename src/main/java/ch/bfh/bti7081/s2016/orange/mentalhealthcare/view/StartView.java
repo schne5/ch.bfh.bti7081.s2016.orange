@@ -20,7 +20,6 @@ public class StartView extends VerticalLayout implements View {
 
 	private final StartController controller;
 	private final PatientController pcontroller;
-	
 
 	public StartView() {
 		controller = new StartController();
@@ -30,7 +29,7 @@ public class StartView extends VerticalLayout implements View {
 
 		final TextField lastName = new TextField();
 		lastName.setCaption("Last name:");
-		
+
 		final TextField firstName = new TextField();
 		firstName.setCaption("First name:");
 
@@ -40,31 +39,32 @@ public class StartView extends VerticalLayout implements View {
 		final DateField birthDate = new DateField();
 		birthDate.setCaption("Birth date:");
 
-		
+		final ListSelect select = new ListSelect("Matching patients");
+		select.addItems(controller.getPatients());
+		select.setNullSelectionAllowed(false);
+
 		final Button searchButton = new Button("Search patient");
 		searchButton.addClickListener(e -> {
 			controller.searchPatient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),
 					birthDate.getValue());
+			select.removeAllItems();
+			select.addItems(controller.getPatients());
 		});
-
-		final ListSelect select = new ListSelect("Matching patients");
-		select.addItems(controller.getPatients());
-		select.setNullSelectionAllowed(false);
 
 		final Button backButton = new Button("Return to main view");
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
-		
-		
+
 		final Button createButton = new Button("Create Patient");
 		createButton.addClickListener(e -> {
-			final Patient p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),0, birthDate.getValue());
+			final Patient p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(), 0,
+					birthDate.getValue());
 			pcontroller.create(p);
-			
 		});
 
-		addComponents(title, lastName, firstName, assuranceNr, birthDate,createButton, searchButton, select, backButton);
+		addComponents(title, lastName, firstName, assuranceNr, birthDate, createButton, searchButton, select,
+				backButton);
 	}
 
 	@Override

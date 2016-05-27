@@ -1,13 +1,11 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
@@ -60,7 +58,8 @@ public class JpaPatientRepository implements PatientRepository {
 		EntityManager em = getEntityManager();
 		TypedQuery<Patient> query = em.createNamedQuery("Patient.findByNameAndSVNr",Patient.class);
 		           query.setParameter("name", name);
-		           query.setParameter("gebDatum", birth);
+		           query.setParameter("vorname", vorname);
+		           //query.setParameter("gebDatum", birth);
 		           query.setParameter("svNr", svNr);
 		patienten =query.getResultList();            
 		return patienten;
