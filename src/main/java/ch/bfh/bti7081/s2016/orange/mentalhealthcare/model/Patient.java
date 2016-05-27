@@ -10,8 +10,8 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQueries({
-		@NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
+@NamedQueries({ @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
+		@NamedQuery(name = "Patient.findByNameAndSVNrAndGebD", query = "SELECT p FROM Patient p WHERE p.name LIKE :name and p.vorname LIKE :vorname and p.svNr LIKE :svNr and p.gebDatum = :gebDatum"),
 		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.name LIKE :name and p.vorname LIKE :vorname and p.svNr LIKE :svNr"), })
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -43,8 +43,7 @@ public class Patient implements Serializable {
 	@OneToMany(mappedBy = "patient")
 	private List<Medikament> medikaments;
 
-	public Patient(String name, String vorname, String svNr, int status,
-			Date gebDatum) {
+	public Patient(String name, String vorname, String svNr, int status, Date gebDatum) {
 		this.name = name;
 		this.vorname = vorname;
 		this.svNr = svNr;
@@ -167,5 +166,4 @@ public class Patient implements Serializable {
 
 		return medikament;
 	}
-
 }

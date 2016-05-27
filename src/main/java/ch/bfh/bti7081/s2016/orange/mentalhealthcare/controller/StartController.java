@@ -20,7 +20,7 @@ public class StartController {
 	public List<String> getPatients() {
 		List<String> list = new ArrayList<String>();
 
-		if (patients == null) {
+		if (patients == null || patients.isEmpty()) {
 			list.add("empty");
 			return list;
 		} else {

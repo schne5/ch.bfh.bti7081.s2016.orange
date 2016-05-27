@@ -16,8 +16,7 @@ public class JpaPatientRepository implements PatientRepository {
 
 	public EntityManager getEntityManager() {
 		if (entityManager == null) {
-			EntityManagerFactory emfactory = Persistence
-					.createEntityManagerFactory("my-app");
+			EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("my-app");
 			entityManager = emfactory.createEntityManager();
 			return entityManager;
 		}
@@ -53,15 +52,22 @@ public class JpaPatientRepository implements PatientRepository {
 		return p;
 	}
 
-	public List<Patient> find(String name, String vorname,Date birth,String svNr) {
+	public List<Patient> find(String name, String vorname, Date birth, String svNr) {
 		List<Patient> patienten;
 		EntityManager em = getEntityManager();
-		TypedQuery<Patient> query = em.createNamedQuery("Patient.findByNameAndSVNr",Patient.class);
-		           query.setParameter("name", name);
-		           query.setParameter("vorname", vorname);
-		           //query.setParameter("gebDatum", birth);
-		           query.setParameter("svNr", svNr);
-		patienten =query.getResultList();            
+		TypedQuery<Patient> query;
+		if (birth == null) {
+			query = em.createNamedQuery("Patient.findByNameAndSVNr", Patient.class);
+		} else {
+			query = em.createNamedQuery("Patient.findByNameAndSVNrAndGebD", Patient.class);
+			query.setParameter("gebDatum", birth);
+		}
+		query.setParameter("name", name);
+		query.setParameter("vorname", vorname);
+		query.setParameter("svNr", svNr);
+
+		patienten = query.getResultList();
+
 		return patienten;
 	}
 }
