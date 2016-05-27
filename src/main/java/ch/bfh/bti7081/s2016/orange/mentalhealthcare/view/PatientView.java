@@ -1,16 +1,22 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
+import java.io.File;
 import java.util.Date;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
+
+
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
@@ -32,7 +38,7 @@ public class PatientView extends VerticalLayout implements View {
 		TabSheet tabsheet = new TabSheet();
 
 		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
-		VerticalLayout tabPatientenUebersicht = getTabPatientenUebersicht();
+		HorizontalLayout tabPatientenUebersicht = getTabPatientenUebersicht();
 		VerticalLayout tabPatientenMedikamente = getTabPatientenMedicaments();
 		VerticalLayout tabPatientenDiagnosen = getTabPatientenDiagnoses();
 
@@ -112,9 +118,20 @@ public class PatientView extends VerticalLayout implements View {
 		return layoutPatientenDaten;
 	}
 
-	private VerticalLayout getTabPatientenUebersicht() {
-		// TODO Auto-generated method stub
-		return new VerticalLayout();
+	private HorizontalLayout getTabPatientenUebersicht() {
+		HorizontalLayout layoutPatientenDaten = new HorizontalLayout();
+		String basepath = VaadinService.getCurrent()
+                .getBaseDirectory().getAbsolutePath();
+
+		//Image as a file resource
+		FileResource resource = new FileResource(new File(basepath +
+                      "/resaources/ampel_rot.png"));
+
+		//Show the image in the application
+		Image image = new Image("Image from file", resource);
+		layoutPatientenDaten.addComponent(image);
+		
+		return layoutPatientenDaten;
 	}
 
 	private VerticalLayout getTabPatientenMedicaments() {
