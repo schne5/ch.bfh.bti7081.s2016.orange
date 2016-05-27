@@ -6,8 +6,6 @@ import java.util.Date;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
-
-
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -120,17 +118,17 @@ public class PatientView extends VerticalLayout implements View {
 
 	private HorizontalLayout getTabPatientenUebersicht() {
 		HorizontalLayout layoutPatientenDaten = new HorizontalLayout();
-		String basepath = VaadinService.getCurrent()
-                .getBaseDirectory().getAbsolutePath();
+		String basepath = VaadinService.getCurrent().getBaseDirectory()
+				.getAbsolutePath();
 
-		//Image as a file resource
-		FileResource resource = new FileResource(new File(basepath +
-                      "/resaources/ampel_rot.png"));
+		// Image as a file resource
+		FileResource resource = new FileResource(new File(basepath
+				+ "/images/ampel_rot.png"));
 
-		//Show the image in the application
-		Image image = new Image("Image from file", resource);
+		// Show the image in the application
+		Image image = new Image("Patient gefährlich für andere", resource);
 		layoutPatientenDaten.addComponent(image);
-		
+
 		return layoutPatientenDaten;
 	}
 
