@@ -11,8 +11,13 @@ public class PatientController {
 		repository = PatientRepositoryFactory.createJpaRepository();
 	}
 
-	public void create(Patient p) {
-		repository.persist(p);
+	public boolean create(Patient p) {
+		if (isValid(p)) {
+			repository.persist(p);
+			return true;
+		}
+		return false;
+
 	}
 
 	public Patient update(Patient p) {
@@ -27,12 +32,9 @@ public class PatientController {
 	}
 
 	public boolean isValid(Patient p) {
-		boolean isValid = !"".equals(p.getName()) && null != p.getName()
-				&& p.getName().length() <= 50;
-		isValid &= !"".equals(p.getVorname()) && null != p.getVorname()
-				&& p.getName().length() <= 50;
-		isValid &= !"".equals(p.getSvNr()) && null != p.getSvNr()
-				&& p.getName().length() <= 25;
+		boolean isValid = !"".equals(p.getName()) && null != p.getName() && p.getName().length() <= 50;
+		isValid &= !"".equals(p.getVorname()) && null != p.getVorname() && p.getName().length() <= 50;
+		isValid &= !"".equals(p.getSvNr()) && null != p.getSvNr() && p.getName().length() <= 25;
 		isValid &= null != p.getGebDatum();
 		return isValid;
 	}

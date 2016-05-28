@@ -1,6 +1,5 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
@@ -15,11 +14,12 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 public class CreatePatientView extends VerticalLayout implements View {
 	public static final String NAME = "Create";
 
-	private final PatientController pcontroller;
+	private final PatientController controller;
 	private Patient p;
+	private Label hinweis = new Label();
 
 	public CreatePatientView() {
-		pcontroller = new PatientController();
+		controller = new PatientController();
 
 		final Label title = new Label("Create");
 
@@ -35,8 +35,6 @@ public class CreatePatientView extends VerticalLayout implements View {
 		final DateField birthDate = new DateField();
 		birthDate.setCaption("Birth date:");
 
-	
-
 		final Button backButton = new Button("Return to main view");
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
@@ -44,13 +42,15 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 		final Button createButton = new Button("Create Patient");
 		createButton.addClickListener(e -> {
-			 p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(), 0,
-					birthDate.getValue());
-			pcontroller.create(p);
+			p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(), 0, birthDate.getValue());
+			if (controller.create(p)) {
+				getUI().getNavigator().navigateTo(StartView.NAME);
+			} else {
+				this.hinweis.setCaption("Fehlerhafte Eingabe: Neuer Patient konnte nicht erstellt werden");
+			}
 		});
 
-		
-		addComponents(title, lastName, firstName, assuranceNr, birthDate, createButton, backButton);
+		addComponents(title, lastName, firstName, assuranceNr, birthDate, hinweis,createButton, backButton);
 	}
 
 	@Override
