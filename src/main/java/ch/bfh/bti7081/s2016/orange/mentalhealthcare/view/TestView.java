@@ -15,7 +15,7 @@ public class TestView extends VerticalLayout implements View {
 		addComponent(new Label("Everything ok so far..."));
 
 		Button button = new Button("Go to Search");
-
+	
 		button.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
@@ -31,8 +31,12 @@ public class TestView extends VerticalLayout implements View {
 		buttonPatientBearbeiten.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(PatientView.NAME);
 		});
-
-		addComponents(button, buttonPatientBearbeiten, buttonPatientCreate);
+		
+		Button buttonLogin = new Button("Go to Login");
+		buttonLogin.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(LoginView.NAME);
+		});
+		addComponents(button, buttonPatientBearbeiten, buttonPatientCreate, buttonLogin);
 	}
 
 	@Override

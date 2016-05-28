@@ -23,6 +23,10 @@ public class Arzt implements Serializable {
 	private String name;
 
 	private String spezialgebiet;
+	
+	//private String username;
+	
+	//private String password;
 
 	//bi-directional many-to-one association to Diagnose
 	@OneToMany(mappedBy="arzt")

@@ -6,6 +6,7 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreatePatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.LoginView;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -36,6 +37,7 @@ public class MyUI extends UI {
 		navigator.addView(PatientView.NAME, PatientView.class);
 		navigator.addView(TestView.NAME, TestView.class);
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
+		navigator.addView(LoginView.NAME, LoginView.class);
 		navigator.navigateTo(TestView.NAME);
 	}
 
