@@ -1,8 +1,5 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
-import java.util.Date;
-
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
@@ -29,14 +26,16 @@ public class CreatePatientView extends VerticalLayout implements View {
 		TabSheet tabsheet = new TabSheet();
 		VerticalLayout tabCreatePatient = getTabCreatePatient();
 		tabsheet.addTab(tabCreatePatient).setCaption("Create");
-		
+
 		addComponents(getTop(), hinweis, tabsheet);
 
 		setMargin(true);
+
 	}
 
 	private HorizontalLayout getTop() { // leer mal als Platzhalter drin
 		HorizontalLayout layoutTop = new HorizontalLayout();
+		layoutTop.addComponents();
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
@@ -62,7 +61,9 @@ public class CreatePatientView extends VerticalLayout implements View {
 			if (controller.create(p)) {
 				getUI().getNavigator().navigateTo(StartView.NAME);
 			} else {
+
 				this.hinweis.setCaption("Fehlerhafte Eingabe: Neuer Patient konnte nicht erstellt werden");
+
 			}
 		});
 
@@ -70,7 +71,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
-		
+
 		final Button startButton = new Button("Return to search view");
 		startButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
@@ -78,9 +79,9 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 		layoutPatientenDaten.addComponents(lastName, firstName, assuranceNr, birthDate, createButton, startButton,
 				backButton);
-		
+
 		layoutPatientenDaten.setSpacing(true);
-		
+
 		return layoutPatientenDaten;
 	}
 
