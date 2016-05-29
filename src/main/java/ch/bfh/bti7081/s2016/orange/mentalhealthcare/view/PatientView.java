@@ -31,7 +31,7 @@ public class PatientView extends VerticalLayout implements View {
 		controller = new PatientController();
 	}
 
-	private void setPatient() {
+	private void setPatient(boolean editPatient) {
 		TabSheet tabsheet = new TabSheet();
 
 		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
@@ -43,6 +43,12 @@ public class PatientView extends VerticalLayout implements View {
 		tabsheet.addTab(tabPatientenUebersicht).setCaption("Overview");
 		tabsheet.addTab(tabPatientenMedikamente).setCaption("Medication");
 		tabsheet.addTab(tabPatientenDiagnosen).setCaption("Diagnaoses");
+
+		if (editPatient) {
+			tabsheet.setSelectedTab(0);
+		} else {
+			tabsheet.setSelectedTab(1);
+		}
 
 		addComponents(getTop(), labelFehler, tabsheet);
 		setMargin(true);
@@ -144,8 +150,7 @@ public class PatientView extends VerticalLayout implements View {
 			String[] parameters = event.getParameters().split("/");
 			int patientId;
 			try {
-				patientId = Integer.parseInt(parameters[0]);
-				this.labelFehler.setCaption(Integer.toString(patientId));
+				patientId = Integer.parseInt(parameters[1]);		
 			} catch (NumberFormatException e) {
 				patientId = 0;
 			}
@@ -156,7 +161,15 @@ public class PatientView extends VerticalLayout implements View {
 				patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
 				patient.setId(1);
 			}
-			setPatient();
+
+			// Check if patient should be opened for editing
+			boolean editPatient = false;
+			if (parameters[0].equals("edit")) {
+				editPatient = true;
+				this.labelFehler.setCaption("edit");
+			}
+
+			setPatient(editPatient);
 		}
 	}
 }

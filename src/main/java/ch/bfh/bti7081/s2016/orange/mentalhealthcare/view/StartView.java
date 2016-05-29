@@ -2,7 +2,6 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
@@ -85,20 +84,22 @@ public class StartView extends VerticalLayout implements View {
 
 		nav.addComponents(input, button);
 
-		/*
-		final Label current = new Label("Selected: -");
-		display.addComponent(current);
-		*/
-
-		// Add "open patient button"
-		final Button openButton = new Button("Open");
+		// Add "open patient buttons"
+		final HorizontalLayout displayButtons = new HorizontalLayout();
+		final Button openButton = new Button("Open patient");
 		openButton.addClickListener(e -> {
 			int rowNumber =  (int) patientTable.getValue();				
-			int patientId = patientIds.get(rowNumber - 1);
-		//	current.setValue("Selected: " + patientId);
-			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+			int patientId = patientIds.get(rowNumber - 1);	
+			getUI().getNavigator().navigateTo(PatientView.NAME + "/open/" + patientId);
 		});
-		display.addComponent(openButton);
+		final Button editButton = new Button("Edit patient");
+		editButton.addClickListener(e -> {
+			int rowNumber =  (int) patientTable.getValue();				
+			int patientId = patientIds.get(rowNumber - 1);	
+			getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patientId);
+		});
+		displayButtons.addComponents(openButton, editButton);
+		display.addComponent(displayButtons);
 
 		// Add "back button"
 		final VerticalLayout bottom = new VerticalLayout();
