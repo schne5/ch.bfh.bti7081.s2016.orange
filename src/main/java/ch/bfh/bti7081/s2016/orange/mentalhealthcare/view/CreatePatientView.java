@@ -25,52 +25,25 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 	public CreatePatientView() {
 		controller = new PatientController();
-		
+
 		TabSheet tabsheet = new TabSheet();
-		
 		VerticalLayout tabCreatePatient = getTabCreatePatient();
 		tabsheet.addTab(tabCreatePatient).setCaption("Create");
 		
-		
-		//final Label title = new Label("Create"); 
-	
-		//final TextField lastName = new TextField();//weg
-		//lastName.setCaption("Last name:");//weg
-		//final TextField firstName = new TextField();//weg
-		//firstName.setCaption("First name:");//weg
-		//vfinal TextField assuranceNr = new TextField();//weg
-		//assuranceNr.setCaption("Social assurance number:");//weg
-		//final DateField birthDate = new DateField();//weg
-		//birthDate.setCaption("Birth date:");//weg
-		//final Button backButton = new Button("Return to main view");//weg
-		//backButton.addClickListener(e -> {//weg
-		//getUI().getNavigator().navigateTo(TestView.NAME);//weg
-		//});
-		//final Button createButton = new Button("Create Patient");//weg
-		//createButton.addClickListener(e -> {//weg
-		//p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(), 0, birthDate.getValue());//weg
-		//if (controller.create(p)) {//weg
-		//	getUI().getNavigator().navigateTo(StartView.NAME);//weg
-		//} else {
-		//	this.hinweis.setCaption("Fehlerhafte Eingabe: Neuer Patient konnte nicht erstellt werden");//weg
-		//	}//weg
-		//});//weg
-
 		addComponents(getTop(), hinweis, tabsheet);
-		//addComponents(title, lastName, firstName, assuranceNr, birthDate, hinweis,createButton, backButton);
+
 		setMargin(true);
 	}
-	
-	private HorizontalLayout getTop(){ // leer mal als Platzhalter drin
+
+	private HorizontalLayout getTop() { // leer mal als Platzhalter drin
 		HorizontalLayout layoutTop = new HorizontalLayout();
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
-	
-		
+
 	private VerticalLayout getTabCreatePatient() {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
-		
+
 		final TextField lastName = new TextField();
 		lastName.setCaption("Last name:");
 
@@ -97,18 +70,19 @@ public class CreatePatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
+		
 		final Button startButton = new Button("Return to search view");
 		startButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
+
+		layoutPatientenDaten.addComponents(lastName, firstName, assuranceNr, birthDate, createButton, startButton,
+				backButton);
 		
-		layoutPatientenDaten.addComponents(lastName, firstName,
-				assuranceNr, birthDate, createButton, startButton, backButton);
 		layoutPatientenDaten.setSpacing(true);
+		
 		return layoutPatientenDaten;
 	}
-	
-	
 
 	@Override
 	public void enter(ViewChangeEvent event) {
