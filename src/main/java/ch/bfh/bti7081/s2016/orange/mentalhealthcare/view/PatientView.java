@@ -24,7 +24,7 @@ public class PatientView extends VerticalLayout implements View {
 
 	public static final String NAME = "PatientEdit";
 	private final PatientController controller;
-	private Patient patient;
+	private Patient patient = null;
 	Label labelFehler = new Label();
 
 	public PatientView() {
@@ -32,6 +32,13 @@ public class PatientView extends VerticalLayout implements View {
 	}
 
 	private void setPatient(boolean editPatient) {
+		if (patient == null) {
+			// TODO: remove debug data
+			patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
+			patient.setId(1);
+			editPatient = true;
+		}
+
 		TabSheet tabsheet = new TabSheet();
 
 		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
@@ -90,6 +97,12 @@ public class PatientView extends VerticalLayout implements View {
 		final DateField birthDate = new DateField(propertyBirthDate);
 		birthDate.setCaption("Birth date:");
 
+		final Button contactButton = new Button("Edit contact data");
+		contactButton.addClickListener(e -> {
+			int patientId = this.patient.getId();
+			getUI().getNavigator().navigateTo(ContactView.NAME + "/" + patientId);
+		});
+
 		final Button saveButton = new Button("Save patient");
 		saveButton.addClickListener(e -> {
 			this.patient.setName(propertyLastName.getValue());
@@ -107,7 +120,8 @@ public class PatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		layoutPatientenDaten.addComponents(id, lastName, firstName, assuranceNr, birthDate, saveButton, backButton);
+		layoutPatientenDaten.addComponents(id, lastName, firstName, assuranceNr, birthDate, saveButton, contactButton,
+				backButton);
 		layoutPatientenDaten.setSpacing(true);
 		return layoutPatientenDaten;
 	}
@@ -146,30 +160,27 @@ public class PatientView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		boolean editPatient = false;
+
 		if (event.getParameters() != null) {
 			String[] parameters = event.getParameters().split("/");
 			int patientId;
 			try {
-				patientId = Integer.parseInt(parameters[1]);		
-			} catch (NumberFormatException e) {
+				patientId = Integer.parseInt(parameters[1]);
+			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				patientId = 0;
 			}
 			if (patientId > 0) {
 				patient = controller.getPatientById(patientId);
 			} else {
-				// TODO: remove debug data
-				patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
-				patient.setId(1);
+				patient = null;
 			}
 
 			// Check if patient should be opened for editing
-			boolean editPatient = false;
 			if (parameters[0].equals("edit")) {
 				editPatient = true;
-				this.labelFehler.setCaption("edit");
 			}
-
-			setPatient(editPatient);
 		}
+		setPatient(editPatient);
 	}
 }
