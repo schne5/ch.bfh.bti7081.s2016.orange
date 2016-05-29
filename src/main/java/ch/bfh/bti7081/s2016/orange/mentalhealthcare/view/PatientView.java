@@ -21,6 +21,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 public class PatientView extends VerticalLayout implements View {
+
 	public static final String NAME = "PatientEdit";
 	private final PatientController controller;
 	private Patient patient;
@@ -28,11 +29,9 @@ public class PatientView extends VerticalLayout implements View {
 
 	public PatientView() {
 		controller = new PatientController();
-		// TODO nur zum Testen. Patient nicht mehr setzten, wenn von Suche
-		// übergeben
-		patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
-		patient.setId(1);
+	}
 
+	private void setPatient() {
 		TabSheet tabsheet = new TabSheet();
 
 		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
@@ -57,8 +56,7 @@ public class PatientView extends VerticalLayout implements View {
 		Label labelSocialAssuranceNumber = new Label(this.patient.getSvNr());
 		Label labelBirthDate = new Label(this.patient.getGebDatum().toString());
 
-		layoutTop.addComponents(labelLastname, labelFirstName,
-				labelSocialAssuranceNumber, labelBirthDate);
+		layoutTop.addComponents(labelLastname, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
@@ -66,29 +64,23 @@ public class PatientView extends VerticalLayout implements View {
 	private VerticalLayout getTabPatientenDaten() {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
 
-		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(
-				patient.getId());
+		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(patient.getId());
 		final TextField id = new TextField(propertyId);
 		id.setVisible(false);
 
-		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(
-				patient.getName());
+		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(patient.getName());
 		final TextField lastName = new TextField(propertyLastName);
 		lastName.setCaption("Last name:");
 
-		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(
-				patient.getVorname());
+		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(patient.getVorname());
 		final TextField firstName = new TextField(propertyFirstName);
 		firstName.setCaption("First name:");
 
-		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(
-				patient.getSvNr());
-		final TextField assuranceNr = new TextField(
-				propertySocialAssuranceNumber);
+		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(patient.getSvNr());
+		final TextField assuranceNr = new TextField(propertySocialAssuranceNumber);
 		assuranceNr.setCaption("Social assurance number:");
 
-		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(
-				patient.getGebDatum());
+		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(patient.getGebDatum());
 		final DateField birthDate = new DateField(propertyBirthDate);
 		birthDate.setCaption("Birth date:");
 
@@ -99,8 +91,7 @@ public class PatientView extends VerticalLayout implements View {
 			this.patient.setSvNr(propertySocialAssuranceNumber.getValue());
 			this.patient.setGebDatum(propertyBirthDate.getValue());
 			if (null == controller.update(patient)) {
-				this.labelFehler
-						.setCaption("Daten konnten nicht gespeichert werden.");
+				this.labelFehler.setCaption("Daten konnten nicht gespeichert werden.");
 			} else {
 				this.labelFehler.setCaption("Daten gespeichert.");
 			}
@@ -110,20 +101,17 @@ public class PatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		layoutPatientenDaten.addComponents(id, lastName, firstName,
-				assuranceNr, birthDate, saveButton, backButton);
+		layoutPatientenDaten.addComponents(id, lastName, firstName, assuranceNr, birthDate, saveButton, backButton);
 		layoutPatientenDaten.setSpacing(true);
 		return layoutPatientenDaten;
 	}
 
 	private HorizontalLayout getTabPatientenUebersicht() {
 		HorizontalLayout layoutPatientenDaten = new HorizontalLayout();
-		String basepath = VaadinService.getCurrent().getBaseDirectory()
-				.getAbsolutePath();
+		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
 		// Image as a file resource
-		FileResource resource = new FileResource(new File(basepath
-				+ "/images/ampel_rot.png"));
+		FileResource resource = new FileResource(new File(basepath + "/images/ampel_rot.png"));
 
 		// Show the image in the application
 		Image image = new Image("Patient gefährlich für andere", resource);
@@ -152,6 +140,23 @@ public class PatientView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		if (event.getParameters() != null) {
+			String[] parameters = event.getParameters().split("/");
+			int patientId;
+			try {
+				patientId = Integer.parseInt(parameters[0]);
+				this.labelFehler.setCaption(Integer.toString(patientId));
+			} catch (NumberFormatException e) {
+				patientId = 0;
+			}
+			if (patientId > 0) {
+				patient = controller.getPatientById(patientId);
+			} else {
+				// TODO: remove debug data
+				patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
+				patient.setId(1);
+			}
+			setPatient();
+		}
 	}
 }

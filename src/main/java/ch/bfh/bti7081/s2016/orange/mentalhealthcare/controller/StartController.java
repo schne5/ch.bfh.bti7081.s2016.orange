@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,13 @@ public class StartController {
 	}
 
 	public List<Patient> getPatients() {
+		// Remove empty elements
+		List<Patient> copy = new ArrayList<Patient>(patients);
+		for (Patient p : copy) {
+			if (p.getName().isEmpty()) {
+				patients.remove(p);
+			}
+		}
 		return patients;
 	}
 

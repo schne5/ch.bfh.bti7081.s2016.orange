@@ -1,6 +1,8 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
@@ -28,6 +30,8 @@ public class StartView extends VerticalLayout implements View {
 	private static final String firstName = "First Name";
 	private static final String assuranceNr = "Assurance Number";
 	private static final String birthDate = "Birth Date";
+
+	private ArrayList<Integer> patientIds = null;
 
 	public StartView() {
 		controller = new StartController();
@@ -81,6 +85,21 @@ public class StartView extends VerticalLayout implements View {
 
 		nav.addComponents(input, button);
 
+		/*
+		final Label current = new Label("Selected: -");
+		display.addComponent(current);
+		*/
+
+		// Add "open patient button"
+		final Button openButton = new Button("Open");
+		openButton.addClickListener(e -> {
+			int rowNumber =  (int) patientTable.getValue();				
+			int patientId = patientIds.get(rowNumber - 1);
+		//	current.setValue("Selected: " + patientId);
+			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+		});
+		display.addComponent(openButton);
+
 		// Add "back button"
 		final VerticalLayout bottom = new VerticalLayout();
 		final Button backButton = new Button("Return to main view");
@@ -95,6 +114,7 @@ public class StartView extends VerticalLayout implements View {
 	@SuppressWarnings("unchecked")
 	private void updatePatientTable(Table patientTable) {
 		patientTable.removeAllItems();
+		patientIds = new ArrayList<Integer>();
 
 		for (Patient patient : controller.getPatients()) {
 			Object newItemId = patientTable.addItem();
@@ -103,11 +123,14 @@ public class StartView extends VerticalLayout implements View {
 			row.getItemProperty(StartView.firstName).setValue(patient.getVorname());
 			row.getItemProperty(StartView.assuranceNr).setValue(patient.getSvNr());
 			row.getItemProperty(StartView.birthDate).setValue(patient.getGebDatum());
+
+			patientIds.add(patient.getId());
 		}
 	}
 
 	private Table createPatientTable() {
 		Table patientTable = new Table("Select patient:");
+		patientTable.setSelectable(true);
 
 		// Define columns
 		patientTable.addContainerProperty(StartView.lastName, String.class, null);

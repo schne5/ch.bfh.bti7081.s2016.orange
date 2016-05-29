@@ -17,7 +17,6 @@ public class PatientController {
 			return true;
 		}
 		return false;
-
 	}
 
 	public Patient update(Patient p) {
@@ -37,5 +36,10 @@ public class PatientController {
 		isValid &= !"".equals(p.getSvNr()) && null != p.getSvNr() && p.getName().length() <= 25;
 		isValid &= null != p.getGebDatum();
 		return isValid;
+	}
+
+	public Patient getPatientById(int id) {
+		Patient patient = repository.get(id);
+		return patient;
 	}
 }
