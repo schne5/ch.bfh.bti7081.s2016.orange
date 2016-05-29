@@ -1,16 +1,21 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
+import java.util.Date;
+
+import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class StartView extends VerticalLayout implements View {
 	public static final String NAME = "SearchPatients";
@@ -18,6 +23,11 @@ public class StartView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -4883635345472877648L;
 
 	private final StartController controller;
+
+	private static final String lastName = "Last Name";
+	private static final String firstName = "First Name";
+	private static final String assuranceNr = "Assurance Number";
+	private static final String birthDate = "Birth Date";
 
 	public StartView() {
 		controller = new StartController();
@@ -33,10 +43,6 @@ public class StartView extends VerticalLayout implements View {
 		content.setWidth("100%");
 		addComponent(content);
 
-		// Add a horizontal layout for the bottom part
-		final HorizontalLayout bottom = new HorizontalLayout();
-		addComponent(bottom);
-
 		// Add navigation and display sides
 		final VerticalLayout nav = new VerticalLayout();
 		nav.setWidth("250px");
@@ -48,21 +54,19 @@ public class StartView extends VerticalLayout implements View {
 		// Add input fields
 		final VerticalLayout input = new VerticalLayout();
 		final TextField lastName = new TextField();
-		lastName.setCaption("Last name:");
+		lastName.setCaption(StartView.lastName);
 		final TextField firstName = new TextField();
-		firstName.setCaption("First name:");
+		firstName.setCaption(StartView.firstName);
 		final TextField assuranceNr = new TextField();
-		assuranceNr.setCaption("Social assurance number:");
+		assuranceNr.setCaption(StartView.assuranceNr);
 		final DateField birthDate = new DateField();
-		birthDate.setCaption("Birth date:");
+		birthDate.setCaption(StartView.birthDate);
 		input.addComponents(lastName, firstName, assuranceNr, birthDate);
 		input.setHeight("300px");
 
 		// Add output field
-		final ListSelect select = new ListSelect("Select patient:");
-		select.addItems(controller.getPatients());
-		select.setNullSelectionAllowed(false);
-		display.addComponents(select);
+		Table patientTable = createPatientTable();
+		display.addComponents(patientTable);
 
 		// Add search button
 		final VerticalLayout button = new VerticalLayout();
@@ -70,19 +74,48 @@ public class StartView extends VerticalLayout implements View {
 		searchButton.addClickListener(e -> {
 			controller.searchPatient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(),
 					birthDate.getValue());
-			select.removeAllItems();
-			select.addItems(controller.getPatients());
+			updatePatientTable(patientTable);
 		});
 		button.addComponent(searchButton);
 		button.setHeight("100px");
 
 		nav.addComponents(input, button);
 
+		// Add "back button"
+		final VerticalLayout bottom = new VerticalLayout();
 		final Button backButton = new Button("Return to main view");
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
 		bottom.addComponent(backButton);
+		nav.addComponent(bottom);
+		nav.setComponentAlignment(bottom, Alignment.BOTTOM_LEFT);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void updatePatientTable(Table patientTable) {
+		patientTable.removeAllItems();
+
+		for (Patient patient : controller.getPatients()) {
+			Object newItemId = patientTable.addItem();
+			Item row = patientTable.getItem(newItemId);
+			row.getItemProperty(StartView.lastName).setValue(patient.getName());
+			row.getItemProperty(StartView.firstName).setValue(patient.getVorname());
+			row.getItemProperty(StartView.assuranceNr).setValue(patient.getSvNr());
+			row.getItemProperty(StartView.birthDate).setValue(patient.getGebDatum());
+		}
+	}
+
+	private Table createPatientTable() {
+		Table patientTable = new Table("Select patient:");
+
+		// Define columns
+		patientTable.addContainerProperty(StartView.lastName, String.class, null);
+		patientTable.addContainerProperty(StartView.firstName, String.class, null);
+		patientTable.addContainerProperty(StartView.assuranceNr, String.class, null);
+		patientTable.addContainerProperty(StartView.birthDate, Date.class, null);
+
+		return patientTable;
 	}
 
 	@Override
