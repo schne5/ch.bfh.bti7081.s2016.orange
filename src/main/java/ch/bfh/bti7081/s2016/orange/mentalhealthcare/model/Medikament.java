@@ -86,5 +86,9 @@ public class Medikament implements Serializable {
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+	
+	public String getMedikamentBezeichnung(){
+		return compendiummedikament.getName();
+	}
 
 }

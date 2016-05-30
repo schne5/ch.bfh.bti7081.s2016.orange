@@ -1,6 +1,7 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -26,7 +27,7 @@ public class Kontakt implements Serializable {
 	private String typ;
 
 	//bi-directional many-to-one association to Patient
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="patientId")
 	private Patient patient;
 

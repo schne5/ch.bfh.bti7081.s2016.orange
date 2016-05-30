@@ -1,7 +1,10 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,15 +35,15 @@ public class Patient implements Serializable {
 	private String vorname;
 
 	// bi-directional many-to-one association to Diagnose
-	@OneToMany(mappedBy = "patient")
+	@OneToMany(mappedBy = "patient",cascade = {CascadeType.ALL})
 	private List<Diagnose> diagnoses;
 
 	// bi-directional many-to-one association to Kontakt
-	@OneToMany(mappedBy = "patient")
+	@OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL})
 	private List<Kontakt> kontakts;
 
 	// bi-directional many-to-one association to Medikament
-	@OneToMany(mappedBy = "patient")
+	@OneToMany(mappedBy = "patient",cascade = {CascadeType.ALL})
 	private List<Medikament> medikaments;
 
 	public Patient(String name, String vorname, String svNr, int status, Date gebDatum) {
@@ -102,7 +105,15 @@ public class Patient implements Serializable {
 	}
 
 	public List<Diagnose> getDiagnoses() {
-		return this.diagnoses;
+		if(diagnoses==null){
+			diagnoses=  new ArrayList<Diagnose>();
+		}
+		List<Diagnose> actives = new ArrayList<Diagnose>();
+		for(Diagnose d : diagnoses){
+			if(d.getActive()==1)
+				actives.add(d);
+		}
+		return actives;
 	}
 
 	public void setDiagnoses(List<Diagnose> diagnoses) {
@@ -124,6 +135,9 @@ public class Patient implements Serializable {
 	}
 
 	public List<Kontakt> getKontakts() {
+		if(kontakts==null){
+			kontakts= new ArrayList<Kontakt>();
+		}
 		return this.kontakts;
 	}
 
@@ -134,7 +148,6 @@ public class Patient implements Serializable {
 	public Kontakt addKontakt(Kontakt kontakt) {
 		getKontakts().add(kontakt);
 		kontakt.setPatient(this);
-
 		return kontakt;
 	}
 
@@ -146,7 +159,15 @@ public class Patient implements Serializable {
 	}
 
 	public List<Medikament> getMedikaments() {
-		return this.medikaments;
+		if(medikaments==null){
+			medikaments = new ArrayList<Medikament>();
+		}
+		List<Medikament> actives = new ArrayList<Medikament>();
+		for(Medikament m : medikaments){
+			if(m.getActive()==1)
+				actives.add(m);
+		}
+		return actives;
 	}
 
 	public void setMedikaments(List<Medikament> medikaments) {
@@ -165,5 +186,13 @@ public class Patient implements Serializable {
 		medikament.setPatient(null);
 
 		return medikament;
+	}
+	
+	public List<Medikament> getMedikamentHistory(){
+		return this.medikaments;
+	}
+	
+	public List<Diagnose> getDiagnoseHistory(){
+		return this.diagnoses;
 	}
 }
