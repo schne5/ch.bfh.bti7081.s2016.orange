@@ -4,15 +4,22 @@ import java.io.File;
 import java.util.Date;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedikament;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medikament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -29,7 +36,14 @@ public class PatientView extends VerticalLayout implements View {
 
 	public PatientView() {
 		controller = new PatientController();
+
+		// TODO nur zum Testen. Patient nicht mehr setzten, wenn von Suche
+		// übergeben
+		patient =controller.getPatientById(7);
+		
+
 	}
+
 
 	private void setPatient(boolean editPatient) {
 		if (patient == null) {
@@ -128,26 +142,73 @@ public class PatientView extends VerticalLayout implements View {
 
 	private HorizontalLayout getTabPatientenUebersicht() {
 		HorizontalLayout layoutPatientenDaten = new HorizontalLayout();
-		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
+		layoutPatientenDaten.setMargin(true);
+		
+		VerticalLayout listen =new VerticalLayout();
+		listen.setSpacing(true);
+		
+		Label labelMedikamente = new Label("Aktuelle Medikamente:");
+		BeanItemContainer<Medikament> medis =
+			    new BeanItemContainer<Medikament>(Medikament.class, patient.getMedikaments());
+		Grid gridMedikamente = getMedikamenteGrid(medis);
+		
+		Label labelDiagnosen= new Label("Aktuelle Diagnosen:");
+		BeanItemContainer<Diagnose> diagnoses =
+			    new BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoses());
+		Grid gridDiagnosen= getDiagnoseGrid(diagnoses)	;	
+		listen.addComponents(labelMedikamente,gridMedikamente,labelDiagnosen,gridDiagnosen);
+		
+		VerticalLayout kontakteLayout = new VerticalLayout();
+		kontakteLayout.setSpacing(true);
+		kontakteLayout.setMargin(new MarginInfo(false, true, false, true));
+		Label labelKontakte= new Label("Kontakte:");
+		BeanItemContainer<Kontakt> kontakte =
+			    new BeanItemContainer<Kontakt>(Kontakt.class, patient.getKontakts());
+		Grid gridKontakte= getKontakteGrid(kontakte);	
+		kontakteLayout.addComponents(labelKontakte, gridKontakte);
+		String basepath = VaadinService.getCurrent().getBaseDirectory()
+				.getAbsolutePath();
+
+
+		VerticalLayout statusLayout = new VerticalLayout();
+		statusLayout.setMargin(new MarginInfo(true,false,false,false));
 		// Image as a file resource
 		FileResource resource = new FileResource(new File(basepath + "/images/ampel_rot.png"));
 
 		// Show the image in the application
 		Image image = new Image("Patient gefährlich für andere", resource);
-		layoutPatientenDaten.addComponent(image);
+		image.setHeight("200");
+		image.setWidth("100");
+		statusLayout.addComponent(image);
+		
+		layoutPatientenDaten.addComponents(listen,kontakteLayout,statusLayout);
 
 		return layoutPatientenDaten;
 	}
 
 	private VerticalLayout getTabPatientenMedicaments() {
-		// TODO Auto-generated method stub
-		return new VerticalLayout();
+		VerticalLayout layout = new VerticalLayout();
+		Label labelMedikamente = new Label("Medikamente:");
+		BeanItemContainer<Medikament> medis =
+			    new BeanItemContainer<Medikament>(Medikament.class, patient.getMedikamentHistory());
+		Grid gridMedikamente = getMedikamenteGrid(medis);
+		layout.addComponents(labelMedikamente,gridMedikamente);
+		layout.setSpacing(true);
+		layout.setMargin(new MarginInfo(true,false,false,false));
+		return layout;
 	}
 
 	private VerticalLayout getTabPatientenDiagnoses() {
-		// TODO Auto-generated method stub
-		return new VerticalLayout();
+		VerticalLayout layout = new VerticalLayout();
+		Label labelDiagnosen= new Label("Diagnosen:");
+		BeanItemContainer<Diagnose> diagnoses =
+			    new BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoseHistory());
+		Grid gridDiagnosen= getDiagnoseGrid(diagnoses);
+		layout.addComponents(labelDiagnosen,gridDiagnosen);
+		layout.setSpacing(true);
+		layout.setMargin(new MarginInfo(true,false,false,false));
+		return layout;
 	}
 
 	public Patient getPatient() {
@@ -183,4 +244,32 @@ public class PatientView extends VerticalLayout implements View {
 		}
 		setPatient(editPatient);
 	}
+	
+	public Grid getMedikamenteGrid(BeanItemContainer<Medikament> medis){
+		Grid gridMedikamente = new Grid(medis);	
+		gridMedikamente.removeColumn("id");	
+		gridMedikamente.removeColumn("patient");
+		gridMedikamente.removeColumn("active");
+		gridMedikamente.removeColumn("compendiummedikament");
+		gridMedikamente.setColumnOrder("medikamentBezeichnung","dosis","arzt");
+		gridMedikamente.setHeight("200");
+		return gridMedikamente;
+	}
+	
+	public Grid getDiagnoseGrid(BeanItemContainer<Diagnose> diagnoses){
+		Grid gridDiagnosen= new Grid(diagnoses);	
+		gridDiagnosen.removeColumn("patient");
+		gridDiagnosen.setHeight("200");
+		return gridDiagnosen;
+	}
+	
+	public Grid getKontakteGrid(BeanItemContainer<Kontakt> kontakte){
+		Grid gridKontakte= new Grid(kontakte);	
+		gridKontakte.removeColumn("patient");
+		gridKontakte.setHeight("200");
+		gridKontakte.removeColumn("id");
+		gridKontakte.setColumnOrder("name", "adresse","telefonNr");
+		return gridKontakte;
+	}
+	
 }
