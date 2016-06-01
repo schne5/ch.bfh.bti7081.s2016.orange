@@ -127,7 +127,11 @@ public class ContactView extends VerticalLayout implements View {
 			row.getItemProperty(ContactView.contactType).setValue(k.getTyp());
 
 			Button deleteButton = new Button();
-			deleteButton.setCaption("X");
+			deleteButton.setCaption("Delete");
+			deleteButton.addClickListener(e -> {
+				controller.deleteContact(patientId, k);
+				updateContactTable();
+			});
 			row.getItemProperty(ContactView.deleteButton).setValue(deleteButton);
 		}
 	}
@@ -152,7 +156,6 @@ public class ContactView extends VerticalLayout implements View {
 			String type = (String) row.getItemProperty(ContactView.contactType).getValue();
 
 			controller.saveContact(patientId, name, address, telNr, type);
-
 			updateContactTable();
 			updateInputTable();
 		});

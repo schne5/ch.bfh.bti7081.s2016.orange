@@ -30,6 +30,8 @@ public class StartView extends VerticalLayout implements View {
 	private static final String assuranceNr = "Assurance Number";
 	private static final String birthDate = "Birth Date";
 
+	private final HorizontalLayout displayButtons;
+
 	private ArrayList<Integer> patientIds = null;
 
 	public StartView() {
@@ -85,7 +87,7 @@ public class StartView extends VerticalLayout implements View {
 		nav.addComponents(input, button);
 
 		// Add "open patient buttons"
-		final HorizontalLayout displayButtons = new HorizontalLayout();
+		displayButtons = new HorizontalLayout();
 		final Button openButton = new Button("Open patient");
 		openButton.addClickListener(e -> {
 			int rowNumber = (int) patientTable.getValue();
@@ -99,6 +101,7 @@ public class StartView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patientId);
 		});
 		displayButtons.addComponents(openButton, editButton);
+		displayButtons.setEnabled(false);
 		display.addComponent(displayButtons);
 
 		// Add "create patient button"
@@ -148,6 +151,10 @@ public class StartView extends VerticalLayout implements View {
 		patientTable.addContainerProperty(StartView.firstName, String.class, null);
 		patientTable.addContainerProperty(StartView.assuranceNr, String.class, null);
 		patientTable.addContainerProperty(StartView.birthDate, Date.class, null);
+
+		patientTable.addItemClickListener(e -> {
+			displayButtons.setEnabled(true);
+		});
 
 		return patientTable;
 	}

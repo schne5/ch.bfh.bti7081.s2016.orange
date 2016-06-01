@@ -8,7 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class JpaPatientRepository implements PatientRepository {

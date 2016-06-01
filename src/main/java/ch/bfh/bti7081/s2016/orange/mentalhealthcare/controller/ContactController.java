@@ -33,4 +33,12 @@ public class ContactController {
 
 		repository.persist(patient);
 	}
+
+	public void deleteContact(int id, Kontakt contact) {
+		Patient patient = repository.get(id);
+		List<Kontakt> contacts = patient.getKontakts();
+		contacts.remove(contact);
+
+		repository.update(patient);
+	}
 }
