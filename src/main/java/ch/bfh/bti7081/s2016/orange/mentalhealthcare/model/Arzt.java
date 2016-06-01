@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Arzt.findAll", query="SELECT a FROM Arzt a")
+
 public class Arzt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,9 +25,9 @@ public class Arzt implements Serializable {
 
 	private String spezialgebiet;
 	
-	//private String username;
+	private String username;
 	
-	//private String password;
+	private String password;
 
 	//bi-directional many-to-one association to Diagnose
 	@OneToMany(mappedBy="arzt")
@@ -36,7 +37,13 @@ public class Arzt implements Serializable {
 	@OneToMany(mappedBy="arzt")
 	private List<Medikament> medikaments;
 
+	public Arzt(String username, String password){
+		this.username = username;
+		this.password = password;
+	}
+	
 	public Arzt() {
+		
 	}
 
 	public int getId() {
@@ -111,8 +118,23 @@ public class Arzt implements Serializable {
 	public Medikament removeMedikament(Medikament medikament) {
 		getMedikaments().remove(medikament);
 		medikament.setArzt(null);
-
 		return medikament;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

@@ -16,16 +16,13 @@ import com.vaadin.ui.VerticalLayout;
 
 public class LoginView extends VerticalLayout implements View {
 	public static final String NAME = "Login";
-	// TODO private final LoginController controller;
-	private Arzt a;
+	private Arzt a = null;
 
 	Label hinweis = new Label(); // Hinweis bei fehlerhafter eingabe
-	
-	
-	public LoginView() {
-		// controller = new LoginController();
-		// a = new Arzt(); erst bei eingabe
+	private final LoginController controller;
 
+	public LoginView() {
+		controller = new LoginController();
 		TabSheet tabsheet = new TabSheet();
 		VerticalLayout tabLoginDaten = getTabLoginDaten();
 		tabsheet.addTab(tabLoginDaten);
@@ -44,13 +41,13 @@ public class LoginView extends VerticalLayout implements View {
 	private VerticalLayout getTabLoginDaten() {
 		VerticalLayout layoutLoginDaten = new VerticalLayout();
 		layoutLoginDaten.setCaption("Login");
-		
+
 		final TextField username = new TextField();
 		username.setCaption("Username:");
 		username.setRequired(true);
 		username.setNullRepresentation("");
 		username.setValue("");
-		
+
 		final PasswordField password = new PasswordField();
 		password.setCaption("Password");
 		password.setRequired(true);
@@ -60,14 +57,17 @@ public class LoginView extends VerticalLayout implements View {
 		Button loginButton = new Button("Login");
 		loginButton.setWidth("100px");
 		loginButton.addClickListener(e -> {
-			if (password.getValue()!= ""&& username.getValue()!=""){ //TODO Übergabe DB und Controller
-				getUI().getNavigator().navigateTo(StartView.NAME);
-			}
-			else{
-				username.setInputPrompt("ungültige Eingabe");
+			a = controller.logIn(username.getValue(), password.getValue());
+
+			if (null == a) {
 				username.setRequiredError(" ");
-				password.setRequiredError("ungültige Eingabe");
+				password.setRequiredError(" ");
+				hinweis.setCaption("Fehlerhafte Eingabe: Login hat nicht funktioniert");
+			} else {
+				getUI().getNavigator().navigateTo(StartView.NAME);
+
 			}
+
 		});
 
 		Button backButton = new Button("Return to main view");

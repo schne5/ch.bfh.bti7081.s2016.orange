@@ -18,7 +18,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 	private final PatientController controller;
 	private Patient p;
-	private Label hinweis = new Label();
+	private Label hinweis = new Label();// Hinweis bei fehlerhafter eingabe
 
 	public CreatePatientView() {
 		controller = new PatientController();

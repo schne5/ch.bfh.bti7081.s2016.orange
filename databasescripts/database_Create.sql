@@ -29,7 +29,10 @@ create Table Arzt(
 id int not null PRIMARY KEY AUTO_INCREMENT,
 name varchar(50),
 adresse varchar(100),
-spezialgebiet varchar(50)
+spezialgebiet varchar(50),
+username varchar(50),
+password varchar(50)
+
 );
 
 create TABLE Diagnose(
@@ -59,7 +62,4 @@ FOREIGN KEY (patientId) REFERENCES patient(id),
 FOREIGN KEY (arztId) REFERENCES arzt(id),
 FOREIGN KEY (compMedId) REFERENCES compendiummedikament(id)    
 );
-
-
-
 
