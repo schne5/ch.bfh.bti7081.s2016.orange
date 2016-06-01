@@ -40,7 +40,7 @@ public class MyUI extends UI {
 		navigator.addView(TestView.NAME, TestView.class);
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
 		navigator.addView(LoginView.NAME, LoginView.class);
-		navigator.navigateTo(TestView.NAME);
+		navigator.navigateTo(LoginView.NAME);
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
