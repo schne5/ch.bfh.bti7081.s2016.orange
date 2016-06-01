@@ -19,4 +19,18 @@ public class ContactController {
 
 		return patient.getKontakts();
 	}
+
+	public void saveContact(int id, String name, String address, String telNr, String type) {
+		Patient patient = repository.get(id);
+
+		Kontakt contact = new Kontakt();
+		contact.setName(name);
+		contact.setAdresse(address);
+		contact.setTelefonNr(telNr);
+		contact.setTyp(type);
+
+		patient.addKontakt(contact);
+
+		repository.persist(patient);
+	}
 }
