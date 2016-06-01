@@ -63,13 +63,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 			} else {
 
 				this.hinweis.setCaption("Fehlerhafte Eingabe: Neuer Patient konnte nicht erstellt werden");
-
 			}
-		});
-
-		final Button backButton = new Button("Return to main view");
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
 
 		final Button startButton = new Button("Return to search view");
@@ -77,8 +71,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
 
-		layoutPatientenDaten.addComponents(lastName, firstName, assuranceNr, birthDate, createButton, startButton,
-				backButton);
+		layoutPatientenDaten.addComponents(lastName, firstName, assuranceNr, birthDate, createButton, startButton);
 
 		layoutPatientenDaten.setSpacing(true);
 
