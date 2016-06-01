@@ -6,6 +6,7 @@ import java.util.Date;
 import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
@@ -88,28 +89,38 @@ public class StartView extends VerticalLayout implements View {
 		final HorizontalLayout displayButtons = new HorizontalLayout();
 		final Button openButton = new Button("Open patient");
 		openButton.addClickListener(e -> {
-			int rowNumber =  (int) patientTable.getValue();				
-			int patientId = patientIds.get(rowNumber - 1);	
+			int rowNumber = (int) patientTable.getValue();
+			int patientId = patientIds.get(rowNumber - 1);
 			getUI().getNavigator().navigateTo(PatientView.NAME + "/open/" + patientId);
 		});
 		final Button editButton = new Button("Edit patient");
 		editButton.addClickListener(e -> {
-			int rowNumber =  (int) patientTable.getValue();				
-			int patientId = patientIds.get(rowNumber - 1);	
+			int rowNumber = (int) patientTable.getValue();
+			int patientId = patientIds.get(rowNumber - 1);
 			getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patientId);
 		});
 		displayButtons.addComponents(openButton, editButton);
 		display.addComponent(displayButtons);
 
+		// Add "create patient button"
+		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
+		final Button createPatientButton = new Button("Create Patient");
+		createPatientButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
+		});
+		createPatientButtonLayout.addComponent(createPatientButton);
+		createPatientButtonLayout.setMargin(new MarginInfo(true, false));
+		nav.addComponent(createPatientButtonLayout);
+
 		// Add "back button"
-		final VerticalLayout bottom = new VerticalLayout();
+		final VerticalLayout backButtonLayout = new VerticalLayout();
 		final Button backButton = new Button("Return to main view");
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(TestView.NAME);
 		});
-		bottom.addComponent(backButton);
-		nav.addComponent(bottom);
-		nav.setComponentAlignment(bottom, Alignment.BOTTOM_LEFT);
+		backButtonLayout.addComponent(backButton);
+		backButtonLayout.setMargin(new MarginInfo(true, false));
+		nav.addComponent(backButtonLayout);
 	}
 
 	@SuppressWarnings("unchecked")
