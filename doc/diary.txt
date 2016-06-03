@@ -20,3 +20,4 @@ Datum       Dauer  Aufgaben
 27.05.2016      5  Task11 review Sprint 1
 27.05.2016     10  Task12 daily Scrum, 2. Sprint Planung, Start 2. Sprint
 01.06.2016	   10  Task12 daily Scrum
+03.06.2016	   60  Task12 daily Scrum, Präsentation Tasks, review 2. Sprint, 3. Sprin planung
