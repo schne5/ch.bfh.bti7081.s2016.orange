@@ -42,26 +42,14 @@ public class PatientView extends VerticalLayout implements View {
 
 	public PatientView() {
 		controller = new PatientController();
-
-		// TODO nur zum Testen. Patient nicht mehr setzten, wenn von Suche
-		// übergeben
-		patient = controller.getPatientById(7);
 		this.state = null;
 
 	}
 
-	private void setPatient(boolean editPatient) {
-		if (patient == null) {
-			// TODO: remove debug data
-			patient = new Patient("Schenk", "Anna", "123456789", 1, new Date());
-			patient.setId(1);
-			patient.setStatus(2);
-			editPatient = true;
-		}
-
+	private void createTabsheet(boolean editPatient) {
 		TabSheet tabsheet = new TabSheet();
 
-		VerticalLayout tabPatientenDaten = getTabPatientenDaten();
+		VerticalLayout tabPatientenDaten = getTabPatientBearbeiten();
 		HorizontalLayout tabPatientenUebersicht = getTabPatientenUebersicht();
 		VerticalLayout tabPatientenMedikamente = getTabPatientenMedicaments();
 		VerticalLayout tabPatientenDiagnosen = getTabPatientenDiagnoses();
@@ -95,7 +83,7 @@ public class PatientView extends VerticalLayout implements View {
 		return layoutTop;
 	}
 
-	private VerticalLayout getTabPatientenDaten() {
+	private VerticalLayout getTabPatientBearbeiten() {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
 
 		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(
@@ -246,6 +234,10 @@ public class PatientView extends VerticalLayout implements View {
 		this.patient = patient;
 	}
 
+	public void setPatient(int patientId) {
+		setPatient(controller.getPatientById(patientId));
+	}
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		boolean editPatient = false;
@@ -259,8 +251,8 @@ public class PatientView extends VerticalLayout implements View {
 				patientId = 0;
 			}
 			if (patientId > 0) {
-				patient = controller.getPatientById(patientId);
-				switch (patient.getStatus()) {
+				setPatient(patientId);
+				switch (this.patient.getStatus()) {
 				case 0:
 					NoDangerState noDanger = new NoDangerState();
 					noDanger.changeAmpel(this);
@@ -276,7 +268,7 @@ public class PatientView extends VerticalLayout implements View {
 				}
 
 			} else {
-				patient = null;
+				this.patient = null;
 			}
 
 			// Check if patient should be opened for editing
@@ -284,7 +276,7 @@ public class PatientView extends VerticalLayout implements View {
 				editPatient = true;
 			}
 		}
-		setPatient(editPatient);
+		createTabsheet(editPatient);
 	}
 
 	public Grid getMedikamenteGrid(BeanItemContainer<Medikament> medis) {
