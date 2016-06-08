@@ -22,25 +22,26 @@ public class LoginView extends VerticalLayout implements View {
 	private final LoginController controller;
 
 	public LoginView() {
+		final Label title = new Label("Login");
 		controller = new LoginController();
-		TabSheet tabsheet = new TabSheet();
-		VerticalLayout tabLoginDaten = getTabLoginDaten();
-		tabsheet.addTab(tabLoginDaten);
+		//TabSheet tabsheet = new TabSheet();
+		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
+		//tabsheet.addTab(layoutLoginDaten);
 
-		addComponents(getTop(), hinweis, tabsheet);
+		addComponents(getTop(),title, hinweis, layoutLoginDaten);
 		setMargin(true);
 	}
 
-	private HorizontalLayout getTop() {
+	private HorizontalLayout getTop() {// leer mal als Platzhalter drin
 		HorizontalLayout layoutTop = new HorizontalLayout();
 		layoutTop.addComponents();
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
 
-	private VerticalLayout getTabLoginDaten() {
+	private VerticalLayout getLayoutLoginDaten() {
 		VerticalLayout layoutLoginDaten = new VerticalLayout();
-		layoutLoginDaten.setCaption("Login");
+		//layoutLoginDaten.setCaption("Login");
 
 		final TextField username = new TextField();
 		username.setCaption("Username:");

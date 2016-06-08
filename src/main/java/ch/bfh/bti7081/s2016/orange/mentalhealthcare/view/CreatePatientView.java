@@ -22,12 +22,13 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 	public CreatePatientView() {
 		controller = new PatientController();
+		//final Label title = new Label("Create");
 
-		TabSheet tabsheet = new TabSheet();
-		VerticalLayout tabCreatePatient = getTabCreatePatient();
-		tabsheet.addTab(tabCreatePatient).setCaption("Create");
+		//TabSheet tabsheet = new TabSheet();
+		VerticalLayout layoutCreatePatient = getLayoutCreatePatient();
+		//tabsheet.addTab(layoutCreatePatient).setCaption("Create");
 
-		addComponents(getTop(), hinweis, tabsheet);
+		addComponents(getTop(), hinweis, layoutCreatePatient);
 
 		setMargin(true);
 
@@ -40,9 +41,9 @@ public class CreatePatientView extends VerticalLayout implements View {
 		return layoutTop;
 	}
 
-	private VerticalLayout getTabCreatePatient() {
+	private VerticalLayout getLayoutCreatePatient() {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
-
+		final Label title = new Label("Create");
 		final TextField lastName = new TextField();
 		lastName.setCaption("Last name:");
 
@@ -71,7 +72,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
 
-		layoutPatientenDaten.addComponents(lastName, firstName, assuranceNr, birthDate, createButton, startButton);
+		layoutPatientenDaten.addComponents(title, lastName, firstName, assuranceNr, birthDate, createButton, startButton);
 
 		layoutPatientenDaten.setSpacing(true);
 
