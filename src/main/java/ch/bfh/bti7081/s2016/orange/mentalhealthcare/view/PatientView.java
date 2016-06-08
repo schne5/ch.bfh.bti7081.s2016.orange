@@ -137,8 +137,8 @@ public class PatientView extends VerticalLayout implements View {
 		});
 
 		final Button deleteButton = new Button("delete patient");
-		controller.delete(patient);
 		deleteButton.addClickListener(e -> {
+			controller.delete(patient);
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
 
