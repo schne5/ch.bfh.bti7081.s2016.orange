@@ -39,22 +39,37 @@ public class StartView extends VerticalLayout implements View {
 
 		setMargin(true);
 
-		// Add title
+		// Add layout for menu buttons
+		final VerticalLayout menu = new VerticalLayout();
+		addComponent(menu);
+
+		// Add "logout button"
+		final VerticalLayout logoutButtonLayout = new VerticalLayout();
+		final Button logoutButton = new Button("Logout");
+		logoutButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(LoginView.NAME);
+		});
+		logoutButtonLayout.addComponent(logoutButton);
+		logoutButtonLayout.setMargin(new MarginInfo(true, false));
+		menu.addComponent(logoutButtonLayout);
+
+		// Add "create patient button"
+		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
+		final Button createPatientButton = new Button("Create Patient");
+		createPatientButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
+		});
+		createPatientButtonLayout.addComponent(createPatientButton);
+		createPatientButtonLayout.setMargin(new MarginInfo(true, false));
+		menu.addComponent(createPatientButtonLayout);
+
+		// Add layout for search
+		final VerticalLayout search = new VerticalLayout();
+		addComponent(search);
+
+		// Add title for search
 		final Label title = new Label("Search for Patients");
-		addComponent(title);
-
-		// Add content
-		final HorizontalLayout content = new HorizontalLayout();
-		content.setWidth("100%");
-		addComponent(content);
-
-		// Add navigation and display sides
-		final VerticalLayout nav = new VerticalLayout();
-		nav.setWidth("250px");
-		final VerticalLayout display = new VerticalLayout();
-		display.setWidth("100%");
-		content.addComponents(nav, display);
-		content.setExpandRatio(display, 1);
+		search.addComponent(title);
 
 		// Add input fields
 		final VerticalLayout input = new VerticalLayout();
@@ -68,10 +83,10 @@ public class StartView extends VerticalLayout implements View {
 		birthDate.setCaption(StartView.BIRTHDATE);
 		input.addComponents(lastName, firstName, assuranceNr, birthDate);
 		input.setHeight("300px");
+		search.addComponent(input);
 
 		// Add output field
 		Table patientTable = createPatientTable();
-		display.addComponents(patientTable);
 
 		// Add search button
 		final VerticalLayout button = new VerticalLayout();
@@ -84,7 +99,7 @@ public class StartView extends VerticalLayout implements View {
 		button.addComponent(searchButton);
 		button.setHeight("100px");
 
-		nav.addComponents(input, button);
+		search.addComponents(button, patientTable);
 
 		// Add "open patient buttons"
 		displayButtons = new HorizontalLayout();
@@ -102,27 +117,7 @@ public class StartView extends VerticalLayout implements View {
 		});
 		displayButtons.addComponents(openButton, editButton);
 		displayButtons.setEnabled(false);
-		display.addComponent(displayButtons);
-
-		// Add "create patient button"
-		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
-		final Button createPatientButton = new Button("Create Patient");
-		createPatientButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
-		});
-		createPatientButtonLayout.addComponent(createPatientButton);
-		createPatientButtonLayout.setMargin(new MarginInfo(true, false));
-		nav.addComponent(createPatientButtonLayout);
-
-		// Add "back button"
-		final VerticalLayout backButtonLayout = new VerticalLayout();
-		final Button backButton = new Button("Return to main view");
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(TestView.NAME);
-		});
-		backButtonLayout.addComponent(backButton);
-		backButtonLayout.setMargin(new MarginInfo(true, false));
-		nav.addComponent(backButtonLayout);
+		addComponent(displayButtons);
 	}
 
 	@SuppressWarnings("unchecked")
