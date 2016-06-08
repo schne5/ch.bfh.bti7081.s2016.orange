@@ -77,8 +77,7 @@ public class PatientView extends VerticalLayout implements View {
 		Label labelSocialAssuranceNumber = new Label(this.patient.getSvNr());
 		Label labelBirthDate = new Label(this.patient.getGebDatum().toString());
 
-		layoutTop.addComponents(labelLastname, labelFirstName,
-				labelSocialAssuranceNumber, labelBirthDate);
+		layoutTop.addComponents(labelLastname, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
@@ -86,36 +85,29 @@ public class PatientView extends VerticalLayout implements View {
 	private VerticalLayout getTabPatientBearbeiten() {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
 
-		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(
-				patient.getId());
+		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(patient.getId());
 		final TextField id = new TextField(propertyId);
 		id.setVisible(false);
 
-		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(
-				patient.getName());
+		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(patient.getName());
 		final TextField lastName = new TextField(propertyLastName);
 		lastName.setCaption("Last name:");
 
-		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(
-				patient.getVorname());
+		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(patient.getVorname());
 		final TextField firstName = new TextField(propertyFirstName);
 		firstName.setCaption("First name:");
 
-		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(
-				patient.getSvNr());
-		final TextField assuranceNr = new TextField(
-				propertySocialAssuranceNumber);
+		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(patient.getSvNr());
+		final TextField assuranceNr = new TextField(propertySocialAssuranceNumber);
 		assuranceNr.setCaption("Social assurance number:");
 
-		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(
-				patient.getGebDatum());
+		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(patient.getGebDatum());
 		final DateField birthDate = new DateField(propertyBirthDate);
 		birthDate.setCaption("Birth date:");
 
 		final ComboBox patientState = new ComboBox();
 		patientState.setCaption("State:");
-		patientState.addItems(PatientState.NO_DANGER,
-				PatientState.POTENTIAL_DANGER, PatientState.DANGER);
+		patientState.addItems(PatientState.NO_DANGER, PatientState.POTENTIAL_DANGER, PatientState.DANGER);
 		patientState.select(PatientState.getByValue(patient.getStatus()));
 		final Button saveButton = new Button("Save patient");
 		saveButton.addClickListener(e -> {
@@ -123,20 +115,24 @@ public class PatientView extends VerticalLayout implements View {
 			this.patient.setVorname(propertyFirstName.getValue());
 			this.patient.setSvNr(propertySocialAssuranceNumber.getValue());
 			this.patient.setGebDatum(propertyBirthDate.getValue());
-			this.patient.setStatus(((PatientState) patientState.getValue())
-					.getValue());
+			this.patient.setStatus(((PatientState) patientState.getValue()).getValue());
 
 			Patient updatedPatient = controller.update(patient);
 			if (null == updatedPatient) {
-				this.labelFehler
-						.setCaption("Daten konnten nicht gespeichert werden.");
+				this.labelFehler.setCaption("Daten konnten nicht gespeichert werden.");
 			} else {
 				this.labelFehler.setCaption("Daten gespeichert.");
 				this.patient = updatedPatient;
 			}
 		});
 
-		final Button deleteButton = new Button("delete patient");
+		final Button contactButton = new Button("Edit contact data");
+		contactButton.addClickListener(e -> {
+			int patientId = this.patient.getId();
+			getUI().getNavigator().navigateTo(ContactView.NAME + "/" + patientId);
+		});
+
+		final Button deleteButton = new Button("Delete patient");
 		deleteButton.addClickListener(e -> {
 			controller.delete(patient);
 			getUI().getNavigator().navigateTo(StartView.NAME);
@@ -146,9 +142,8 @@ public class PatientView extends VerticalLayout implements View {
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		layoutPatientenDaten.addComponents(id, lastName, firstName,
-				assuranceNr, birthDate, patientState, saveButton, deleteButton,
-				backButton);
+		layoutPatientenDaten.addComponents(id, lastName, firstName, assuranceNr, birthDate, patientState, saveButton,
+				deleteButton, contactButton, backButton);
 		layoutPatientenDaten.setSpacing(true);
 		return layoutPatientenDaten;
 	}
@@ -162,33 +157,28 @@ public class PatientView extends VerticalLayout implements View {
 		listen.setSpacing(true);
 
 		Label labelMedikamente = new Label("Aktuelle Medikamente:");
-		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(
-				Medikament.class, patient.getMedikaments());
+		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(Medikament.class,
+				patient.getMedikaments());
 		Grid gridMedikamente = getMedikamenteGrid(medis);
 
 		Label labelDiagnosen = new Label("Aktuelle Diagnosen:");
-		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(
-				Diagnose.class, patient.getDiagnoses());
+		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoses());
 		Grid gridDiagnosen = getDiagnoseGrid(diagnoses);
-		listen.addComponents(labelMedikamente, gridMedikamente, labelDiagnosen,
-				gridDiagnosen);
+		listen.addComponents(labelMedikamente, gridMedikamente, labelDiagnosen, gridDiagnosen);
 
 		VerticalLayout kontakteLayout = new VerticalLayout();
 		kontakteLayout.setSpacing(true);
 		kontakteLayout.setMargin(new MarginInfo(false, true, false, true));
 		Label labelKontakte = new Label("Kontakte:");
-		BeanItemContainer<Kontakt> kontakte = new BeanItemContainer<Kontakt>(
-				Kontakt.class, patient.getKontakts());
+		BeanItemContainer<Kontakt> kontakte = new BeanItemContainer<Kontakt>(Kontakt.class, patient.getKontakts());
 		Grid gridKontakte = getKontakteGrid(kontakte);
 		kontakteLayout.addComponents(labelKontakte, gridKontakte);
-		String basepath = VaadinService.getCurrent().getBaseDirectory()
-				.getAbsolutePath();
+		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
 		VerticalLayout statusLayout = new VerticalLayout();
 		statusLayout.setMargin(new MarginInfo(true, false, false, false));
 		// Image as a file resource
-		FileResource resource = new FileResource(new File(basepath + "/images/"
-				+ state.changeAmpel(this)));
+		FileResource resource = new FileResource(new File(basepath + "/images/" + state.changeAmpel(this)));
 
 		// Show the image in the application
 		Image image = new Image("Patient gefährlich für andere", resource);
@@ -196,8 +186,7 @@ public class PatientView extends VerticalLayout implements View {
 		image.setWidth("100");
 		statusLayout.addComponent(image);
 
-		layoutPatientenDaten
-				.addComponents(listen, kontakteLayout, statusLayout);
+		layoutPatientenDaten.addComponents(listen, kontakteLayout, statusLayout);
 
 		return layoutPatientenDaten;
 	}
@@ -205,8 +194,8 @@ public class PatientView extends VerticalLayout implements View {
 	private VerticalLayout getTabPatientenMedicaments() {
 		VerticalLayout layout = new VerticalLayout();
 		Label labelMedikamente = new Label("Medikamente:");
-		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(
-				Medikament.class, patient.getMedikamentHistory());
+		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(Medikament.class,
+				patient.getMedikamentHistory());
 		Grid gridMedikamente = getMedikamenteGrid(medis);
 		layout.addComponents(labelMedikamente, gridMedikamente);
 		layout.setSpacing(true);
@@ -217,8 +206,8 @@ public class PatientView extends VerticalLayout implements View {
 	private VerticalLayout getTabPatientenDiagnoses() {
 		VerticalLayout layout = new VerticalLayout();
 		Label labelDiagnosen = new Label("Diagnosen:");
-		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(
-				Diagnose.class, patient.getDiagnoseHistory());
+		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(Diagnose.class,
+				patient.getDiagnoseHistory());
 		Grid gridDiagnosen = getDiagnoseGrid(diagnoses);
 		layout.addComponents(labelDiagnosen, gridDiagnosen);
 		layout.setSpacing(true);
@@ -285,8 +274,7 @@ public class PatientView extends VerticalLayout implements View {
 		gridMedikamente.removeColumn("patient");
 		gridMedikamente.removeColumn("active");
 		gridMedikamente.removeColumn("compendiummedikament");
-		gridMedikamente
-				.setColumnOrder("medikamentBezeichnung", "dosis", "arzt");
+		gridMedikamente.setColumnOrder("medikamentBezeichnung", "dosis", "arzt");
 		gridMedikamente.setHeight("200");
 		return gridMedikamente;
 	}
