@@ -18,12 +18,12 @@ public class ContactView extends VerticalLayout implements View {
 
 	private static final long serialVersionUID = -2127813907372672333L;
 
-	private static final String contactName = "Name";
-	private static final String contactAddress = "Address";
-	private static final String contactTelNr = "Telefon Number";
-	private static final String contactType = "Type of Contact";
-	private static final String deleteButton = "Delete Entry";
-	private static final String saveButton = "Save Entry";
+	private static final String CONTACT_NAME = "Name";
+	private static final String CONTACT_ADDRESS = "Address";
+	private static final String CONTACT_TEL_NR = "Telefon Number";
+	private static final String CONTACT_TYPE = "Type of Contact";
+	private static final String DELETE_BUTTON = "Delete Entry";
+	private static final String SAVE_BUTTON = "Save Entry";
 
 	private final ContactController controller;
 
@@ -91,11 +91,11 @@ public class ContactView extends VerticalLayout implements View {
 		Table contactTable = new Table();
 
 		// Define columns
-		contactTable.addContainerProperty(ContactView.contactName, String.class, null);
-		contactTable.addContainerProperty(ContactView.contactAddress, String.class, null);
-		contactTable.addContainerProperty(ContactView.contactTelNr, String.class, null);
-		contactTable.addContainerProperty(ContactView.contactType, String.class, null);
-		contactTable.addContainerProperty(ContactView.deleteButton, Button.class, null);
+		contactTable.addContainerProperty(ContactView.CONTACT_NAME, String.class, null);
+		contactTable.addContainerProperty(ContactView.CONTACT_ADDRESS, String.class, null);
+		contactTable.addContainerProperty(ContactView.CONTACT_TEL_NR, String.class, null);
+		contactTable.addContainerProperty(ContactView.CONTACT_TYPE, String.class, null);
+		contactTable.addContainerProperty(ContactView.DELETE_BUTTON, Button.class, null);
 
 		return contactTable;
 	}
@@ -105,11 +105,11 @@ public class ContactView extends VerticalLayout implements View {
 		inputTable.setEditable(true);
 
 		// Define columns
-		inputTable.addContainerProperty(ContactView.contactName, String.class, null);
-		inputTable.addContainerProperty(ContactView.contactAddress, String.class, null);
-		inputTable.addContainerProperty(ContactView.contactTelNr, String.class, null);
-		inputTable.addContainerProperty(ContactView.contactType, String.class, null);
-		inputTable.addContainerProperty(ContactView.saveButton, Button.class, null);
+		inputTable.addContainerProperty(ContactView.CONTACT_NAME, String.class, null);
+		inputTable.addContainerProperty(ContactView.CONTACT_ADDRESS, String.class, null);
+		inputTable.addContainerProperty(ContactView.CONTACT_TEL_NR, String.class, null);
+		inputTable.addContainerProperty(ContactView.CONTACT_TYPE, String.class, null);
+		inputTable.addContainerProperty(ContactView.SAVE_BUTTON, Button.class, null);
 
 		return inputTable;
 	}
@@ -121,10 +121,10 @@ public class ContactView extends VerticalLayout implements View {
 		for (Kontakt k : controller.getContacts(patientId)) {
 			Object newItemId = contactTable.addItem();
 			Item row = contactTable.getItem(newItemId);
-			row.getItemProperty(ContactView.contactName).setValue(k.getName());
-			row.getItemProperty(ContactView.contactAddress).setValue(k.getAdresse());
-			row.getItemProperty(ContactView.contactTelNr).setValue(k.getTelefonNr());
-			row.getItemProperty(ContactView.contactType).setValue(k.getTyp());
+			row.getItemProperty(ContactView.CONTACT_NAME).setValue(k.getName());
+			row.getItemProperty(ContactView.CONTACT_ADDRESS).setValue(k.getAdresse());
+			row.getItemProperty(ContactView.CONTACT_TEL_NR).setValue(k.getTelefonNr());
+			row.getItemProperty(ContactView.CONTACT_TYPE).setValue(k.getTyp());
 
 			Button deleteButton = new Button();
 			deleteButton.setCaption("Delete");
@@ -132,7 +132,7 @@ public class ContactView extends VerticalLayout implements View {
 				controller.deleteContact(patientId, k);
 				updateContactTable();
 			});
-			row.getItemProperty(ContactView.deleteButton).setValue(deleteButton);
+			row.getItemProperty(ContactView.DELETE_BUTTON).setValue(deleteButton);
 		}
 	}
 
@@ -142,23 +142,23 @@ public class ContactView extends VerticalLayout implements View {
 
 		Object newItemId = inputTable.addItem();
 		Item row = inputTable.getItem(newItemId);
-		row.getItemProperty(ContactView.contactName).setValue("");
-		row.getItemProperty(ContactView.contactAddress).setValue("");
-		row.getItemProperty(ContactView.contactTelNr).setValue("");
-		row.getItemProperty(ContactView.contactType).setValue("");
+		row.getItemProperty(ContactView.CONTACT_NAME).setValue("");
+		row.getItemProperty(ContactView.CONTACT_ADDRESS).setValue("");
+		row.getItemProperty(ContactView.CONTACT_TEL_NR).setValue("");
+		row.getItemProperty(ContactView.CONTACT_TYPE).setValue("");
 
 		Button saveButton = new Button();
 		saveButton.setCaption("Save");
 		saveButton.addClickListener(e -> {
-			String name = (String) row.getItemProperty(ContactView.contactName).getValue();
-			String address = (String) row.getItemProperty(ContactView.contactAddress).getValue();
-			String telNr = (String) row.getItemProperty(ContactView.contactTelNr).getValue();
-			String type = (String) row.getItemProperty(ContactView.contactType).getValue();
+			String name = (String) row.getItemProperty(ContactView.CONTACT_NAME).getValue();
+			String address = (String) row.getItemProperty(ContactView.CONTACT_ADDRESS).getValue();
+			String telNr = (String) row.getItemProperty(ContactView.CONTACT_TEL_NR).getValue();
+			String type = (String) row.getItemProperty(ContactView.CONTACT_TYPE).getValue();
 
 			controller.saveContact(patientId, name, address, telNr, type);
 			updateContactTable();
 			updateInputTable();
 		});
-		row.getItemProperty(ContactView.saveButton).setValue(saveButton);
+		row.getItemProperty(ContactView.SAVE_BUTTON).setValue(saveButton);
 	}
 }

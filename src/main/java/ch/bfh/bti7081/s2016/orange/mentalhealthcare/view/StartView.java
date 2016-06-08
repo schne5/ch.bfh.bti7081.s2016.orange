@@ -25,10 +25,10 @@ public class StartView extends VerticalLayout implements View {
 
 	private final StartController controller;
 
-	private static final String lastName = "Last Name";
-	private static final String firstName = "First Name";
-	private static final String assuranceNr = "Assurance Number";
-	private static final String birthDate = "Birth Date";
+	private static final String LAST_NAME = "Last Name";
+	private static final String FIRST_NAME = "First Name";
+	private static final String ASSURANCE_NR = "Assurance Number";
+	private static final String BIRTHDATE = "Birthdate";
 
 	private final HorizontalLayout displayButtons;
 
@@ -59,13 +59,13 @@ public class StartView extends VerticalLayout implements View {
 		// Add input fields
 		final VerticalLayout input = new VerticalLayout();
 		final TextField lastName = new TextField();
-		lastName.setCaption(StartView.lastName);
+		lastName.setCaption(StartView.LAST_NAME);
 		final TextField firstName = new TextField();
-		firstName.setCaption(StartView.firstName);
+		firstName.setCaption(StartView.FIRST_NAME);
 		final TextField assuranceNr = new TextField();
-		assuranceNr.setCaption(StartView.assuranceNr);
+		assuranceNr.setCaption(StartView.ASSURANCE_NR);
 		final DateField birthDate = new DateField();
-		birthDate.setCaption(StartView.birthDate);
+		birthDate.setCaption(StartView.BIRTHDATE);
 		input.addComponents(lastName, firstName, assuranceNr, birthDate);
 		input.setHeight("300px");
 
@@ -133,10 +133,10 @@ public class StartView extends VerticalLayout implements View {
 		for (Patient patient : controller.getPatients()) {
 			Object newItemId = patientTable.addItem();
 			Item row = patientTable.getItem(newItemId);
-			row.getItemProperty(StartView.lastName).setValue(patient.getName());
-			row.getItemProperty(StartView.firstName).setValue(patient.getVorname());
-			row.getItemProperty(StartView.assuranceNr).setValue(patient.getSvNr());
-			row.getItemProperty(StartView.birthDate).setValue(patient.getGebDatum());
+			row.getItemProperty(StartView.LAST_NAME).setValue(patient.getName());
+			row.getItemProperty(StartView.FIRST_NAME).setValue(patient.getVorname());
+			row.getItemProperty(StartView.ASSURANCE_NR).setValue(patient.getSvNr());
+			row.getItemProperty(StartView.BIRTHDATE).setValue(patient.getGebDatum());
 
 			patientIds.add(patient.getId());
 		}
@@ -147,10 +147,10 @@ public class StartView extends VerticalLayout implements View {
 		patientTable.setSelectable(true);
 
 		// Define columns
-		patientTable.addContainerProperty(StartView.lastName, String.class, null);
-		patientTable.addContainerProperty(StartView.firstName, String.class, null);
-		patientTable.addContainerProperty(StartView.assuranceNr, String.class, null);
-		patientTable.addContainerProperty(StartView.birthDate, Date.class, null);
+		patientTable.addContainerProperty(StartView.LAST_NAME, String.class, null);
+		patientTable.addContainerProperty(StartView.FIRST_NAME, String.class, null);
+		patientTable.addContainerProperty(StartView.ASSURANCE_NR, String.class, null);
+		patientTable.addContainerProperty(StartView.BIRTHDATE, Date.class, null);
 
 		patientTable.addItemClickListener(e -> {
 			displayButtons.setEnabled(true);
