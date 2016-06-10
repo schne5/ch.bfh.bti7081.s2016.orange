@@ -165,7 +165,7 @@ public class StartView extends VerticalLayout implements View {
 		if(getSession().getAttribute("user")!=null){
 			int i = (int)getSession().getAttribute("user");
 			arzt = acontroller.getArztById(i);
-			text.setCaption("eingeloggt als "+arzt.getName());
+			text.setCaption("logged in as: "+arzt.getName());
 			
 		}
 		
