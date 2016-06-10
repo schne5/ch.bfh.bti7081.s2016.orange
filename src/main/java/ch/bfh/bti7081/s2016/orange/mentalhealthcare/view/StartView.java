@@ -25,7 +25,7 @@ public class StartView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -4883635345472877648L;
 
 	private final StartController controller;
-	private final ArztController doctorController;
+
 	private static final String LAST_NAME = "Last Name";
 	private static final String FIRST_NAME = "First Name";
 	private static final String ASSURANCE_NR = "Assurance Number";
@@ -33,15 +33,16 @@ public class StartView extends VerticalLayout implements View {
 
 	private static final String OPEN_BUTTON = "Open";
 	private static final String EDIT_BUTTON = "Edit";
-	Label text = new Label();
-	private Arzt doctor = null;
+
+	private Label loggingInfo = new Label();
 	private ArrayList<Integer> patientIds = null;
 
 	public StartView() {
-		doctorController = new ArztController();
 		controller = new StartController();
 
 		setMargin(true);
+
+		addComponent(loggingInfo);
 
 		// Add layout for menu buttons
 		final VerticalLayout menu = new VerticalLayout();
@@ -75,7 +76,7 @@ public class StartView extends VerticalLayout implements View {
 
 		// Add title for search
 		final Label title = new Label("Search for Patients");
-		search.addComponents(title, text);
+		search.addComponent(title);
 
 		// Add input fields
 		final VerticalLayout input = new VerticalLayout();
@@ -160,12 +161,11 @@ public class StartView extends VerticalLayout implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// Add welcome text after login
+		ArztController doctorController = new ArztController();
 		if (getSession().getAttribute("user") != null) {
 			int i = (int) getSession().getAttribute("user");
-			doctor = doctorController.getArztById(i);
-			text.setCaption("You are logged in as: " + doctor.getName());
-
+			Arzt doctor = doctorController.getArztById(i);
+			loggingInfo.setCaption("You are logged in as: " + doctor.getName());
 		}
-
 	}
 }
