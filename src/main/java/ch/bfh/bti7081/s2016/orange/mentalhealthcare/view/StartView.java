@@ -15,8 +15,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.ArztController;//Rajina
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt;//Rajina
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.ArztController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
@@ -26,19 +26,19 @@ public class StartView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -4883635345472877648L;
 
 	private final StartController controller;
-	private final ArztController acontroller;//Rajina
+	private final ArztController acontroller;
 	private static final String LAST_NAME = "Last Name";
 	private static final String FIRST_NAME = "First Name";
 	private static final String ASSURANCE_NR = "Assurance Number";
 	private static final String BIRTHDATE = "Birthdate";
 
 	private final HorizontalLayout displayButtons;
-	Label text = new Label();//Rajina
-	private Arzt arzt = null;//Rajina
+	Label text = new Label();
+	private Arzt arzt = null;
 	private ArrayList<Integer> patientIds = null;
 
 	public StartView() {
-		acontroller = new ArztController();//Rajina
+		acontroller = new ArztController();
 		controller = new StartController();
 
 		setMargin(true);
@@ -161,7 +161,7 @@ public class StartView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		
+		//add welcome text after Login
 		if(getSession().getAttribute("user")!=null){
 			int i = (int)getSession().getAttribute("user");
 			arzt = acontroller.getArztById(i);
