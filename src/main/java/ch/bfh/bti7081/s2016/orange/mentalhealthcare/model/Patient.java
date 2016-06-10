@@ -1,59 +1,47 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * The persistent class for the patient database table.
  * 
  */
 @Entity
-@NamedQueries({ @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
-		@NamedQuery(name = "Patient.findByNameAndSVNrAndGebD", query = "SELECT p FROM Patient p WHERE p.name LIKE :name and p.vorname LIKE :vorname and p.svNr LIKE :svNr and p.gebDatum = :gebDatum"),
-		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.name LIKE :name and p.vorname LIKE :vorname and p.svNr LIKE :svNr"), })
+@NamedQuery(name="Patient.findAll", query="SELECT p FROM Patient p")
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	private String assuranceNr;
+
 	@Temporal(TemporalType.DATE)
-	private Date gebDatum;
+	private Date birthdate;
 
-	private String name;
+	private String firstname;
 
-	private int status;
+	private int state;
 
-	private String svNr;
+	private String surename;
 
-	private String vorname;
-
-	// bi-directional many-to-one association to Diagnose
-	@OneToMany(mappedBy = "patient",cascade = {CascadeType.ALL})
+	//bi-directional many-to-one association to Diagnose
+	@OneToMany(mappedBy="patient")
 	private List<Diagnose> diagnoses;
 
-	// bi-directional many-to-one association to Kontakt
-	@OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL})
-	private List<Kontakt> kontakts;
+	//bi-directional many-to-one association to Contact
+	@OneToMany(mappedBy="patient")
+	private List<Contact> contacts;
 
-	// bi-directional many-to-one association to Medikament
-	@OneToMany(mappedBy = "patient",cascade = {CascadeType.ALL})
-	private List<Medikament> medikaments;
+	//bi-directional many-to-one association to Medicament
+	@OneToMany(mappedBy="patient")
+	private List<Medicament> medicaments;
 
-	public Patient(String name, String vorname, String svNr, int status, Date gebDatum) {
-		this.name = name;
-		this.vorname = vorname;
-		this.svNr = svNr;
-		this.gebDatum = gebDatum;
-	}
-
-	Patient() {
+	public Patient() {
 	}
 
 	public int getId() {
@@ -64,56 +52,48 @@ public class Patient implements Serializable {
 		this.id = id;
 	}
 
-	public Date getGebDatum() {
-		return this.gebDatum;
+	public String getAssuranceNr() {
+		return this.assuranceNr;
 	}
 
-	public void setGebDatum(Date gebDatum) {
-		this.gebDatum = gebDatum;
+	public void setAssuranceNr(String assuranceNr) {
+		this.assuranceNr = assuranceNr;
 	}
 
-	public String getName() {
-		return this.name;
+	public Date getBirthdate() {
+		return this.birthdate;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
-	public int getStatus() {
-		return this.status;
+	public String getFirstname() {
+		return this.firstname;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
-	public String getSvNr() {
-		return this.svNr;
+	public int getState() {
+		return this.state;
 	}
 
-	public void setSvNr(String svNr) {
-		this.svNr = svNr;
+	public void setState(int state) {
+		this.state = state;
 	}
 
-	public String getVorname() {
-		return this.vorname;
+	public String getSurename() {
+		return this.surename;
 	}
 
-	public void setVorname(String vorname) {
-		this.vorname = vorname;
+	public void setSurename(String surename) {
+		this.surename = surename;
 	}
 
 	public List<Diagnose> getDiagnoses() {
-		if(diagnoses==null){
-			diagnoses=  new ArrayList<Diagnose>();
-		}
-		List<Diagnose> actives = new ArrayList<Diagnose>();
-		for(Diagnose d : diagnoses){
-			if(d.getActive()==1)
-				actives.add(d);
-		}
-		return actives;
+		return this.diagnoses;
 	}
 
 	public void setDiagnoses(List<Diagnose> diagnoses) {
@@ -134,65 +114,48 @@ public class Patient implements Serializable {
 		return diagnos;
 	}
 
-	public List<Kontakt> getKontakts() {
-		if(kontakts==null){
-			kontakts= new ArrayList<Kontakt>();
-		}
-		return this.kontakts;
+	public List<Contact> getContacts() {
+		return this.contacts;
 	}
 
-	public void setKontakts(List<Kontakt> kontakts) {
-		this.kontakts = kontakts;
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
 	}
 
-	public Kontakt addKontakt(Kontakt kontakt) {
-		getKontakts().add(kontakt);
-		kontakt.setPatient(this);
-		return kontakt;
+	public Contact addContact(Contact contact) {
+		getContacts().add(contact);
+		contact.setPatient(this);
+
+		return contact;
 	}
 
-	public Kontakt removeKontakt(Kontakt kontakt) {
-		getKontakts().remove(kontakt);
-		kontakt.setPatient(null);
+	public Contact removeContact(Contact contact) {
+		getContacts().remove(contact);
+		contact.setPatient(null);
 
-		return kontakt;
+		return contact;
 	}
 
-	public List<Medikament> getMedikaments() {
-		if(medikaments==null){
-			medikaments = new ArrayList<Medikament>();
-		}
-		List<Medikament> actives = new ArrayList<Medikament>();
-		for(Medikament m : medikaments){
-			if(m.getActive()==1)
-				actives.add(m);
-		}
-		return actives;
+	public List<Medicament> getMedicaments() {
+		return this.medicaments;
 	}
 
-	public void setMedikaments(List<Medikament> medikaments) {
-		this.medikaments = medikaments;
+	public void setMedicaments(List<Medicament> medicaments) {
+		this.medicaments = medicaments;
 	}
 
-	public Medikament addMedikament(Medikament medikament) {
-		getMedikaments().add(medikament);
-		medikament.setPatient(this);
+	public Medicament addMedicament(Medicament medicament) {
+		getMedicaments().add(medicament);
+		medicament.setPatient(this);
 
-		return medikament;
+		return medicament;
 	}
 
-	public Medikament removeMedikament(Medikament medikament) {
-		getMedikaments().remove(medikament);
-		medikament.setPatient(null);
+	public Medicament removeMedicament(Medicament medicament) {
+		getMedicaments().remove(medicament);
+		medicament.setPatient(null);
 
-		return medikament;
+		return medicament;
 	}
-	
-	public List<Medikament> getMedikamentHistory(){
-		return this.medikaments;
-	}
-	
-	public List<Diagnose> getDiagnoseHistory(){
-		return this.diagnoses;
-	}
+
 }

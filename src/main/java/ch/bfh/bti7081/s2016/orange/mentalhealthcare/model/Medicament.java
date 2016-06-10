@@ -2,15 +2,16 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
- * The persistent class for the diagnose database table.
+ * The persistent class for the medicament database table.
  * 
  */
 @Entity
-@NamedQuery(name="Diagnose.findAll", query="SELECT d FROM Diagnose d")
-public class Diagnose implements Serializable {
+@NamedQuery(name="Medicament.findAll", query="SELECT m FROM Medicament m")
+public class Medicament implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -18,10 +19,9 @@ public class Diagnose implements Serializable {
 
 	private short active;
 
-	//bi-directional many-to-one association to Icdcdiagnose
-	@ManyToOne
-	@JoinColumn(name="icdcId")
-	private Icdcdiagnose icdcdiagnose;
+	private BigDecimal dose;
+
+	private int takings;
 
 	//bi-directional many-to-one association to Patient
 	@ManyToOne
@@ -33,7 +33,12 @@ public class Diagnose implements Serializable {
 	@JoinColumn(name="doctorId")
 	private Doctor doctor;
 
-	public Diagnose() {
+	//bi-directional many-to-one association to Compendiummedicament
+	@ManyToOne
+	@JoinColumn(name="compMedId")
+	private Compendiummedicament compendiummedicament;
+
+	public Medicament() {
 	}
 
 	public int getId() {
@@ -52,12 +57,20 @@ public class Diagnose implements Serializable {
 		this.active = active;
 	}
 
-	public Icdcdiagnose getIcdcdiagnose() {
-		return this.icdcdiagnose;
+	public BigDecimal getDose() {
+		return this.dose;
 	}
 
-	public void setIcdcdiagnose(Icdcdiagnose icdcdiagnose) {
-		this.icdcdiagnose = icdcdiagnose;
+	public void setDose(BigDecimal dose) {
+		this.dose = dose;
+	}
+
+	public int getTakings() {
+		return this.takings;
+	}
+
+	public void setTakings(int takings) {
+		this.takings = takings;
 	}
 
 	public Patient getPatient() {
@@ -74,6 +87,14 @@ public class Diagnose implements Serializable {
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+
+	public Compendiummedicament getCompendiummedicament() {
+		return this.compendiummedicament;
+	}
+
+	public void setCompendiummedicament(Compendiummedicament compendiummedicament) {
+		this.compendiummedicament = compendiummedicament;
 	}
 
 }
