@@ -6,6 +6,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class JpaArztRepository implements ArztRepository {
 
@@ -35,6 +36,15 @@ public class JpaArztRepository implements ArztRepository {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@Override
+	public Arzt get(int arztId) {
+		EntityManager em = getEntityManager();
+		Arzt a = em.find(Arzt.class, arztId);
+		return a;
+		
+		// TODO Auto-generated method stub
 	}
 
 }

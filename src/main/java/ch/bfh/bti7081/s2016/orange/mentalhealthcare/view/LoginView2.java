@@ -14,34 +14,35 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 
-public class LoginView extends VerticalLayout implements View {
+public class LoginView2 extends VerticalLayout implements View {
 	public static final String NAME = "Login";
-	 Arzt a = null;
+	private Arzt a = null;
 
 	Label hinweis = new Label(); // Hinweis bei fehlerhafter eingabe
-	final TextField username = new TextField();
 	private final LoginController controller;
 
-	public LoginView() {
-		final Label title = new Label("Login");
+	public LoginView2() {
 		controller = new LoginController();
-		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
-		addComponents(getTop(),title, hinweis, layoutLoginDaten);
+		TabSheet tabsheet = new TabSheet();
+		VerticalLayout tabLoginDaten = getTabLoginDaten();
+		tabsheet.addTab(tabLoginDaten);
+
+		addComponents(getTop(), hinweis, tabsheet);
 		setMargin(true);
 	}
 
-	private HorizontalLayout getTop() {// leer mal als Platzhalter drin
+	private HorizontalLayout getTop() {
 		HorizontalLayout layoutTop = new HorizontalLayout();
 		layoutTop.addComponents();
 		layoutTop.setSpacing(true);
 		return layoutTop;
 	}
 
-	private VerticalLayout getLayoutLoginDaten() {
+	private VerticalLayout getTabLoginDaten() {
 		VerticalLayout layoutLoginDaten = new VerticalLayout();
-	
+		layoutLoginDaten.setCaption("Login");
 
-		
+		final TextField username = new TextField();
 		username.setCaption("Username:");
 		username.setRequired(true);
 		username.setNullRepresentation("");
@@ -62,12 +63,11 @@ public class LoginView extends VerticalLayout implements View {
 				username.setRequiredError(" ");
 				password.setRequiredError(" ");
 				hinweis.setCaption("Fehlerhafte Eingabe: Login hat nicht funktioniert");
-				
 			} else {
-				getSession().setAttribute("user", a.getId());
-			
 				getUI().getNavigator().navigateTo(StartView.NAME);
+
 			}
+
 		});
 
 		Button backButton = new Button("Return to main view");
@@ -83,7 +83,6 @@ public class LoginView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		username.focus();
 		// TODO Auto-generated method stub
 
 	}
