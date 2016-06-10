@@ -1,23 +1,24 @@
+drop database mentalhealthcare;
 create database mentalhealthcare;
 use mentalhealthcare;
 
 create TABLE patient(
 id int not null PRIMARY KEY AUTO_INCREMENT,
-name varchar(50),
-vorname varchar(50),
-gebDatum date,
-svNr varchar(25),
-status int
+surename varchar(50),
+firstname varchar(50),
+birthdate date,
+assuranceNr varchar(25),
+state int
 );
 
-create TABLE Kontakt (
+create TABLE Contact (
 id int not null PRIMARY KEY AUTO_INCREMENT,
 name varchar(50),
-adresse varchar(100),
-telefonNr varchar(12),
-typ varchar(25),
+adress varchar(100),
+phoneNr varchar(12),
+contactType varchar(25),
 patientId int,
-FOREIGN KEY (patientId ) REFERENCES patient(id)
+FOREIGN KEY (patientId) REFERENCES patient(id)
 );
 
 create table ICDCDiagnose(
@@ -25,11 +26,11 @@ id int not null PRIMARY KEY AUTO_INCREMENT,
 name varchar(100) not null
 );
 
-create Table Arzt(
+create Table Doctor(
 id int not null PRIMARY KEY AUTO_INCREMENT,
 name varchar(50),
-adresse varchar(100),
-spezialgebiet varchar(50),
+adress varchar(100),
+specialisation varchar(50),
 username varchar(50),
 password varchar(50)
 
@@ -38,28 +39,31 @@ password varchar(50)
 create TABLE Diagnose(
 id int not null PRIMARY KEY AUTO_INCREMENT,
 active SMALLINT,
-arztId int,
+doctorId int,
 patientId int,
 icdcId int,
 FOREIGN KEY (icdcId) REFERENCES ICDCDiagnose(id),
-FOREIGN KEY (patientId ) REFERENCES patient(id),
-FOREIGN KEY (arztId) REFERENCES arzt(id)   
+FOREIGN KEY (patientId) REFERENCES patient(id),
+FOREIGN KEY (doctorId) REFERENCES doctor(id)   
 );
 
-create table compendiumMedikament(
+create table compendiumMedicament(
 id int not null PRIMARY KEY AUTO_INCREMENT,
-name varchar(50)
+name varchar(50),
+maxDose decimal,
+maxDosePerDay int
 );
 
-create table Medikament(
+create table Medicament(
 id int not null PRIMARY KEY AUTO_INCREMENT,
-dosis varchar(50),
-arztId int,
+dose decimal,
+doctorId int,
 compMedId int,
 active SMALLINT,
 patientId int,
+takeings int,
 FOREIGN KEY (patientId) REFERENCES patient(id),
-FOREIGN KEY (arztId) REFERENCES arzt(id),
-FOREIGN KEY (compMedId) REFERENCES compendiummedikament(id)    
+FOREIGN KEY (doctorId) REFERENCES doctor(id),
+FOREIGN KEY (compMedId) REFERENCES compendiummedicament(id)    
 );
 
