@@ -50,16 +50,14 @@ public class MyUI extends UI {
                 // Check if a user has logged in
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
                 boolean isLoginView = event.getNewView() instanceof LoginView;
-
+               
                 if (!isLoggedIn && !isLoginView) {
-                    // Redirect to login view always if a user has not yet
-                    // logged in
+                    // go to login view if not logged in
                     getNavigator().navigateTo(LoginView.NAME);
                     return false;
 
                 } else if (isLoggedIn && isLoginView) {
-                    // If someone tries to access to login view while logged in,
-                    // then cancel
+                    // cancel If someone tries to access to login view while logged in
                     return false;
                 }
 
