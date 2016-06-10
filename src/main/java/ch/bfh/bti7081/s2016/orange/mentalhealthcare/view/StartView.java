@@ -9,7 +9,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -26,19 +25,20 @@ public class StartView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -4883635345472877648L;
 
 	private final StartController controller;
-	private final ArztController acontroller;
+	private final ArztController doctorController;
 	private static final String LAST_NAME = "Last Name";
 	private static final String FIRST_NAME = "First Name";
 	private static final String ASSURANCE_NR = "Assurance Number";
 	private static final String BIRTHDATE = "Birthdate";
 
-	private final HorizontalLayout displayButtons;
+	private static final String OPEN_BUTTON = "Open";
+	private static final String EDIT_BUTTON = "Edit";
 	Label text = new Label();
-	private Arzt arzt = null;
+	private Arzt doctor = null;
 	private ArrayList<Integer> patientIds = null;
 
 	public StartView() {
-		acontroller = new ArztController();
+		doctorController = new ArztController();
 		controller = new StartController();
 
 		setMargin(true);
@@ -56,7 +56,8 @@ public class StartView extends VerticalLayout implements View {
 		});
 		logoutButtonLayout.addComponent(logoutButton);
 		logoutButtonLayout.setMargin(new MarginInfo(true, false));
-		menu.addComponent(logoutButtonLayout);
+		logoutButtonLayout.setHeight("20px");
+		menu.addComponent(logoutButton);
 
 		// Add "create patient button"
 		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
@@ -92,6 +93,7 @@ public class StartView extends VerticalLayout implements View {
 
 		// Add output field
 		Table patientTable = createPatientTable();
+		patientTable.setPageLength(0);
 
 		// Add search button
 		final VerticalLayout button = new VerticalLayout();
@@ -105,24 +107,21 @@ public class StartView extends VerticalLayout implements View {
 		button.setHeight("100px");
 
 		search.addComponents(button, patientTable);
+	}
 
-		// Add "open patient buttons"
-		displayButtons = new HorizontalLayout();
-		final Button openButton = new Button("Open patient");
-		openButton.addClickListener(e -> {
-			int rowNumber = (int) patientTable.getValue();
-			int patientId = patientIds.get(rowNumber - 1);
-			getUI().getNavigator().navigateTo(PatientView.NAME + "/open/" + patientId);
-		});
-		final Button editButton = new Button("Edit patient");
-		editButton.addClickListener(e -> {
-			int rowNumber = (int) patientTable.getValue();
-			int patientId = patientIds.get(rowNumber - 1);
-			getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patientId);
-		});
-		displayButtons.addComponents(openButton, editButton);
-		displayButtons.setEnabled(false);
-		addComponent(displayButtons);
+	private Table createPatientTable() {
+		Table patientTable = new Table("Select patient:");
+		patientTable.setSelectable(true);
+
+		// Define columns
+		patientTable.addContainerProperty(StartView.LAST_NAME, String.class, null);
+		patientTable.addContainerProperty(StartView.FIRST_NAME, String.class, null);
+		patientTable.addContainerProperty(StartView.ASSURANCE_NR, String.class, null);
+		patientTable.addContainerProperty(StartView.BIRTHDATE, Date.class, null);
+		patientTable.addContainerProperty(StartView.OPEN_BUTTON, Button.class, null);
+		patientTable.addContainerProperty(StartView.EDIT_BUTTON, Button.class, null);
+
+		return patientTable;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -138,36 +137,35 @@ public class StartView extends VerticalLayout implements View {
 			row.getItemProperty(StartView.ASSURANCE_NR).setValue(patient.getSvNr());
 			row.getItemProperty(StartView.BIRTHDATE).setValue(patient.getGebDatum());
 
+			Button openButton = new Button();
+			openButton.setCaption(StartView.OPEN_BUTTON);
+			openButton.addClickListener(e -> {
+				getUI().getNavigator().navigateTo(PatientView.NAME + "/open/" + patient.getId());
+			});
+			row.getItemProperty(StartView.OPEN_BUTTON).setValue(openButton);
+
+			Button editButton = new Button();
+			editButton.setCaption(StartView.EDIT_BUTTON);
+			editButton.addClickListener(e -> {
+				getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patient.getId());
+			});
+			row.getItemProperty(StartView.EDIT_BUTTON).setValue(editButton);
+
 			patientIds.add(patient.getId());
 		}
-	}
 
-	private Table createPatientTable() {
-		Table patientTable = new Table("Select patient:");
-		patientTable.setSelectable(true);
-
-		// Define columns
-		patientTable.addContainerProperty(StartView.LAST_NAME, String.class, null);
-		patientTable.addContainerProperty(StartView.FIRST_NAME, String.class, null);
-		patientTable.addContainerProperty(StartView.ASSURANCE_NR, String.class, null);
-		patientTable.addContainerProperty(StartView.BIRTHDATE, Date.class, null);
-
-		patientTable.addItemClickListener(e -> {
-			displayButtons.setEnabled(true);
-		});
-
-		return patientTable;
+		patientTable.setPageLength(patientTable.getItemIds().size());
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		//add welcome text after Login
-		if(getSession().getAttribute("user")!=null){
-			int i = (int)getSession().getAttribute("user");
-			arzt = acontroller.getArztById(i);
-			text.setCaption("logged in as: "+arzt.getName());
-			
+		// Add welcome text after login
+		if (getSession().getAttribute("user") != null) {
+			int i = (int) getSession().getAttribute("user");
+			doctor = doctorController.getArztById(i);
+			text.setCaption("You are logged in as: " + doctor.getName());
+
 		}
-		
+
 	}
 }
