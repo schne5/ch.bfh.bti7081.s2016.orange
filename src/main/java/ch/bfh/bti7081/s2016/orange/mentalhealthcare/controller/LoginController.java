@@ -1,12 +1,12 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.ArztRepository;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.ArztRepositoryFactory;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepository;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepositoryFactory;
 
 public class LoginController {
 	Doctor doctor = new Doctor();
-	ArztRepository repository;
+	DoctorRepository repository;
 
 	public LoginController() {
 		repository = ArztRepositoryFactory.createJpaRepository();
