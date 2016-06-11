@@ -23,7 +23,7 @@ public class LoginView extends VerticalLayout implements View {
 	private final LoginController controller;
 
 	public LoginView() {
-		final Label title = new Label("Login");
+		final Label title = new Label("Mentalhealthcare patientdata");
 		controller = new LoginController();
 		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
 		addComponents(getTop(),title, errornote, layoutLoginDaten);
@@ -69,12 +69,8 @@ public class LoginView extends VerticalLayout implements View {
 			}
 		});
 
-		Button backButton = new Button("Return to main view");
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(TestView.NAME);
-		});
-
-		layoutLoginDaten.addComponents(username, password, loginButton, backButton);
+		
+		layoutLoginDaten.addComponents(username, password, loginButton);
 		layoutLoginDaten.setSpacing(true);
 
 		return layoutLoginDaten;
