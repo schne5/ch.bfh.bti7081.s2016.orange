@@ -58,6 +58,8 @@ public class MyUI extends UI {
 
                 } else if (isLoggedIn && isLoginView) {
                     // cancel If someone tries to access to login view while logged in
+                	//it will navigate to StartView
+                	getNavigator().navigateTo(StartView.NAME);
                     return false;
                 }
 
