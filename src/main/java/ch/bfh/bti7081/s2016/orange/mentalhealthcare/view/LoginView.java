@@ -1,7 +1,7 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.LoginController;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -16,9 +16,9 @@ import com.vaadin.ui.VerticalLayout;
 
 public class LoginView extends VerticalLayout implements View {
 	public static final String NAME = "Login";
-	 Arzt a = null;
+	 Doctor doctor = null;
 
-	Label hinweis = new Label(); // Hinweis bei fehlerhafter eingabe
+	Label errornote = new Label(); 
 	final TextField username = new TextField();
 	private final LoginController controller;
 
@@ -26,7 +26,7 @@ public class LoginView extends VerticalLayout implements View {
 		final Label title = new Label("Login");
 		controller = new LoginController();
 		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
-		addComponents(getTop(),title, hinweis, layoutLoginDaten);
+		addComponents(getTop(),title, errornote, layoutLoginDaten);
 		setMargin(true);
 	}
 
@@ -40,8 +40,6 @@ public class LoginView extends VerticalLayout implements View {
 	private VerticalLayout getLayoutLoginDaten() {
 		VerticalLayout layoutLoginDaten = new VerticalLayout();
 	
-
-		
 		username.setCaption("Username:");
 		username.setRequired(true);
 		username.setNullRepresentation("");
@@ -56,16 +54,17 @@ public class LoginView extends VerticalLayout implements View {
 		Button loginButton = new Button("Login");
 		loginButton.setWidth("100px");
 		loginButton.addClickListener(e -> {
-			a = controller.logIn(username.getValue(), password.getValue());
-
-			if (null == a) {
+			doctor = controller.logIn(username.getValue(), password.getValue());
+			
+			// notification if the login informations are wrong or if no input in fields 
+			//if the Login was correct go to  
+			if (null == doctor) {
 				username.setRequiredError(" ");
 				password.setRequiredError(" ");
-				hinweis.setCaption("Fehlerhafte Eingabe: Login hat nicht funktioniert");
+				errornote.setCaption("The Input was incorrect, you are not logged in");
 				
 			} else {
-				getSession().setAttribute("user", a.getId());
-			
+				getSession().setAttribute("user", doctor.getId());
 				getUI().getNavigator().navigateTo(StartView.NAME);
 			}
 		});
@@ -84,7 +83,5 @@ public class LoginView extends VerticalLayout implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		username.focus();
-		// TODO Auto-generated method stub
-
 	}
 }
