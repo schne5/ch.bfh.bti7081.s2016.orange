@@ -25,7 +25,7 @@ public class JpaDoctorRepository implements DoctorRepository {
 	public Doctor findDoctorInfo(String username, String password) {
 		EntityManager em = getEntityManager();
 		try {
-			Query query = em.createQuery("SELECT a From Arzt a Where a.username = :username AND a.password = :password ");
+			Query query = em.createQuery("SELECT a From Doctor a Where a.username = :username AND a.password = :password ");
 			query.setParameter("username", username);
 			query.setParameter("password", password);
 
