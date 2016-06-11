@@ -9,15 +9,15 @@ public class LoginController {
 	DoctorRepository repository;
 
 	public LoginController() {
-		repository = ArztRepositoryFactory.createJpaRepository();
+		repository = DoctorRepositoryFactory.createJpaRepository();
 	}
 
 	//Controll if the username and password are in database
 	public Doctor logIn(String username, String password) {
-		this.doctor = repository.findDoctortInfo(username, password);/
-		
+		this.doctor = repository.findDoctorInfo(username, password);
+	
 		if (doctor != null) {
-			if (username.equalsIgnoreCase(Doctor.getUsername()) && password.equals(doctor.getPassword())) {
+			if (username.equalsIgnoreCase(doctor.getUsername()) && password.equals(doctor.getPassword())) {
 				return doctor;
 			}
 		}
