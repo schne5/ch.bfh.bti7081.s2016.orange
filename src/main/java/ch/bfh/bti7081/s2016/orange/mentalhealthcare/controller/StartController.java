@@ -21,7 +21,7 @@ public class StartController {
 		// Remove empty elements
 		List<Patient> copy = new ArrayList<Patient>(patients);
 		for (Patient p : copy) {
-			if (p.getName().isEmpty()) {
+			if (p.getSurename().isEmpty()) {
 				patients.remove(p);
 			}
 		}

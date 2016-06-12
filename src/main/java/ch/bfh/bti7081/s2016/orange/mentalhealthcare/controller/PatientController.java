@@ -11,30 +11,30 @@ public class PatientController {
 		repository = PatientRepositoryFactory.createJpaRepository();
 	}
 
-	public boolean create(Patient p) {
-		if (isValid(p)) {
-			repository.persist(p);
+	public boolean create(Patient patient) {
+		if (isValid(patient)) {
+			repository.persist(patient);
 			return true;
 		}
 		return false;
 	}
 
-	public Patient update(Patient p) {
-		if (isValid(p)) {
-			return repository.update(p);
+	public Patient update(Patient patient) {
+		if (isValid(patient)) {
+			return repository.update(patient);
 		}
 		return null;
 	}
 
-	public void delete(Patient p) {
-		repository.delete(p.getId());
+	public void delete(Patient patient) {
+		repository.delete(patient.getId());
 	}
 
-	public boolean isValid(Patient p) {
-		boolean isValid = !"".equals(p.getName()) && null != p.getName() && p.getName().length() <= 50;
-		isValid &= !"".equals(p.getVorname()) && null != p.getVorname() && p.getName().length() <= 50;
-		isValid &= !"".equals(p.getSvNr()) && null != p.getSvNr() && p.getName().length() <= 25;
-		isValid &= null != p.getGebDatum();
+	public boolean isValid(Patient patient) {
+		boolean isValid = !"".equals(patient.getSurename()) && null != patient.getSurename() && patient.getSurename().length() <= 50;
+		isValid &= !"".equals(patient.getFirstname()) && null != patient.getFirstname() && patient.getFirstname().length() <= 50;
+		isValid &= !"".equals(patient.getAssuranceNr()) && null != patient.getAssuranceNr() && patient.getAssuranceNr().length() <= 25;
+		isValid &= null != patient.getBirthdate();
 		return isValid;
 	}
 

@@ -2,7 +2,7 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller;
 
 import java.util.List;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.PatientRepository;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.PatientRepositoryFactory;
@@ -14,29 +14,29 @@ public class ContactController {
 		repository = PatientRepositoryFactory.createJpaRepository();
 	}
 
-	public List<Kontakt> getContacts(int id) {
+	public List<Contact> getContacts(int id) {
 		Patient patient = repository.get(id);
 
-		return patient.getKontakts();
+		return patient.getContacts();
 	}
 
 	public void saveContact(int id, String name, String address, String telNr, String type) {
 		Patient patient = repository.get(id);
 
-		Kontakt contact = new Kontakt();
+		Contact contact = new Contact();
 		contact.setName(name);
-		contact.setAdresse(address);
-		contact.setTelefonNr(telNr);
-		contact.setTyp(type);
+		contact.setAdress(address);
+		contact.setPhoneNr(telNr);
+		contact.setContactType(type);
 
-		patient.addKontakt(contact);
+		patient.addContact(contact);
 
 		repository.persist(patient);
 	}
 
-	public void deleteContact(int id, Kontakt contact) {
+	public void deleteContact(int id, Contact contact) {
 		Patient patient = repository.get(id);
-		List<Kontakt> contacts = patient.getKontakts();
+		List<Contact> contacts = patient.getContacts();
 		contacts.remove(contact);
 
 		repository.update(patient);

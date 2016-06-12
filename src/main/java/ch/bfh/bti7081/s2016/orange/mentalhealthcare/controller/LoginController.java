@@ -4,9 +4,12 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepository;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepositoryFactory;
 
+
 public class LoginController {
+
 	Doctor doctor = new Doctor();
 	DoctorRepository repository;
+
 
 	public LoginController() {
 		repository = DoctorRepositoryFactory.createJpaRepository();
@@ -19,6 +22,7 @@ public class LoginController {
 		if (doctor != null) {
 			if (username.equalsIgnoreCase(doctor.getUsername()) && password.equals(doctor.getPassword())) {
 				return doctor;
+
 			}
 		}
 		return null;

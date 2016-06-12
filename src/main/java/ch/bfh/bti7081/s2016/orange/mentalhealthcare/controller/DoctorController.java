@@ -13,7 +13,7 @@ public class DoctorController {
 	}
 
 
-	public Doctor getArztById(int id) {
+	public Doctor getDoctorById(int id) {
 		Doctor doctor = repository.get(id);
 		return doctor;
 	}
