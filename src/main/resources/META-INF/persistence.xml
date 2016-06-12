@@ -1,12 +1,12 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_1_0.xsd" version="1.0">
     <persistence-unit name="my-app" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt</class>
-        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedikament</class>
+        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor</class>
+        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament</class>
         <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose</class>
         <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Icdcdiagnose</class>
-        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt</class>
-        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medikament</class>
+        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact</class>
+        <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament</class>
         <class>ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -17,7 +17,3 @@
         </properties>
     </persistence-unit>
 </persistence>
-
-
-
-
