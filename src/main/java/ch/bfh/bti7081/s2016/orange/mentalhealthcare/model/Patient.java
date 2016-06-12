@@ -11,7 +11,9 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Patient.findAll", query="SELECT p FROM Patient p")
+@NamedQueries({ @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
+	@NamedQuery(name = "Patient.findByNameAndSVNrAndGebD", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr and p.birthdate = :birthdate"),
+	@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr"), })
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
