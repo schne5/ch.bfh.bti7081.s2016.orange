@@ -41,9 +41,12 @@ public class EditPatientView extends VerticalLayout implements View {
 	}
 
 	private void createLayout() {
+		setMargin(true);
+
 		VerticalLayout patientLayout = new VerticalLayout();
 
 		final Label infoMessage = new Label();
+		infoMessage.setHeight("20px");
 
 		final ObjectProperty<Integer> propertyId = new ObjectProperty<Integer>(patient.getId());
 		final TextField id = new TextField(propertyId);
@@ -98,8 +101,8 @@ public class EditPatientView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
 
-		patientLayout.addComponents(infoMessage, id, lastName, firstName, assuranceNr, birthDate, patientState, saveButton,
-				deleteButton, backButton);
+		patientLayout.addComponents(infoMessage, id, lastName, firstName, assuranceNr, birthDate, patientState,
+				saveButton, deleteButton, backButton);
 		patientLayout.setSpacing(true);
 
 		addComponent(patientLayout);

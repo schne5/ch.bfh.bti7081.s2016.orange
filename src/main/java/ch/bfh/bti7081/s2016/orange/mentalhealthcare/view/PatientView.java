@@ -1,24 +1,20 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 
 import java.io.File;
-import java.util.Date;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Accordion;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
@@ -28,7 +24,6 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.NoDangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PotentialDangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.State;
 
@@ -48,7 +43,21 @@ public class PatientView extends VerticalLayout implements View {
 	}
 
 	// Create the patient overview
-	private void createAccordion(boolean editPatient) {
+	private void createView() {
+		final GridLayout menu = new GridLayout(2, 1);
+		menu.setWidth("100%");
+		final Button backButton = new Button("Return to search view");
+		backButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(StartView.NAME);
+		});
+		menu.addComponent(backButton, 1, 0);
+		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
+
+		menu.addComponent(errorMessage, 0, 0);
+		menu.setComponentAlignment(errorMessage, Alignment.TOP_LEFT);
+		menu.setHeight("50px");
+		addComponent(menu);
+
 		Accordion accordion = new Accordion();
 
 		accordion.addTab(getPatientOverview()).setCaption("Overview");
@@ -56,20 +65,42 @@ public class PatientView extends VerticalLayout implements View {
 		accordion.addTab(getPatientDiagnose()).setCaption("Diagnose");
 		accordion.addTab(getPatientContacts()).setCaption("Contacts");
 
-		addComponents(errorMessage, accordion);
+		addComponent(accordion);
 		setMargin(true);
 	}
 
-	private VerticalLayout getPatientOverview() {
-		VerticalLayout overview = new VerticalLayout();
+	private GridLayout getPatientOverview() {
+		GridLayout overview = new GridLayout(2, 1);
+		overview.setWidth("100%");
+
+		// Add patient information
+		VerticalLayout patientInfo = new VerticalLayout();
 
 		Label labelLastName = new Label("Name: " + this.patient.getSurename());
 		Label labelFirstName = new Label("First name: " + this.patient.getFirstname());
 		Label labelSocialAssuranceNumber = new Label("Assurance Nr.: " + this.patient.getAssuranceNr());
 		Label labelBirthDate = new Label("Birthdate: " + this.patient.getBirthdate().toString());
 
-		overview.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
-		overview.setSpacing(true);
+		patientInfo.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
+		patientInfo.setSpacing(true);
+
+		overview.addComponent(patientInfo, 0, 0);
+
+		// Add patient status
+		VerticalLayout statusLayout = new VerticalLayout();
+		statusLayout.setMargin(new MarginInfo(true, false, false, false));
+
+		String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+		// Image as a file resource
+		FileResource resource = new FileResource(new File(basePath + "/images/" + state.changeAmpel(this)));
+		// Show the image in the application
+		Image image = new Image("Patient danger level", resource);
+		image.setHeight("150");
+		image.setWidth("75");
+		statusLayout.addComponent(image);
+		statusLayout.setComponentAlignment(image, Alignment.TOP_CENTER);
+
+		overview.addComponent(statusLayout, 1, 0);
 
 		return overview;
 	}
@@ -105,47 +136,17 @@ public class PatientView extends VerticalLayout implements View {
 
 	private VerticalLayout getPatientContacts() {
 		VerticalLayout contacts = new VerticalLayout();
+
+		contacts.setSpacing(true);
+		contacts.setMargin(new MarginInfo(false, true, false, true));
+		Label labelContacts = new Label("Contacts:");
+		BeanItemContainer<Contact> contact = new BeanItemContainer<Contact>(Contact.class, patient.getContacts());
+		Grid gridKontakte = getContactsGrid(contact);
+		Button newContact = new Button("New Contact");
+		contacts.addComponents(labelContacts, gridKontakte, newContact);
+
 		return contacts;
 	}
-	/*
-	 * private HorizontalLayout getTabPatientenUebersicht() { HorizontalLayout
-	 * layoutPatientenDaten = new HorizontalLayout();
-	 * 
-	 * layoutPatientenDaten.setMargin(true);
-	 * 
-	 * VerticalLayout listen = new VerticalLayout(); listen.setSpacing(true);
-	 * 
-	 * Label labelDiagnosen = new Label("Current Diagnoses:");
-	 * BeanItemContainer<Diagnose> diagnoses = new
-	 * BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoses()); Grid
-	 * gridDiagnosen = getDiagnoseGrid(diagnoses);
-	 * 
-	 * listen.addComponents(labelMedikamente, gridMedikamente, createMedication,
-	 * labelDiagnosen, gridDiagnosen);
-	 * 
-	 * VerticalLayout kontakteLayout = new VerticalLayout();
-	 * kontakteLayout.setSpacing(true); kontakteLayout.setMargin(new
-	 * MarginInfo(false, true, false, true)); Label labelKontakte = new
-	 * Label("Contacts:"); BeanItemContainer<Contact> kontakte = new
-	 * BeanItemContainer<Contact>(Contact.class, patient.getContacts()); Grid
-	 * gridKontakte = getKontakteGrid(kontakte); Button newKontakt = new Button(
-	 * "New Contact"); kontakteLayout.addComponents(labelKontakte, gridKontakte,
-	 * newKontakt); String basepath =
-	 * VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-	 * 
-	 * VerticalLayout statusLayout = new VerticalLayout();
-	 * statusLayout.setMargin(new MarginInfo(true, false, false, false)); //
-	 * Image as a file resource FileResource resource = new FileResource(new
-	 * File(basepath + "/images/" + state.changeAmpel(this)));
-	 * 
-	 * // Show the image in the application Image image = new Image(
-	 * "Patient gefährlich für andere", resource); image.setHeight("200");
-	 * image.setWidth("100"); statusLayout.addComponent(image);
-	 * 
-	 * layoutPatientenDaten.addComponents(listen, kontakteLayout, statusLayout);
-	 * 
-	 * return layoutPatientenDaten; }
-	 */
 
 	public Patient getPatient() {
 		return patient;
@@ -162,13 +163,11 @@ public class PatientView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		boolean editPatient = false;
-
 		if (event.getParameters() != null) {
 			String[] parameters = event.getParameters().split("/");
 			int patientId;
 			try {
-				patientId = Integer.parseInt(parameters[1]);
+				patientId = Integer.parseInt(parameters[0]);
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				patientId = 0;
 			}
@@ -188,17 +187,11 @@ public class PatientView extends VerticalLayout implements View {
 					danger.changeAmpel(this);
 					break;
 				}
-
 			} else {
 				this.patient = null;
 			}
-
-			// Check if patient should be opened for editing
-			if (parameters[0].equals("edit")) {
-				editPatient = true;
-			}
 		}
-		createAccordion(editPatient);
+		createView();
 	}
 
 	public Grid getMedicamentsGrid(BeanItemContainer<Medicament> medis) {

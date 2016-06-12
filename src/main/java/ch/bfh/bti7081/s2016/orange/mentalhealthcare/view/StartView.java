@@ -145,7 +145,7 @@ public class StartView extends VerticalLayout implements View {
 			Button openButton = new Button();
 			openButton.setCaption(StartView.OPEN_BUTTON);
 			openButton.addClickListener(e -> {
-				getUI().getNavigator().navigateTo(PatientView.NAME + "/open/" + patient.getId());
+				getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patient.getId());
 			});
 			row.getItemProperty(StartView.OPEN_BUTTON).setValue(openButton);
 
