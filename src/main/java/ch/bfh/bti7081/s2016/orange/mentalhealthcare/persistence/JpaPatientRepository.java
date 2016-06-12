@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class JpaPatientRepository implements PatientRepository {
@@ -52,22 +53,38 @@ public class JpaPatientRepository implements PatientRepository {
 		return p;
 	}
 
-	public List<Patient> find(String name, String vorname, Date birth, String svNr) {
+	public List<Patient> find(String surename, String firstname, Date birthdate, String assuranceNr) {
 		List<Patient> patienten;
 		EntityManager em = getEntityManager();
 		TypedQuery<Patient> query;
-		if (birth == null) {
+		if (birthdate == null) {
 			query = em.createNamedQuery("Patient.findByNameAndSVNr", Patient.class);
 		} else {
 			query = em.createNamedQuery("Patient.findByNameAndSVNrAndGebD", Patient.class);
-			query.setParameter("gebDatum", birth);
+			query.setParameter("birthdate", birthdate);
 		}
-		query.setParameter("name", name);
-		query.setParameter("vorname", vorname);
-		query.setParameter("svNr", svNr);
+		query.setParameter("surename", surename);
+		query.setParameter("firstname", firstname);
+		query.setParameter("assuranceNr", assuranceNr);
 
 		patienten = query.getResultList();
 
 		return patienten;
+	}
+
+	@Override
+	public List<Compendiummedicament> getCompdeniumMedicaments() {
+		List<Compendiummedicament> compendiumMedications;
+		EntityManager em = getEntityManager();
+		TypedQuery<Compendiummedicament> query;
+		query=em.createNamedQuery("Compendiummedicament.findAll",Compendiummedicament.class);
+		compendiumMedications=query.getResultList();
+		return compendiumMedications;
+	}
+	
+	public Compendiummedicament getCompendiumMedicament(int id) {
+		EntityManager em = getEntityManager();
+		Compendiummedicament medication = em.find(Compendiummedicament.class, id);
+		return medication;
 	}
 }

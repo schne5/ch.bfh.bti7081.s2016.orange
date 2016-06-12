@@ -11,7 +11,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.ContactController;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
 
 public class ContactView extends VerticalLayout implements View {
 	public static final String NAME = "Contacts";
@@ -118,18 +118,18 @@ public class ContactView extends VerticalLayout implements View {
 	private void updateContactTable() {
 		contactTable.removeAllItems();
 
-		for (Kontakt k : controller.getContacts(patientId)) {
+		for (Contact contact : controller.getContacts(patientId)) {
 			Object newItemId = contactTable.addItem();
 			Item row = contactTable.getItem(newItemId);
-			row.getItemProperty(ContactView.CONTACT_NAME).setValue(k.getName());
-			row.getItemProperty(ContactView.CONTACT_ADDRESS).setValue(k.getAdresse());
-			row.getItemProperty(ContactView.CONTACT_TEL_NR).setValue(k.getTelefonNr());
-			row.getItemProperty(ContactView.CONTACT_TYPE).setValue(k.getTyp());
+			row.getItemProperty(ContactView.CONTACT_NAME).setValue(contact.getName());
+			row.getItemProperty(ContactView.CONTACT_ADDRESS).setValue(contact.getAdress());
+			row.getItemProperty(ContactView.CONTACT_TEL_NR).setValue(contact.getPhoneNr());
+			row.getItemProperty(ContactView.CONTACT_TYPE).setValue(contact.getContactType());
 
 			Button deleteButton = new Button();
 			deleteButton.setCaption("Delete");
 			deleteButton.addClickListener(e -> {
-				controller.deleteContact(patientId, k);
+				controller.deleteContact(patientId, contact);
 				updateContactTable();
 			});
 			row.getItemProperty(ContactView.DELETE_BUTTON).setValue(deleteButton);

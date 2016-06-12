@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.ContactView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreatePatientView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateMedicationView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
@@ -41,6 +42,7 @@ public class MyUI extends UI {
 		navigator.addView(TestView.NAME, TestView.class);
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
 		navigator.addView(LoginView.NAME, LoginView.class);
+		navigator.addView(CreateMedicationView.NAME, CreateMedicationView.class);
 		navigator.navigateTo(LoginView.NAME);
 		
 		getNavigator().addViewChangeListener(new ViewChangeListener() {

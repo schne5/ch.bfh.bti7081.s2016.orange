@@ -17,7 +17,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 	public static final String NAME = "Create";
 
 	private final PatientController controller;
-	private Patient p;
+	private Patient patient;
 	private Label hinweis = new Label();// Hinweis bei fehlerhafter eingabe
 
 	public CreatePatientView() {
@@ -58,8 +58,12 @@ public class CreatePatientView extends VerticalLayout implements View {
 
 		final Button createButton = new Button("Create Patient");
 		createButton.addClickListener(e -> {
-			p = new Patient(lastName.getValue(), firstName.getValue(), assuranceNr.getValue(), 0, birthDate.getValue());
-			if (controller.create(p)) {
+			patient = new Patient();
+			patient.setSurename(firstName.getValue());
+			patient.setFirstname(firstName.getValue());
+			patient.setAssuranceNr(assuranceNr.getValue());
+			patient.setBirthdate(birthDate.getValue());
+			if (controller.create(patient)) {
 				getUI().getNavigator().navigateTo(StartView.NAME);
 			} else {
 

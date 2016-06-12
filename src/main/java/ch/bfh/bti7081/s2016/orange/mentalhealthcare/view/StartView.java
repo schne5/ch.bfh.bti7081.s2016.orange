@@ -14,9 +14,12 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.ArztController;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Arzt;
+
+
+
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.DoctorController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class StartView extends VerticalLayout implements View {
@@ -133,10 +136,10 @@ public class StartView extends VerticalLayout implements View {
 		for (Patient patient : controller.getPatients()) {
 			Object newItemId = patientTable.addItem();
 			Item row = patientTable.getItem(newItemId);
-			row.getItemProperty(StartView.LAST_NAME).setValue(patient.getName());
-			row.getItemProperty(StartView.FIRST_NAME).setValue(patient.getVorname());
-			row.getItemProperty(StartView.ASSURANCE_NR).setValue(patient.getSvNr());
-			row.getItemProperty(StartView.BIRTHDATE).setValue(patient.getGebDatum());
+			row.getItemProperty(StartView.LAST_NAME).setValue(patient.getSurename());
+			row.getItemProperty(StartView.FIRST_NAME).setValue(patient.getFirstname());
+			row.getItemProperty(StartView.ASSURANCE_NR).setValue(patient.getAssuranceNr());
+			row.getItemProperty(StartView.BIRTHDATE).setValue(patient.getBirthdate());
 
 			Button openButton = new Button();
 			openButton.setCaption(StartView.OPEN_BUTTON);
@@ -161,10 +164,10 @@ public class StartView extends VerticalLayout implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// Add welcome text after login
-		ArztController doctorController = new ArztController();
+		DoctorController doctorController = new DoctorController();
 		if (getSession().getAttribute("user") != null) {
 			int i = (int) getSession().getAttribute("user");
-			Arzt doctor = doctorController.getArztById(i);
+			Doctor doctor = doctorController.getDoctorById(i);
 			loggingInfo.setCaption("You are logged in as: " + doctor.getName());
 		}
 	}

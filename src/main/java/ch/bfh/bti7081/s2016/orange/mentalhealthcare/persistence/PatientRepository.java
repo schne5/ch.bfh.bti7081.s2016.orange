@@ -2,6 +2,7 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence;
 import java.util.Date;
 import java.util.List;
 
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public interface PatientRepository {
@@ -16,4 +17,7 @@ public interface PatientRepository {
 
 	public List<Patient> find(String name, String vorname,Date birth,String svNr);
 
+	public List<Compendiummedicament> getCompdeniumMedicaments();
+	
+	public Compendiummedicament getCompendiumMedicament(int id);
 }

@@ -6,8 +6,8 @@ import java.util.Date;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.DangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Kontakt;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medikament;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.NoDangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
@@ -51,13 +51,11 @@ public class PatientView extends VerticalLayout implements View {
 
 		VerticalLayout tabPatientenDaten = getTabPatientBearbeiten();
 		HorizontalLayout tabPatientenUebersicht = getTabPatientenUebersicht();
-		VerticalLayout tabPatientenMedikamente = getTabPatientenMedicaments();
-		VerticalLayout tabPatientenDiagnosen = getTabPatientenDiagnoses();
+		
 
 		tabsheet.addTab(tabPatientenDaten).setCaption("Edit");
 		tabsheet.addTab(tabPatientenUebersicht).setCaption("Overview");
-		tabsheet.addTab(tabPatientenMedikamente).setCaption("Medication");
-		tabsheet.addTab(tabPatientenDiagnosen).setCaption("Diagnaoses");
+		
 
 		if (editPatient) {
 			tabsheet.setSelectedTab(0);
@@ -72,10 +70,10 @@ public class PatientView extends VerticalLayout implements View {
 	private HorizontalLayout getTop() {
 		HorizontalLayout layoutTop = new HorizontalLayout();
 
-		Label labelLastname = new Label(this.patient.getName());
-		Label labelFirstName = new Label(this.patient.getVorname());
-		Label labelSocialAssuranceNumber = new Label(this.patient.getSvNr());
-		Label labelBirthDate = new Label(this.patient.getGebDatum().toString());
+		Label labelLastname = new Label(this.patient.getSurename());
+		Label labelFirstName = new Label(this.patient.getFirstname());
+		Label labelSocialAssuranceNumber = new Label(this.patient.getAssuranceNr());
+		Label labelBirthDate = new Label(this.patient.getBirthdate().toString());
 
 		layoutTop.addComponents(labelLastname, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
 		layoutTop.setSpacing(true);
@@ -89,39 +87,39 @@ public class PatientView extends VerticalLayout implements View {
 		final TextField id = new TextField(propertyId);
 		id.setVisible(false);
 
-		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(patient.getName());
+		final ObjectProperty<String> propertyLastName = new ObjectProperty<String>(patient.getSurename());
 		final TextField lastName = new TextField(propertyLastName);
 		lastName.setCaption("Last name:");
 
-		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(patient.getVorname());
+		final ObjectProperty<String> propertyFirstName = new ObjectProperty<String>(patient.getFirstname());
 		final TextField firstName = new TextField(propertyFirstName);
 		firstName.setCaption("First name:");
 
-		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(patient.getSvNr());
+		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(patient.getAssuranceNr());
 		final TextField assuranceNr = new TextField(propertySocialAssuranceNumber);
 		assuranceNr.setCaption("Social assurance number:");
 
-		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(patient.getGebDatum());
+		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(patient.getBirthdate());
 		final DateField birthDate = new DateField(propertyBirthDate);
 		birthDate.setCaption("Birth date:");
 
 		final ComboBox patientState = new ComboBox();
 		patientState.setCaption("State:");
 		patientState.addItems(PatientState.NO_DANGER, PatientState.POTENTIAL_DANGER, PatientState.DANGER);
-		patientState.select(PatientState.getByValue(patient.getStatus()));
+		patientState.select(PatientState.getByValue(patient.getState()));
 		final Button saveButton = new Button("Save patient");
 		saveButton.addClickListener(e -> {
-			this.patient.setName(propertyLastName.getValue());
-			this.patient.setVorname(propertyFirstName.getValue());
-			this.patient.setSvNr(propertySocialAssuranceNumber.getValue());
-			this.patient.setGebDatum(propertyBirthDate.getValue());
-			this.patient.setStatus(((PatientState) patientState.getValue()).getValue());
+			this.patient.setSurename(propertyLastName.getValue());
+			this.patient.setFirstname(propertyFirstName.getValue());
+			this.patient.setAssuranceNr(propertySocialAssuranceNumber.getValue());
+			this.patient.setBirthdate(propertyBirthDate.getValue());
+			this.patient.setState(((PatientState) patientState.getValue()).getValue());
 
 			Patient updatedPatient = controller.update(patient);
 			if (null == updatedPatient) {
-				this.labelFehler.setCaption("Daten konnten nicht gespeichert werden.");
+				this.labelFehler.setCaption("Data couldnt be persisted.");
 			} else {
-				this.labelFehler.setCaption("Daten gespeichert.");
+				this.labelFehler.setCaption("Daten persisted.");
 				this.patient = updatedPatient;
 			}
 		});
@@ -156,23 +154,31 @@ public class PatientView extends VerticalLayout implements View {
 		VerticalLayout listen = new VerticalLayout();
 		listen.setSpacing(true);
 
-		Label labelMedikamente = new Label("Aktuelle Medikamente:");
-		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(Medikament.class,
-				patient.getMedikaments());
+		Label labelMedikamente = new Label("Current Medicaments:");
+		BeanItemContainer<Medicament> medis = new BeanItemContainer<Medicament>(Medicament.class,
+				patient.getMedicaments());
 		Grid gridMedikamente = getMedikamenteGrid(medis);
+		Button createMedication = new Button("Add Medication");
+		createMedication.addClickListener(c -> {
+			getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId());
+		});
 
-		Label labelDiagnosen = new Label("Aktuelle Diagnosen:");
+		Label labelDiagnosen = new Label("Current Diagnoses:");
 		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoses());
 		Grid gridDiagnosen = getDiagnoseGrid(diagnoses);
-		listen.addComponents(labelMedikamente, gridMedikamente, labelDiagnosen, gridDiagnosen);
+
+		listen.addComponents(labelMedikamente, gridMedikamente,createMedication, labelDiagnosen,
+				gridDiagnosen);
+
 
 		VerticalLayout kontakteLayout = new VerticalLayout();
 		kontakteLayout.setSpacing(true);
 		kontakteLayout.setMargin(new MarginInfo(false, true, false, true));
-		Label labelKontakte = new Label("Kontakte:");
-		BeanItemContainer<Kontakt> kontakte = new BeanItemContainer<Kontakt>(Kontakt.class, patient.getKontakts());
+		Label labelKontakte = new Label("Contacts:");
+		BeanItemContainer<Contact> kontakte = new BeanItemContainer<Contact>(Contact.class, patient.getContacts());
 		Grid gridKontakte = getKontakteGrid(kontakte);
-		kontakteLayout.addComponents(labelKontakte, gridKontakte);
+		Button newKontakt = new Button("New Contact");
+		kontakteLayout.addComponents(labelKontakte, gridKontakte, newKontakt);
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
 		VerticalLayout statusLayout = new VerticalLayout();
@@ -191,30 +197,7 @@ public class PatientView extends VerticalLayout implements View {
 		return layoutPatientenDaten;
 	}
 
-	private VerticalLayout getTabPatientenMedicaments() {
-		VerticalLayout layout = new VerticalLayout();
-		Label labelMedikamente = new Label("Medikamente:");
-		BeanItemContainer<Medikament> medis = new BeanItemContainer<Medikament>(Medikament.class,
-				patient.getMedikamentHistory());
-		Grid gridMedikamente = getMedikamenteGrid(medis);
-		layout.addComponents(labelMedikamente, gridMedikamente);
-		layout.setSpacing(true);
-		layout.setMargin(new MarginInfo(true, false, false, false));
-		return layout;
-	}
-
-	private VerticalLayout getTabPatientenDiagnoses() {
-		VerticalLayout layout = new VerticalLayout();
-		Label labelDiagnosen = new Label("Diagnosen:");
-		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(Diagnose.class,
-				patient.getDiagnoseHistory());
-		Grid gridDiagnosen = getDiagnoseGrid(diagnoses);
-		layout.addComponents(labelDiagnosen, gridDiagnosen);
-		layout.setSpacing(true);
-		layout.setMargin(new MarginInfo(true, false, false, false));
-		return layout;
-	}
-
+	
 	public Patient getPatient() {
 		return patient;
 	}
@@ -224,6 +207,7 @@ public class PatientView extends VerticalLayout implements View {
 	}
 
 	public void setPatient(int patientId) {
+		System.out.println(patientId);
 		setPatient(controller.getPatientById(patientId));
 	}
 
@@ -241,7 +225,7 @@ public class PatientView extends VerticalLayout implements View {
 			}
 			if (patientId > 0) {
 				setPatient(patientId);
-				switch (this.patient.getStatus()) {
+				switch (this.patient.getState()) {
 				case 0:
 					NoDangerState noDanger = new NoDangerState();
 					noDanger.changeAmpel(this);
@@ -268,13 +252,13 @@ public class PatientView extends VerticalLayout implements View {
 		createTabsheet(editPatient);
 	}
 
-	public Grid getMedikamenteGrid(BeanItemContainer<Medikament> medis) {
+	public Grid getMedikamenteGrid(BeanItemContainer<Medicament> medis) {
 		Grid gridMedikamente = new Grid(medis);
 		gridMedikamente.removeColumn("id");
 		gridMedikamente.removeColumn("patient");
 		gridMedikamente.removeColumn("active");
-		gridMedikamente.removeColumn("compendiummedikament");
-		gridMedikamente.setColumnOrder("medikamentBezeichnung", "dosis", "arzt");
+		gridMedikamente.removeColumn("compendiummedicament");
+		gridMedikamente.setColumnOrder("medicamentName", "dose", "doctor");
 		gridMedikamente.setHeight("200");
 		return gridMedikamente;
 	}
@@ -286,12 +270,12 @@ public class PatientView extends VerticalLayout implements View {
 		return gridDiagnosen;
 	}
 
-	public Grid getKontakteGrid(BeanItemContainer<Kontakt> kontakte) {
+	public Grid getKontakteGrid(BeanItemContainer<Contact> kontakte) {
 		Grid gridKontakte = new Grid(kontakte);
 		gridKontakte.removeColumn("patient");
 		gridKontakte.setHeight("200");
 		gridKontakte.removeColumn("id");
-		gridKontakte.setColumnOrder("name", "adresse", "telefonNr");
+		gridKontakte.setColumnOrder("name", "adress", "phoneNr");
 		return gridKontakte;
 	}
 

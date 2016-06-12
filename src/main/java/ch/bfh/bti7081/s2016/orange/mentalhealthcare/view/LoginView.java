@@ -16,7 +16,9 @@ import com.vaadin.ui.VerticalLayout;
 
 public class LoginView extends VerticalLayout implements View {
 	public static final String NAME = "Login";
+
 	 Doctor doctor = null;
+
 
 	Label errornote = new Label(); 
 	final TextField username = new TextField();
@@ -54,11 +56,13 @@ public class LoginView extends VerticalLayout implements View {
 		Button loginButton = new Button("Login");
 		loginButton.setWidth("100px");
 		loginButton.addClickListener(e -> {
-			doctor = controller.logIn(username.getValue(), password.getValue());
+
+		doctor = controller.logIn(username.getValue(), password.getValue());
 			
 			// notification if the login informations are wrong or if no input in fields 
 			//if the Login was correct go to  
 			if (null == doctor) {
+
 				username.setRequiredError(" ");
 				password.setRequiredError(" ");
 				errornote.setCaption("The Input was incorrect, you are not logged in");
