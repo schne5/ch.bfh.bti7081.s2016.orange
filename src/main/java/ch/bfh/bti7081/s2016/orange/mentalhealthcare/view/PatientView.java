@@ -51,36 +51,27 @@ public class PatientView extends VerticalLayout implements View {
 	private void createAccordion(boolean editPatient) {
 		Accordion accordion = new Accordion();
 
+		accordion.addTab(getPatientOverview()).setCaption("Overview");
 		accordion.addTab(getPatientMedication()).setCaption("Medication");
 		accordion.addTab(getPatientDiagnose()).setCaption("Diagnose");
 		accordion.addTab(getPatientContacts()).setCaption("Contacts");
 
-		/*
-		 * //VerticalLayout tabPatientenDaten = getTabPatientBearbeiten();
-		 * //HorizontalLayout tabPatientenUebersicht =
-		 * getTabPatientenUebersicht();
-		 * 
-		 * //accordion.addTab(tabPatientenDaten).setCaption("Edit");
-		 * //accordion.addTab(tabPatientenUebersicht).setCaption("Overview");
-		 * 
-		 * if (editPatient) { accordion.setSelectedTab(0); } else {
-		 * accordion.setSelectedTab(1); }
-		 */
-		addComponents(getTop(), errorMessage, accordion);
+		addComponents(errorMessage, accordion);
 		setMargin(true);
 	}
 
-	private HorizontalLayout getTop() {
-		HorizontalLayout layoutTop = new HorizontalLayout();
+	private VerticalLayout getPatientOverview() {
+		VerticalLayout overview = new VerticalLayout();
 
-		Label labelLastName = new Label(this.patient.getSurename());
-		Label labelFirstName = new Label(this.patient.getFirstname());
-		Label labelSocialAssuranceNumber = new Label(this.patient.getAssuranceNr());
-		Label labelBirthDate = new Label(this.patient.getBirthdate().toString());
+		Label labelLastName = new Label("Name: " + this.patient.getSurename());
+		Label labelFirstName = new Label("First name: " + this.patient.getFirstname());
+		Label labelSocialAssuranceNumber = new Label("Assurance Nr.: " + this.patient.getAssuranceNr());
+		Label labelBirthDate = new Label("Birthdate: " + this.patient.getBirthdate().toString());
 
-		layoutTop.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
-		layoutTop.setSpacing(true);
-		return layoutTop;
+		overview.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
+		overview.setSpacing(true);
+
+		return overview;
 	}
 
 	private VerticalLayout getPatientMedication() {
@@ -117,66 +108,6 @@ public class PatientView extends VerticalLayout implements View {
 		return contacts;
 	}
 	/*
-	 * private VerticalLayout getTabPatientBearbeiten() { VerticalLayout
-	 * layoutPatientenDaten = new VerticalLayout();
-	 * 
-	 * final ObjectProperty<Integer> propertyId = new
-	 * ObjectProperty<Integer>(patient.getId()); final TextField id = new
-	 * TextField(propertyId); id.setVisible(false);
-	 * 
-	 * final ObjectProperty<String> propertyLastName = new
-	 * ObjectProperty<String>(patient.getSurename()); final TextField lastName =
-	 * new TextField(propertyLastName); lastName.setCaption("Last name:");
-	 * 
-	 * final ObjectProperty<String> propertyFirstName = new
-	 * ObjectProperty<String>(patient.getFirstname()); final TextField firstName
-	 * = new TextField(propertyFirstName); firstName.setCaption("First name:");
-	 * 
-	 * final ObjectProperty<String> propertySocialAssuranceNumber = new
-	 * ObjectProperty<String>( patient.getAssuranceNr()); final TextField
-	 * assuranceNr = new TextField(propertySocialAssuranceNumber);
-	 * assuranceNr.setCaption("Social assurance number:");
-	 * 
-	 * final ObjectProperty<Date> propertyBirthDate = new
-	 * ObjectProperty<Date>(patient.getBirthdate()); final DateField birthDate =
-	 * new DateField(propertyBirthDate); birthDate.setCaption("Birth date:");
-	 * 
-	 * final ComboBox patientState = new ComboBox();
-	 * patientState.setCaption("State:");
-	 * patientState.addItems(PatientState.NO_DANGER,
-	 * PatientState.POTENTIAL_DANGER, PatientState.DANGER);
-	 * patientState.select(PatientState.getByValue(patient.getState())); final
-	 * Button saveButton = new Button("Save patient");
-	 * saveButton.addClickListener(e -> {
-	 * this.patient.setSurename(propertyLastName.getValue());
-	 * this.patient.setFirstname(propertyFirstName.getValue());
-	 * this.patient.setAssuranceNr(propertySocialAssuranceNumber.getValue());
-	 * this.patient.setBirthdate(propertyBirthDate.getValue());
-	 * this.patient.setState(((PatientState)
-	 * patientState.getValue()).getValue());
-	 * 
-	 * Patient updatedPatient = controller.update(patient); if (null ==
-	 * updatedPatient) { this.errorMessage.setCaption(
-	 * "Data couldnt be persisted."); } else { this.errorMessage.setCaption(
-	 * "Daten persisted."); this.patient = updatedPatient; } });
-	 * 
-	 * final Button contactButton = new Button("Edit contact data");
-	 * contactButton.addClickListener(e -> { int patientId =
-	 * this.patient.getId(); getUI().getNavigator().navigateTo(ContactView.NAME
-	 * + "/" + patientId); });
-	 * 
-	 * final Button deleteButton = new Button("Delete patient");
-	 * deleteButton.addClickListener(e -> { controller.delete(patient);
-	 * getUI().getNavigator().navigateTo(StartView.NAME); });
-	 * 
-	 * final Button backButton = new Button("Return to search view");
-	 * backButton.addClickListener(e -> {
-	 * getUI().getNavigator().navigateTo(StartView.NAME); });
-	 * layoutPatientenDaten.addComponents(id, lastName, firstName, assuranceNr,
-	 * birthDate, patientState, saveButton, deleteButton, contactButton,
-	 * backButton); layoutPatientenDaten.setSpacing(true); return
-	 * layoutPatientenDaten; }
-	 * 
 	 * private HorizontalLayout getTabPatientenUebersicht() { HorizontalLayout
 	 * layoutPatientenDaten = new HorizontalLayout();
 	 * 

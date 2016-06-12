@@ -14,9 +14,6 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-
-
-
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.DoctorController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
@@ -151,7 +148,7 @@ public class StartView extends VerticalLayout implements View {
 			Button editButton = new Button();
 			editButton.setCaption(StartView.EDIT_BUTTON);
 			editButton.addClickListener(e -> {
-				getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patient.getId());
+				getUI().getNavigator().navigateTo(EditPatientView.NAME + "/" + patient.getId());
 			});
 			row.getItemProperty(StartView.EDIT_BUTTON).setValue(editButton);
 

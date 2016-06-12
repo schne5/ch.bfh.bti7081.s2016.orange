@@ -40,11 +40,9 @@ public class ContactView extends VerticalLayout implements View {
 	public void enter(ViewChangeEvent event) {
 		if (event.getParameters() != null) {
 			String[] parameters = event.getParameters().split("/");
-			try {
-				patientId = Integer.parseInt(parameters[0]);
-			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-				// TODO: handle error -> create error page
-			}
+
+			patientId = Integer.parseInt(parameters[0]);
+
 			createContactView();
 		}
 	}

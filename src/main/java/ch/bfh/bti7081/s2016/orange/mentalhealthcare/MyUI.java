@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.ContactView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreatePatientView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.EditPatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateMedicationView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
@@ -43,41 +44,42 @@ public class MyUI extends UI {
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
 		navigator.addView(LoginView.NAME, LoginView.class);
 		navigator.addView(CreateMedicationView.NAME, CreateMedicationView.class);
+		navigator.addView(EditPatientView.NAME, EditPatientView.class);
 		navigator.navigateTo(LoginView.NAME);
-		
+
 		getNavigator().addViewChangeListener(new ViewChangeListener() {
-            @Override
-            public boolean beforeViewChange(ViewChangeEvent event) {
+			@Override
+			public boolean beforeViewChange(ViewChangeEvent event) {
 
-                // Check if a user has logged in
-                boolean isLoggedIn = getSession().getAttribute("user") != null;
-                boolean isLoginView = event.getNewView() instanceof LoginView;
-               
-                if (!isLoggedIn && !isLoginView) {
-                    // go to login view if not logged in
-                    getNavigator().navigateTo(LoginView.NAME);
-                    return false;
+				// Check if a user has logged in
+				boolean isLoggedIn = getSession().getAttribute("user") != null;
+				boolean isLoginView = event.getNewView() instanceof LoginView;
 
-                } else if (isLoggedIn && isLoginView) {
-                    // cancel If someone tries to access to login view while logged in
-                	//it will navigate to StartView
-                	getNavigator().navigateTo(StartView.NAME);
-                    return false;
-                }
+				if (!isLoggedIn && !isLoginView) {
+					// go to login view if not logged in
+					getNavigator().navigateTo(LoginView.NAME);
+					return false;
 
-                return true;
-            }
+				} else if (isLoggedIn && isLoginView) {
+					// cancel If someone tries to access to login view while
+					// logged in
+					// it will navigate to StartView
+					getNavigator().navigateTo(StartView.NAME);
+					return false;
+				}
+
+				return true;
+			}
 
 			@Override
 			public void afterViewChange(ViewChangeEvent event) {
 				// TODO Auto-generated method stub
-				
+
 			}
-		
-		
+
 		});
 	}
-	
+
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
