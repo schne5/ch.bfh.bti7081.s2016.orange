@@ -7,8 +7,10 @@ import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -42,23 +44,25 @@ public class StartView extends VerticalLayout implements View {
 
 		setMargin(true);
 
-		addComponent(loggingInfo);
-
-		// Add layout for menu buttons
-		final VerticalLayout menu = new VerticalLayout();
-		addComponent(menu);
-
-		// Add "logout button"
-		final VerticalLayout logoutButtonLayout = new VerticalLayout();
+		// Add logging bar
+		final GridLayout logging = new GridLayout(2, 1);
+		logging.setWidth("100%");
+		/*
+		 * Link link = new Link("Logout", new
+		 * ExternalResource("http://vaadin.com/")); logging.addComponent(link,
+		 * 1,0); logging.setComponentAlignment(link, Alignment.TOP_RIGHT);
+		 */
 		final Button logoutButton = new Button("Logout");
 		logoutButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(LoginView.NAME);
 			getSession().setAttribute("user", null);
+			getUI().getNavigator().navigateTo(LoginView.NAME);
 		});
-		logoutButtonLayout.addComponent(logoutButton);
-		logoutButtonLayout.setMargin(new MarginInfo(true, false));
-		logoutButtonLayout.setHeight("20px");
-		menu.addComponent(logoutButton);
+		logging.addComponent(logoutButton, 1, 0);
+		logging.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+
+		logging.addComponent(loggingInfo, 0, 0);
+		logging.setComponentAlignment(loggingInfo, Alignment.TOP_LEFT);
+		addComponent(logging);
 
 		// Add "create patient button"
 		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
@@ -68,7 +72,7 @@ public class StartView extends VerticalLayout implements View {
 		});
 		createPatientButtonLayout.addComponent(createPatientButton);
 		createPatientButtonLayout.setMargin(new MarginInfo(true, false));
-		menu.addComponent(createPatientButtonLayout);
+		addComponent(createPatientButtonLayout);
 
 		// Add layout for search
 		final VerticalLayout search = new VerticalLayout();
