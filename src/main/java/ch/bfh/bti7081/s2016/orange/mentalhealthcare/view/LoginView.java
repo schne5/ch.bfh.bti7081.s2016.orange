@@ -50,7 +50,7 @@ public class LoginView extends VerticalLayout implements View {
 		doctor = controller.logIn(username.getValue(), password.getValue());
 			
 			// notification if the login informations are wrong or if no input in fields 
-			//if the Login was correct go to  
+			//if the Login was correct go to  StartView
 			if (null == doctor) {
 
 				username.setRequiredError(" ");
