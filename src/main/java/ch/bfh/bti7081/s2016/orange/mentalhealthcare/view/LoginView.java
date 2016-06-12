@@ -15,42 +15,45 @@ import com.vaadin.ui.VerticalLayout;
 public class LoginView extends VerticalLayout implements View {
 	public static final String NAME = "Login";
 
-	 Doctor doctor = null;
-
-
-	Label errornote = new Label(); 
+	private Doctor doctor = null;
+	private Label errornote = new Label(); 
 	final TextField username = new TextField();
 	private final LoginController controller;
 
 	public LoginView() {
 		final Label title = new Label("Mentalhealthcare patientdata");
 		controller = new LoginController();
+		//Add layout for Login
 		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
 		addComponents(title, errornote, layoutLoginDaten);
 		setMargin(true);
 	}
-
+	
+	//Layout for Login
 	private VerticalLayout getLayoutLoginDaten() {
 		VerticalLayout layoutLoginDaten = new VerticalLayout();
-	
+		
+		//add input fields for username
 		username.setCaption("Username:");
 		username.setRequired(true);
 		username.setNullRepresentation("");
 		username.setValue("");
-
+		
+		//add input fields for password
 		final PasswordField password = new PasswordField();
 		password.setCaption("Password");
 		password.setRequired(true);
 		password.setValue("");
 		password.setNullRepresentation("");
-
+		
+		//add login button
 		Button loginButton = new Button("Login");
 		loginButton.setWidth("100px");
 		loginButton.addClickListener(e -> {
 		doctor = controller.logIn(username.getValue(), password.getValue());
 			
 			// notification if the login informations are wrong or if no input in fields 
-			//if the Login was correct go to  StartView
+			//if the Login was correct go to  StartView and save the Id in Session
 			if (null == doctor) {
 
 				username.setRequiredError(" ");
@@ -65,7 +68,6 @@ public class LoginView extends VerticalLayout implements View {
 		
 		layoutLoginDaten.addComponents(username, password, loginButton);
 		layoutLoginDaten.setSpacing(true);
-
 		return layoutLoginDaten;
 	}
 
