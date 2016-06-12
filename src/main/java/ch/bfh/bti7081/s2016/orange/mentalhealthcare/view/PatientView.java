@@ -143,6 +143,10 @@ public class PatientView extends VerticalLayout implements View {
 		BeanItemContainer<Contact> contact = new BeanItemContainer<Contact>(Contact.class, patient.getContacts());
 		Grid gridKontakte = getContactsGrid(contact);
 		Button newContact = new Button("New Contact");
+		newContact.addClickListener(e -> {
+			int patientId = this.patient.getId();
+			getUI().getNavigator().navigateTo(ContactView.NAME + "/" + patientId);
+		});
 		contacts.addComponents(labelContacts, gridKontakte, newContact);
 
 		return contacts;

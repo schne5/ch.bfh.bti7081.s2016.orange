@@ -62,13 +62,13 @@ public class ContactView extends VerticalLayout implements View {
 		// Add contact table
 		contactTable = createContactTable();
 		contactTable.setHeight("400px");
-		contactTable.setWidth("900px");
+		contactTable.setWidth("950px");
 		addComponent(contactTable);
 
 		// Add input table
 		inputTable = createInputTable();
 		inputTable.setHeight("100px");
-		inputTable.setWidth("900px");
+		inputTable.setWidth("950px");
 		addComponent(inputTable);
 
 		// Update tables
@@ -77,7 +77,7 @@ public class ContactView extends VerticalLayout implements View {
 
 		final Button backButton = new Button("Return to Patient View");
 		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(PatientView.NAME + "/edit/" + patientId);
+			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
 		});
 		final VerticalLayout nav = new VerticalLayout();
 		nav.setMargin(new MarginInfo(true, false));
