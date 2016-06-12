@@ -7,9 +7,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
@@ -28,15 +26,8 @@ public class LoginView extends VerticalLayout implements View {
 		final Label title = new Label("Mentalhealthcare patientdata");
 		controller = new LoginController();
 		VerticalLayout layoutLoginDaten = getLayoutLoginDaten();
-		addComponents(getTop(),title, errornote, layoutLoginDaten);
+		addComponents(title, errornote, layoutLoginDaten);
 		setMargin(true);
-	}
-
-	private HorizontalLayout getTop() {// leer mal als Platzhalter drin
-		HorizontalLayout layoutTop = new HorizontalLayout();
-		layoutTop.addComponents();
-		layoutTop.setSpacing(true);
-		return layoutTop;
 	}
 
 	private VerticalLayout getLayoutLoginDaten() {
@@ -56,7 +47,6 @@ public class LoginView extends VerticalLayout implements View {
 		Button loginButton = new Button("Login");
 		loginButton.setWidth("100px");
 		loginButton.addClickListener(e -> {
-
 		doctor = controller.logIn(username.getValue(), password.getValue());
 			
 			// notification if the login informations are wrong or if no input in fields 
@@ -72,7 +62,6 @@ public class LoginView extends VerticalLayout implements View {
 				getUI().getNavigator().navigateTo(StartView.NAME);
 			}
 		});
-
 		
 		layoutLoginDaten.addComponents(username, password, loginButton);
 		layoutLoginDaten.setSpacing(true);
