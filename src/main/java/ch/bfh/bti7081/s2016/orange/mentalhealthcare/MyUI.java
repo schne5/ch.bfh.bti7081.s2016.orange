@@ -6,6 +6,7 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.ContactView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreatePatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.EditPatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateMedicationView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.MedicationOvervievView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
@@ -44,6 +45,7 @@ public class MyUI extends UI {
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
 		navigator.addView(LoginView.NAME, LoginView.class);
 		navigator.addView(CreateMedicationView.NAME, CreateMedicationView.class);
+		navigator.addView(MedicationOvervievView.NAME, MedicationOvervievView.class);
 		navigator.addView(EditPatientView.NAME, EditPatientView.class);
 		navigator.navigateTo(LoginView.NAME);
 
