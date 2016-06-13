@@ -39,6 +39,6 @@ public class ContactController {
 		List<Contact> contacts = patient.getContacts();
 		contacts.remove(contact);
 
-		repository.update(patient);
+		repository.deleteContact(contact.getId());
 	}
 }

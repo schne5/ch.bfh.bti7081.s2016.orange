@@ -9,6 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class JpaPatientRepository implements PatientRepository {
@@ -44,6 +45,14 @@ public class JpaPatientRepository implements PatientRepository {
 		em.getTransaction().begin();
 		Patient p = em.find(Patient.class, patientId);
 		em.remove(p);
+		em.getTransaction().commit();
+	}
+	
+	public void deleteContact(int contactId) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Contact c = em.find(Contact.class, contactId);
+		em.remove(c);
 		em.getTransaction().commit();
 	}
 

@@ -12,6 +12,8 @@ public interface PatientRepository {
 	public Patient update(Patient patient);
 
 	public void delete(int patientId);
+	
+	public void deleteContact(int contactId);
 
 	public Patient get(int patientId);
 
