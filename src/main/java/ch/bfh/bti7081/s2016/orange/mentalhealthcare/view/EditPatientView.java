@@ -5,12 +5,15 @@ import java.util.Date;
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
@@ -41,8 +44,18 @@ public class EditPatientView extends VerticalLayout implements View {
 	}
 
 	private void createLayout() {
-		setMargin(true);
-
+			
+		final GridLayout menu = new GridLayout(2,1);
+		menu.setWidth("100%");
+				final Button backButton = new Button("Return to search view");
+		backButton.setStyleName(BaseTheme.BUTTON_LINK);
+		backButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(StartView.NAME);
+		});
+		menu.addComponent(backButton,1,0);
+		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
+		addComponent(menu);
+		
 		VerticalLayout patientLayout = new VerticalLayout();
 
 		final Label infoMessage = new Label();
@@ -63,17 +76,18 @@ public class EditPatientView extends VerticalLayout implements View {
 		final ObjectProperty<String> propertySocialAssuranceNumber = new ObjectProperty<String>(
 				patient.getAssuranceNr());
 		final TextField assuranceNr = new TextField(propertySocialAssuranceNumber);
-		assuranceNr.setCaption("Social assurance number:");
+		assuranceNr.setCaption("Assurance number:");
 
 		final ObjectProperty<Date> propertyBirthDate = new ObjectProperty<Date>(patient.getBirthdate());
 		final DateField birthDate = new DateField(propertyBirthDate);
-		birthDate.setCaption("Birth date:");
+		birthDate.setCaption("Birthdate:");
 
 		final ComboBox patientState = new ComboBox();
 		patientState.setCaption("State:");
 		patientState.addItems(PatientState.NO_DANGER, PatientState.POTENTIAL_DANGER, PatientState.DANGER);
 		patientState.select(PatientState.getByValue(patient.getState()));
 		final Button saveButton = new Button("Save patient");
+		
 		saveButton.addClickListener(e -> {
 			this.patient.setSurename(propertyLastName.getValue());
 			this.patient.setFirstname(propertyFirstName.getValue());
@@ -96,15 +110,13 @@ public class EditPatientView extends VerticalLayout implements View {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
 
-		final Button backButton = new Button("Return to search view");
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(StartView.NAME);
-		});
+		
 
 		patientLayout.addComponents(infoMessage, id, lastName, firstName, assuranceNr, birthDate, patientState,
-				saveButton, deleteButton, backButton);
+				saveButton, deleteButton);
 		patientLayout.setSpacing(true);
 
 		addComponent(patientLayout);
+		setMargin(true);
 	}
 }
