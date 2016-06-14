@@ -159,5 +159,13 @@ public class Patient implements Serializable {
 
 		return medicament;
 	}
-
+	
+	public Medicament getMedicament(int medicamentId){
+		for(Medicament m :getMedicaments()){
+			if(m.getId() ==medicamentId){
+				return m;
+			}
+		}
+		return null;
+	}
 }

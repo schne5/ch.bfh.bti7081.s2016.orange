@@ -9,6 +9,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.ContactController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
@@ -76,6 +77,7 @@ public class ContactView extends VerticalLayout implements View {
 		updateInputTable();
 
 		final Button backButton = new Button("Return to Patient View");
+		backButton.setStyleName(BaseTheme.BUTTON_LINK);
 		backButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
 		});
@@ -125,6 +127,7 @@ public class ContactView extends VerticalLayout implements View {
 			row.getItemProperty(ContactView.CONTACT_TYPE).setValue(contact.getContactType());
 
 			Button deleteButton = new Button();
+			deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
 			deleteButton.setCaption("Delete");
 			deleteButton.addClickListener(e -> {
 				controller.deleteContact(patientId, contact);
@@ -146,6 +149,7 @@ public class ContactView extends VerticalLayout implements View {
 		row.getItemProperty(ContactView.CONTACT_TYPE).setValue("");
 
 		Button saveButton = new Button();
+		saveButton.setStyleName(BaseTheme.BUTTON_LINK);
 		saveButton.setCaption("Save");
 		saveButton.addClickListener(e -> {
 			String name = (String) row.getItemProperty(ContactView.CONTACT_NAME).getValue();

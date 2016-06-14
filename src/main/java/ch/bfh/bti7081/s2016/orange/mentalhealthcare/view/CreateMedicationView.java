@@ -17,6 +17,9 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
 
 
 
+
+
+
 import com.vaadin.client.ui.VFilterSelect.Select;
 import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
@@ -30,6 +33,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 
 public class CreateMedicationView extends VerticalLayout implements View {
 
@@ -38,6 +42,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 	private final MedicationController controller;
 	private Medicament medicament;
 	private int patientId;
+	private int medicamentId;
 	private Label hinweis = new Label();// Hinweis bei fehlerhafter eingabe
 
 	public CreateMedicationView() {
@@ -95,29 +100,54 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			takingsDuration.setItemCaption(t,t.getText());
 		}
 		
+		if(medicamentId>0){
+			Medicament medicament= controller.getMedicamentById(medicamentId);
+			compMedication.setValue(medicament.getCompendiummedicament().getId());
+			String doseString= new Double(medicament.getDose().doubleValue()).toString();
+			dose.setValue(doseString);
+			takings.setValue(new Integer(medicament.getTakings()).toString());
+			active.setValue(medicament.getActive() ==1 ? true :false);
+		}
 		
-
 		final Button createButton = new Button("Create Medication");
 		createButton.addClickListener(e -> {
+			int arztId=(int) getSession().getAttribute("user");
 			short isActive = (short)(active.getValue()?1:0);
 			if(controller.validateDose(dose.getValue(), takings.getValue(),(int) compMedication.getValue())==false){
 				Compendiummedicament medicament = controller.getCompendiummedicamentById((int) compMedication.getValue());
 				this.hinweis.setCaption("Error: The selected dose is not in the approved Range of the Medicament: "+ medicament.getName() +" Dose: "+medicament.getMaxDose());
 			}else{
-				if (controller.saveMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive)) {
-					getUI().getNavigator().navigateTo(StartView.NAME);
+				if (controller.saveMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive,arztId)) {
+					getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
 				} else {
 
 					this.hinweis.setCaption("Error: New Medication couldnt be persisted because of invalid Data");
 				}
-			}
-
-			
+			}	
 		});
+		if(medicamentId>0){
+			createButton.setCaption("Save Changes");
+			createButton.addClickListener(e -> {
+				short isActive = (short)(active.getValue()?1:0);
+				if(controller.validateDose(dose.getValue(), takings.getValue(),(int) compMedication.getValue())==false){
+					Compendiummedicament medicament = controller.getCompendiummedicamentById((int) compMedication.getValue());
+					this.hinweis.setCaption("Error: The selected dose is not in the approved Range of the Medicament: "+ medicament.getName() +" Dose: "+medicament.getMaxDose());
+				}else{
+					if (controller.updateMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive,medicamentId)) {
+						getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+					} else {
+
+						this.hinweis.setCaption("Error: New Medication couldnt be persisted because of invalid Data");
+					}
+				}	
+			});
+			
+		}
 
 		final Button startButton = new Button("Return to patient view");
+		startButton.setStyleName(BaseTheme.BUTTON_LINK);
 		startButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(StartView.NAME);
+			getUI().getNavigator().navigateTo(PatientView.NAME+"/"+patientId);
 		});
 
 		layoutMedicationData.addComponents(title, compMedication, dose, takings, takingsDuration,active,createButton, startButton);
@@ -132,6 +162,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			String[] parameters = event.getParameters().split("/");
 			try {
 				patientId = Integer.parseInt(parameters[0]);
+				medicamentId=Integer.parseInt(parameters[1]);
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				// TODO: handle error -> create error page
 			}

@@ -23,10 +23,12 @@ public class MedicationController {
 		return patient.getMedicaments();
 	}
 
-	public boolean saveMedication(int patientId, int compMedicationId, String dose,String takings,short active) {
+	public boolean saveMedication(int patientId, int compMedicationId, String dose,String takings,short active,int arztId) {
 		Patient patient = repository.get(patientId);
 		Compendiummedicament compMed = getCompendiummedicamentById(compMedicationId);
 		Medicament medication = new Medicament();
+	
+	//	medication.setDoctor(doctor);
 		medication.setCompendiummedicament(compMed);
 		try{
 			double doseDouble = Double.parseDouble(dose);
@@ -42,8 +44,36 @@ public class MedicationController {
 					
 		boolean isValid=validateMedication(medication);
 		if(isValid){
-			patient.addMedicament(medication);
-			repository.update(patient);	
+			medication.setPatient(patient);
+			Medicament persisted=repository.persistMedicament(medication);
+			System.out.println(persisted.getId());
+			patient.addMedicament(persisted);
+		}
+		return isValid;
+	}
+	
+	public boolean updateMedication(int patientId, int compMedicationId, String dose,String takings,short active, int medicamentId) {
+		Patient patient = repository.get(patientId);
+		Compendiummedicament compMed = getCompendiummedicamentById(compMedicationId);
+		Medicament medication = patient.getMedicament(medicamentId);
+		medication.setCompendiummedicament(compMed);
+		try{
+			double doseDouble = Double.parseDouble(dose);
+			int takingsInt =Integer.parseInt(takings);
+			BigDecimal doseDecimal = new BigDecimal(doseDouble);
+			medication.setTakings(takingsInt);
+			medication.setDose(doseDecimal);
+			medication.setActive(active);
+		}catch(Exception e){
+			System.out.println("Exception could not parse String to int");
+			return false;	
+		}
+					
+		boolean isValid=validateMedication(medication);
+		if(isValid){
+			System.out.println(medication.getId());
+			
+			medication =repository.updateMedicament(medication);		
 		}
 		return isValid;
 	}
@@ -52,7 +82,7 @@ public class MedicationController {
 		Patient patient = repository.get(id);
 		List<Medicament> medications = patient.getMedicaments();
 		medications.remove(medication);
-		repository.update(patient);
+		repository.deleteMedicament(medication.getId());
 	}
 	
 	public boolean validateMedication(Medicament medication){
@@ -87,6 +117,11 @@ public class MedicationController {
 	public Compendiummedicament getCompendiummedicamentById(int id) {
 		Compendiummedicament medication = repository.getCompendiumMedicament(id);
 		return medication;
+	}
+	
+	public Medicament getMedicamentById(int medicamentId){
+		Medicament medicament = repository.getMedicamentById(medicamentId);
+		return medicament;
 	}
 	
 	

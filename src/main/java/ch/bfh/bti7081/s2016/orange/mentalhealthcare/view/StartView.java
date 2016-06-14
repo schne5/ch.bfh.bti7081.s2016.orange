@@ -15,6 +15,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.DoctorController;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.StartController;
@@ -53,6 +54,7 @@ public class StartView extends VerticalLayout implements View {
 		 * 1,0); logging.setComponentAlignment(link, Alignment.TOP_RIGHT);
 		 */
 		final Button logoutButton = new Button("Logout");
+		logoutButton.setStyleName(BaseTheme.BUTTON_LINK);
 		logoutButton.addClickListener(e -> {
 			getSession().setAttribute("user", null);
 			getUI().getNavigator().navigateTo(LoginView.NAME);
@@ -67,6 +69,7 @@ public class StartView extends VerticalLayout implements View {
 		// Add "create patient button"
 		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
 		final Button createPatientButton = new Button("Create Patient");
+		createPatientButton.setStyleName(BaseTheme.BUTTON_LINK);
 		createPatientButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
 		});
@@ -143,6 +146,7 @@ public class StartView extends VerticalLayout implements View {
 			row.getItemProperty(StartView.BIRTHDATE).setValue(patient.getBirthdate());
 
 			Button openButton = new Button();
+			openButton.setStyleName(BaseTheme.BUTTON_LINK);
 			openButton.setCaption(StartView.OPEN_BUTTON);
 			openButton.addClickListener(e -> {
 				getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patient.getId());
@@ -150,6 +154,7 @@ public class StartView extends VerticalLayout implements View {
 			row.getItemProperty(StartView.OPEN_BUTTON).setValue(openButton);
 
 			Button editButton = new Button();
+			editButton.setStyleName(BaseTheme.BUTTON_LINK);
 			editButton.setCaption(StartView.EDIT_BUTTON);
 			editButton.addClickListener(e -> {
 				getUI().getNavigator().navigateTo(EditPatientView.NAME + "/" + patient.getId());

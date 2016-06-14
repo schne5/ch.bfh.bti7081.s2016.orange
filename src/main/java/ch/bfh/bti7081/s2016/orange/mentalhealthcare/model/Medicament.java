@@ -15,12 +15,13 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@PrimaryKey(validation=IdValidation.NONE)
+//@PrimaryKey(validation=IdValidation.NONE)
 @NamedQuery(name="Medicament.findAll", query="SELECT m FROM Medicament m")
 public class Medicament implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	private short active;

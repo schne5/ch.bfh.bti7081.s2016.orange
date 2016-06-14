@@ -61,7 +61,7 @@ doctorId int,
 compMedId int,
 active SMALLINT,
 patientId int,
-takeings int,
+takings int,
 FOREIGN KEY (patientId) REFERENCES patient(id),
 FOREIGN KEY (doctorId) REFERENCES doctor(id),
 FOREIGN KEY (compMedId) REFERENCES compendiummedicament(id)    

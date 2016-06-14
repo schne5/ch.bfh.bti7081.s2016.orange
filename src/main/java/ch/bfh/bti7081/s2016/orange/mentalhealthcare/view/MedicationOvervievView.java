@@ -109,6 +109,7 @@ public class MedicationOvervievView extends VerticalLayout implements View {
 		medicamentTable.addContainerProperty(MedicationOvervievView.DOCTOR_NAME, String.class, null);
 		medicamentTable.addContainerProperty(MedicationOvervievView.ACTIVE, Short.class, null);
 		medicamentTable.addContainerProperty(MedicationOvervievView.Delete_BUTTON, Button.class, null);
+		medicamentTable.addContainerProperty(MedicationOvervievView.EDIT_BUTTON, Button.class, null);
 		
 		return medicamentTable;
 	}

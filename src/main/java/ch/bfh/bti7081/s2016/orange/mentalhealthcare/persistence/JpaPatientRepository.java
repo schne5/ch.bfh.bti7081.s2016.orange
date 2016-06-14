@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
 public class JpaPatientRepository implements PatientRepository {
@@ -95,5 +96,39 @@ public class JpaPatientRepository implements PatientRepository {
 		EntityManager em = getEntityManager();
 		Compendiummedicament medication = em.find(Compendiummedicament.class, id);
 		return medication;
+	}
+
+	@Override
+	public void deleteMedicament(int medicamentId) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Medicament medicament = em.find(Medicament.class, medicamentId);
+		em.remove(medicament);
+		em.getTransaction().commit();	
+	}
+
+	@Override
+	public Medicament getMedicamentById(int medicamentId) {
+		EntityManager em = getEntityManager();
+		Medicament medicament = em.find(Medicament.class, medicamentId);
+		return medicament;
+	}
+
+	@Override
+	public Medicament updateMedicament(Medicament medicament) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Medicament medi = em.merge(medicament);
+		em.getTransaction().commit();
+		return medi;
+	}
+
+	@Override
+	public Medicament persistMedicament(Medicament medicament) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Medicament m=em.merge(medicament);
+		em.getTransaction().commit();
+		return m;
 	}
 }
