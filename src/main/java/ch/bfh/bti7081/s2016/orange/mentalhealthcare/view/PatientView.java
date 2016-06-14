@@ -15,6 +15,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
@@ -29,6 +30,7 @@ import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.NoDangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PotentialDangerState;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.State;
 
@@ -86,8 +88,8 @@ public class PatientView extends VerticalLayout implements View {
 		setMargin(true);
 	}
 
-	private GridLayout getPatientOverview() {
-		GridLayout overview = new GridLayout(2, 1);
+	private HorizontalLayout getPatientOverview() {
+		HorizontalLayout overview = new HorizontalLayout();
 		overview.setWidth("100%");
 
 		// Add patient information
@@ -101,23 +103,33 @@ public class PatientView extends VerticalLayout implements View {
 		patientInfo.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
 		patientInfo.setSpacing(true);
 
-		overview.addComponent(patientInfo, 0, 0);
+		overview.addComponent(patientInfo);
 
 		// Add patient status
 		VerticalLayout statusLayout = new VerticalLayout();
-		statusLayout.setMargin(new MarginInfo(true, false, false, false));
+		statusLayout.setMargin(new MarginInfo(false, false, false, false));
 
 		String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 		// Image as a file resource
 		FileResource resource = new FileResource(new File(basePath + "/images/" + state.changeAmpel(this)));
 		// Show the image in the application
-		Image image = new Image("Patient danger level", resource);
-		image.setHeight("150");
+		Image image;
+		if(patient.getState()==PatientState.DANGER.getValue()){
+			image = new Image("Danger", resource);
+		}else if(patient.getState()==PatientState.POTENTIAL_DANGER.getValue()){
+			image = new Image("Potential Danger", resource);
+		}else{
+			image = new Image("No Danger", resource);
+		}
+					
+		image.setHeight("130");
 		image.setWidth("75");
 		statusLayout.addComponent(image);
 		statusLayout.setComponentAlignment(image, Alignment.TOP_CENTER);
+		
 
-		overview.addComponent(statusLayout, 1, 0);
+		overview.addComponent(statusLayout);
+		
 		overview.setMargin(true);
 
 		return overview;
@@ -135,7 +147,7 @@ public class PatientView extends VerticalLayout implements View {
 		
 		updateMedicamentTable();
 		
-		Button createMedication = new Button("Add Medication");
+		Button createMedication = new Button("New Medicament");
 		createMedication.addClickListener(c -> {
 			getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId());
 		});

@@ -49,7 +49,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 		VerticalLayout layoutPatientenDaten = new VerticalLayout();
 		
 		// Add title for Create
-		final Label title = new Label("Create");
+		final Label title = new Label("Create Patient");
 		
 		// Add input fields
 		final TextField lastName = new TextField();
@@ -80,7 +80,18 @@ public class CreatePatientView extends VerticalLayout implements View {
 			}
 		});
 		
+
+		//Add back button
+		final Button startButton = new Button("Return to search view");
+		startButton.setStyleName(BaseTheme.BUTTON_LINK);
+		startButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(StartView.NAME);
+		});
+
+		//layoutPatientenDaten.addComponents(startButton,title, lastName, firstName, assuranceNr, birthDate, createButton);
+
 		layoutPatientenDaten.addComponents(title, lastName, firstName, assuranceNr, birthDate, createButton);
+
 		layoutPatientenDaten.setSpacing(true);
 		return layoutPatientenDaten;
 	}

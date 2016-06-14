@@ -65,15 +65,17 @@ public class StartView extends VerticalLayout implements View {
 		addComponent(logging);
 		
 		// Add "create patient button"
-		final Button createPatientButton = new Button("Create Patient");
-		createPatientButton.setStyleName(BaseTheme.BUTTON_LINK);
+		final Button createPatientButton = new Button("New Patient");
 		createPatientButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
 		});
 		
-		linksLayout.addComponents(createPatientButton,logoutButton );
+
+		
+		linksLayout.addComponents(logoutButton );
 		logging.addComponent(linksLayout, 1, 0);
 		logging.setComponentAlignment(linksLayout, Alignment.TOP_RIGHT);
+
 
 		// Add layout for search
 		final VerticalLayout search = new VerticalLayout();
@@ -113,6 +115,9 @@ public class StartView extends VerticalLayout implements View {
 		button.setHeight("100px");
 
 		search.addComponents(button, patientTable);
+		addComponent(createPatientButton);
+		this.setSpacing(true);
+		
 	}
 
 	private Table createPatientTable() {
