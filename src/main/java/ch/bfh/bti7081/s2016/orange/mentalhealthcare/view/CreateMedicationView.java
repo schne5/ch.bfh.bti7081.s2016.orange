@@ -25,10 +25,12 @@ import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -43,24 +45,27 @@ public class CreateMedicationView extends VerticalLayout implements View {
 	private Medicament medicament;
 	private int patientId;
 	private int medicamentId;
-	private Label hinweis = new Label();// Hinweis bei fehlerhafter eingabe
+	private Label hinweis = new Label();// 
 
 	public CreateMedicationView() {
 		controller = new MedicationController();
-	}
-
-	private HorizontalLayout getTop() { // leer mal als Platzhalter drin
-		HorizontalLayout layoutTop = new HorizontalLayout();
-		layoutTop.addComponents();
-		layoutTop.setSpacing(true);
-		return layoutTop;
+		final Button backButton = new Button("Return to patient view");
+		backButton.setStyleName(BaseTheme.BUTTON_LINK);
+		backButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(PatientView.NAME+"/"+patientId);
+		});
+		
+		final GridLayout menu = new GridLayout(2,1);
+		menu.setWidth("100%");
+		menu.addComponent(backButton,1,0);
+		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
+		addComponent(menu);
+		VerticalLayout layoutCreatePatient = getLayoutCreateMedication();
+		addComponents(hinweis, layoutCreatePatient);
+		setMargin(true);
+	
 	}
 	
-	private void createMedicationView() {
-		VerticalLayout layoutCreateMedication = getLayoutCreateMedication();
-		addComponents(getTop(), hinweis, layoutCreateMedication);
-		setMargin(true);
-	}
 
 	private VerticalLayout getLayoutCreateMedication() {
 		VerticalLayout layoutMedicationData = new VerticalLayout();
@@ -144,13 +149,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			
 		}
 
-		final Button startButton = new Button("Return to patient view");
-		startButton.setStyleName(BaseTheme.BUTTON_LINK);
-		startButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(PatientView.NAME+"/"+patientId);
-		});
-
-		layoutMedicationData.addComponents(title, compMedication, dose, takings, takingsDuration,active,createButton, startButton);
+		layoutMedicationData.addComponents(title, compMedication, dose, takings, takingsDuration,active,createButton);
 
 		layoutMedicationData.setSpacing(true);
 
@@ -166,7 +165,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				// TODO: handle error -> create error page
 			}
-			createMedicationView();		
+			
 		}
 		
 	}
