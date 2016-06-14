@@ -11,6 +11,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -29,10 +30,10 @@ public class StartView extends VerticalLayout implements View {
 
 	private final StartController controller;
 
-	private static final String LAST_NAME = "Last Name";
-	private static final String FIRST_NAME = "First Name";
-	private static final String ASSURANCE_NR = "Assurance Number";
-	private static final String BIRTHDATE = "Birthdate";
+	private static final String LAST_NAME = "Last name:";
+	private static final String FIRST_NAME = "First name:";
+	private static final String ASSURANCE_NR = "Assurance number:";
+	private static final String BIRTHDATE = "Birthdate:";
 
 	private static final String OPEN_BUTTON = "Open";
 	private static final String EDIT_BUTTON = "Edit";
@@ -46,36 +47,33 @@ public class StartView extends VerticalLayout implements View {
 		setMargin(true);
 
 		// Add logging bar
+		final HorizontalLayout linksLayout = new HorizontalLayout();
 		final GridLayout logging = new GridLayout(2, 1);
 		logging.setWidth("100%");
-		/*
-		 * Link link = new Link("Logout", new
-		 * ExternalResource("http://vaadin.com/")); logging.addComponent(link,
-		 * 1,0); logging.setComponentAlignment(link, Alignment.TOP_RIGHT);
-		 */
+		
 		final Button logoutButton = new Button("Logout");
+		
 		logoutButton.setStyleName(BaseTheme.BUTTON_LINK);
 		logoutButton.addClickListener(e -> {
 			getSession().setAttribute("user", null);
 			getUI().getNavigator().navigateTo(LoginView.NAME);
 		});
-		logging.addComponent(logoutButton, 1, 0);
-		logging.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
-
+		
 		logging.addComponent(loggingInfo, 0, 0);
-		logging.setComponentAlignment(loggingInfo, Alignment.TOP_LEFT);
+	
+		logging.setComponentAlignment(loggingInfo, Alignment.BOTTOM_LEFT);
 		addComponent(logging);
-
+		
 		// Add "create patient button"
-		final VerticalLayout createPatientButtonLayout = new VerticalLayout();
 		final Button createPatientButton = new Button("Create Patient");
 		createPatientButton.setStyleName(BaseTheme.BUTTON_LINK);
 		createPatientButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(CreatePatientView.NAME);
 		});
-		createPatientButtonLayout.addComponent(createPatientButton);
-		createPatientButtonLayout.setMargin(new MarginInfo(true, false));
-		addComponent(createPatientButtonLayout);
+		
+		linksLayout.addComponents(createPatientButton,logoutButton );
+		logging.addComponent(linksLayout, 1, 0);
+		logging.setComponentAlignment(linksLayout, Alignment.TOP_RIGHT);
 
 		// Add layout for search
 		final VerticalLayout search = new VerticalLayout();
