@@ -32,7 +32,7 @@ public class Patient implements Serializable {
 	private String surename;
 
 	//bi-directional many-to-one association to Diagnose
-	@OneToMany(mappedBy="patient")
+	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL)
 	private List<Diagnose> diagnoses;
 
 	//bi-directional many-to-one association to Contact
@@ -40,7 +40,7 @@ public class Patient implements Serializable {
 	private List<Contact> contacts;
 
 	//bi-directional many-to-one association to Medicament
-	@OneToMany(mappedBy="patient")
+	@OneToMany(mappedBy="patient",cascade = CascadeType.ALL)
 	private List<Medicament> medicaments;
 
 	public Patient() {

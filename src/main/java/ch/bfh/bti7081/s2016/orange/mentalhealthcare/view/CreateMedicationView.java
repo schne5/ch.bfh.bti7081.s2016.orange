@@ -48,22 +48,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 	private Label hinweis = new Label();// 
 
 	public CreateMedicationView() {
-		controller = new MedicationController();
-		final Button backButton = new Button("Return to patient view");
-		backButton.setStyleName(BaseTheme.BUTTON_LINK);
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(PatientView.NAME+"/"+patientId);
-		});
-		
-		final GridLayout menu = new GridLayout(2,1);
-		menu.setWidth("100%");
-		menu.addComponent(backButton,1,0);
-		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
-		addComponent(menu);
-		VerticalLayout layoutCreatePatient = getLayoutCreateMedication();
-		addComponents(hinweis, layoutCreatePatient);
-		setMargin(true);
-	
+		controller = new MedicationController();	
 	}
 	
 
@@ -104,8 +89,9 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			takingsDuration.addItem(t);
 			takingsDuration.setItemCaption(t,t.getText());
 		}
-		
+		System.out.println("HIER" +medicamentId);
 		if(medicamentId>0){
+			
 			Medicament medicament= controller.getMedicamentById(medicamentId);
 			compMedication.setValue(medicament.getCompendiummedicament().getId());
 			String doseString= new Double(medicament.getDose().doubleValue()).toString();
@@ -113,8 +99,9 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			takings.setValue(new Integer(medicament.getTakings()).toString());
 			active.setValue(medicament.getActive() ==1 ? true :false);
 		}
-		
 		final Button createButton = new Button("Create Medication");
+		if(medicamentId<=0){
+		
 		createButton.addClickListener(e -> {
 			int arztId=(int) getSession().getAttribute("user");
 			short isActive = (short)(active.getValue()?1:0);
@@ -130,6 +117,7 @@ public class CreateMedicationView extends VerticalLayout implements View {
 				}
 			}	
 		});
+		}
 		if(medicamentId>0){
 			createButton.setCaption("Save Changes");
 			createButton.addClickListener(e -> {
@@ -162,11 +150,33 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			try {
 				patientId = Integer.parseInt(parameters[0]);
 				medicamentId=Integer.parseInt(parameters[1]);
+				System.out.println("ENTER" +medicamentId);
+				createMedicationView();
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
 				// TODO: handle error -> create error page
 			}
 			
 		}
+		
+	}
+
+
+	private void createMedicationView() {
+		final Button backButton = new Button("Return to patient view");
+		backButton.setStyleName(BaseTheme.BUTTON_LINK);
+		backButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(PatientView.NAME+"/"+patientId);
+		});
+		
+		final GridLayout menu = new GridLayout(2,1);
+		menu.setWidth("100%");
+		menu.addComponent(backButton,1,0);
+		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
+		addComponent(menu);
+		VerticalLayout layoutCreatePatient = getLayoutCreateMedication();
+		addComponents(hinweis, layoutCreatePatient);
+		setMargin(true);
+	
 		
 	}
 

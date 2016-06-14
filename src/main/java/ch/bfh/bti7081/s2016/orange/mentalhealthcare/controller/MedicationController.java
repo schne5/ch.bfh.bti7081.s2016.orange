@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Doctor;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepository;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.DoctorRepositoryFactory;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.PatientRepository;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.persistence.PatientRepositoryFactory;
 
 public class MedicationController {
 
 	PatientRepository repository;
+	DoctorRepository doctorRepository;
 
 	public MedicationController() {
 		repository = PatientRepositoryFactory.createJpaRepository();
+		doctorRepository =DoctorRepositoryFactory.createJpaRepository();
 	}
 
 	public List<Medicament> getMedications(int id) {
@@ -27,8 +32,8 @@ public class MedicationController {
 		Patient patient = repository.get(patientId);
 		Compendiummedicament compMed = getCompendiummedicamentById(compMedicationId);
 		Medicament medication = new Medicament();
-	
-	//	medication.setDoctor(doctor);
+		Doctor doctor = doctorRepository.get(arztId);
+		medication.setDoctor(doctor);
 		medication.setCompendiummedicament(compMed);
 		try{
 			double doseDouble = Double.parseDouble(dose);
@@ -71,9 +76,7 @@ public class MedicationController {
 					
 		boolean isValid=validateMedication(medication);
 		if(isValid){
-			System.out.println(medication.getId());
-			
-			medication =repository.updateMedicament(medication);		
+			repository.update(patient);	
 		}
 		return isValid;
 	}
