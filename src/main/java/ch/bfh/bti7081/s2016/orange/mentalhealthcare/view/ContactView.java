@@ -4,7 +4,9 @@ import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
@@ -35,6 +37,8 @@ public class ContactView extends VerticalLayout implements View {
 
 	public ContactView() {
 		controller = new ContactController();
+		
+		
 	}
 
 	@Override
@@ -50,11 +54,25 @@ public class ContactView extends VerticalLayout implements View {
 
 	private void createContactView() {
 		setMargin(true);
-
+		
+		final Button backButton = new Button("Return to Patient View");
+		backButton.setStyleName(BaseTheme.BUTTON_LINK);
+		backButton.addClickListener(e -> {
+			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+		});
+		
+		final GridLayout menu = new GridLayout(2,1);
+		menu.setWidth("100%");
+		menu.addComponent(backButton,1,0);
+		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
+		addComponent(menu);
+		
+		
+		
 		// Add title
 		final Label title = new Label("Patient Contacts");
 		addComponent(title);
-
+		
 		// Add content
 		final HorizontalLayout content = new HorizontalLayout();
 		content.setWidth("100%");
@@ -76,14 +94,8 @@ public class ContactView extends VerticalLayout implements View {
 		updateContactTable();
 		updateInputTable();
 
-		final Button backButton = new Button("Return to Patient View");
-		backButton.setStyleName(BaseTheme.BUTTON_LINK);
-		backButton.addClickListener(e -> {
-			getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
-		});
 		final VerticalLayout nav = new VerticalLayout();
 		nav.setMargin(new MarginInfo(true, false));
-		nav.addComponent(backButton);
 		addComponent(nav);
 	}
 
