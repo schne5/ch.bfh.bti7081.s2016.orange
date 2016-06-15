@@ -3,6 +3,19 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 import java.io.File;
 import java.math.BigDecimal;
 
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.DiagnoseController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.MedicationController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.DangerState;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.NoDangerState;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PotentialDangerState;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.State;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -22,41 +35,39 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.MedicationController;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.PatientController;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.DangerState;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.NoDangerState;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PatientState;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.PotentialDangerState;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.State;
-
 public class PatientView extends VerticalLayout implements View {
 	public static final String NAME = "PatientOverview";
-	private static final String Delete_BUTTON = "Delete";
+	private static final String DELETE_BUTTON = "Delete";
 	private static final String EDIT_BUTTON = "Edit";
-	
+
+	// private static final String DELETE_DIAGNOSE_BUTTON = "Delete";
+	// private static final String EDIT_DIAGNOSE_BUTTON = "Edit";
+
 	private static final String MEDICAMENT_NAME = "Medicament Name";
 	private static final String DOSE = "Dose";
 	private static final String TAKINGS = "Takings";
 	private static final String ACTIVE = "Active";
 	private static final String DOCTOR_NAME = "Doctor";
 
+	private static final String DIAGNOSE_NAME = "Diagnose Name";
+	// private static final String ACTIVE_DIAGNOSE = "Active";
+	// private static final String DOCTOR_DIAGNOSE_NAME = "Doctor";
+
 	private static final long serialVersionUID = -3394831508440420703L;
 
 	private final PatientController controller;
 	private final MedicationController medicationController;
+	private final DiagnoseController diagnoseController;
 	private Patient patient = null;
 	private Label errorMessage = new Label();
 	private State state;
 	private Table medicamentGrid;
+	private Table diagnoseGrid;
 
 	public PatientView() {
 		controller = new PatientController();
 		medicationController = new MedicationController();
+		diagnoseController = new DiagnoseController();
 		this.state = null;
 	}
 
@@ -96,11 +107,15 @@ public class PatientView extends VerticalLayout implements View {
 		VerticalLayout patientInfo = new VerticalLayout();
 
 		Label labelLastName = new Label("Name: " + this.patient.getSurename());
-		Label labelFirstName = new Label("First name: " + this.patient.getFirstname());
-		Label labelSocialAssuranceNumber = new Label("Assurance Nr.: " + this.patient.getAssuranceNr());
-		Label labelBirthDate = new Label("Birthdate: " + this.patient.getBirthdate().toString());
+		Label labelFirstName = new Label("First name: "
+				+ this.patient.getFirstname());
+		Label labelSocialAssuranceNumber = new Label("Assurance Nr.: "
+				+ this.patient.getAssuranceNr());
+		Label labelBirthDate = new Label("Birthdate: "
+				+ this.patient.getBirthdate().toString());
 
-		patientInfo.addComponents(labelLastName, labelFirstName, labelSocialAssuranceNumber, labelBirthDate);
+		patientInfo.addComponents(labelLastName, labelFirstName,
+				labelSocialAssuranceNumber, labelBirthDate);
 		patientInfo.setSpacing(true);
 
 		overview.addComponent(patientInfo);
@@ -109,27 +124,29 @@ public class PatientView extends VerticalLayout implements View {
 		VerticalLayout statusLayout = new VerticalLayout();
 		statusLayout.setMargin(new MarginInfo(false, false, false, false));
 
-		String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+		String basePath = VaadinService.getCurrent().getBaseDirectory()
+				.getAbsolutePath();
 		// Image as a file resource
-		FileResource resource = new FileResource(new File(basePath + "/images/" + state.changeAmpel(this)));
+		FileResource resource = new FileResource(new File(basePath + "/images/"
+				+ state.changeAmpel(this)));
 		// Show the image in the application
 		Image image;
-		if(patient.getState()==PatientState.DANGER.getValue()){
+		if (patient.getState() == PatientState.DANGER.getValue()) {
 			image = new Image("Danger", resource);
-		}else if(patient.getState()==PatientState.POTENTIAL_DANGER.getValue()){
+		} else if (patient.getState() == PatientState.POTENTIAL_DANGER
+				.getValue()) {
 			image = new Image("Potential Danger", resource);
-		}else{
+		} else {
 			image = new Image("No Danger", resource);
 		}
-					
+
 		image.setHeight("130");
 		image.setWidth("75");
 		statusLayout.addComponent(image);
 		statusLayout.setComponentAlignment(image, Alignment.TOP_CENTER);
-		
 
 		overview.addComponent(statusLayout);
-		
+
 		overview.setMargin(true);
 
 		return overview;
@@ -143,16 +160,20 @@ public class PatientView extends VerticalLayout implements View {
 		Label labelMedicaments = new Label("Current Medicaments:");
 		medicamentGrid = getMedicamentTable();
 		medicamentGrid.setHeight("200px");
-	
-		
+
 		updateMedicamentTable();
-		
+
 		Button createMedication = new Button("New Medicament");
 		createMedication.addClickListener(c -> {
-			getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId()+"/"+0);
+			getUI().getNavigator()
+					.navigateTo(
+							CreateMedicationView.NAME + "/" + patient.getId()
+									+ "/" + 0);
+
 		});
 
-		medication.addComponents(labelMedicaments, medicamentGrid,createMedication);
+		medication.addComponents(labelMedicaments, medicamentGrid,
+				createMedication);
 
 		return medication;
 	}
@@ -161,10 +182,18 @@ public class PatientView extends VerticalLayout implements View {
 		VerticalLayout diagnose = new VerticalLayout();
 
 		Label labelDiagnoses = new Label("Current Diagnoses:");
-		BeanItemContainer<Diagnose> diagnoses = new BeanItemContainer<Diagnose>(Diagnose.class, patient.getDiagnoses());
-		Grid gridDiagnoses = getDiagnosesGrid(diagnoses);
+		diagnoseGrid = getDiagnoseTable();
+		diagnoseGrid.setHeight("200px");
 
-		diagnose.addComponents(labelDiagnoses, gridDiagnoses);
+		updateDiagnoseTable();
+
+		Button createDiagnose = new Button("Add Diagnose");
+		createDiagnose.addClickListener(c -> {
+			getUI().getNavigator().navigateTo(
+					CreateDiagnoseView.NAME + "/" + patient.getId());
+		});
+
+		diagnose.addComponents(labelDiagnoses, diagnoseGrid, createDiagnose);
 
 		return diagnose;
 	}
@@ -175,12 +204,14 @@ public class PatientView extends VerticalLayout implements View {
 		contacts.setSpacing(true);
 		contacts.setMargin(true);
 		Label labelContacts = new Label("Contacts:");
-		BeanItemContainer<Contact> contact = new BeanItemContainer<Contact>(Contact.class, patient.getContacts());
+		BeanItemContainer<Contact> contact = new BeanItemContainer<Contact>(
+				Contact.class, patient.getContacts());
 		Grid gridKontakte = getContactsGrid(contact);
 		Button newContact = new Button("New Contact");
 		newContact.addClickListener(e -> {
 			int patientId = this.patient.getId();
-			getUI().getNavigator().navigateTo(ContactView.NAME + "/" + patientId);
+			getUI().getNavigator().navigateTo(
+					ContactView.NAME + "/" + patientId);
 		});
 		contacts.addComponents(labelContacts, gridKontakte, newContact);
 
@@ -259,50 +290,122 @@ public class PatientView extends VerticalLayout implements View {
 		gridContacts.setColumnOrder("name", "adress", "phoneNr");
 		return gridContacts;
 	}
-	
+
 	public Table getMedicamentTable() {
-		
+
 		Table medicamentTable = new Table();
-		
+
 		// Define columns
-		medicamentTable.addContainerProperty(PatientView.MEDICAMENT_NAME, String.class, null);
-		medicamentTable.addContainerProperty(PatientView.DOSE, BigDecimal.class, null);
-		medicamentTable.addContainerProperty(PatientView.TAKINGS, Integer.class, null);
-		medicamentTable.addContainerProperty(PatientView.DOCTOR_NAME, String.class, null);
-		medicamentTable.addContainerProperty(PatientView.ACTIVE, Short.class, null);
-		medicamentTable.addContainerProperty(PatientView.Delete_BUTTON, Button.class, null);
-		medicamentTable.addContainerProperty(PatientView.EDIT_BUTTON, Button.class, null);
-		
+		medicamentTable.addContainerProperty(PatientView.MEDICAMENT_NAME,
+				String.class, null);
+		medicamentTable.addContainerProperty(PatientView.DOSE,
+				BigDecimal.class, null);
+		medicamentTable.addContainerProperty(PatientView.TAKINGS,
+				Integer.class, null);
+		medicamentTable.addContainerProperty(PatientView.DOCTOR_NAME,
+				String.class, null);
+		medicamentTable.addContainerProperty(PatientView.ACTIVE, Short.class,
+				null);
+		medicamentTable.addContainerProperty(PatientView.DELETE_BUTTON,
+				Button.class, null);
+		medicamentTable.addContainerProperty(PatientView.EDIT_BUTTON,
+				Button.class, null);
+
 		return medicamentTable;
 	}
-	
+
+	public Table getDiagnoseTable() {
+
+		Table diagnoseTable = new Table();
+
+		// Define columns
+		diagnoseTable.addContainerProperty(PatientView.DIAGNOSE_NAME,
+				String.class, null);
+		diagnoseTable.addContainerProperty(PatientView.DOCTOR_NAME,
+				String.class, null);
+		diagnoseTable.addContainerProperty(PatientView.ACTIVE, Short.class,
+				null);
+		diagnoseTable.addContainerProperty(PatientView.DELETE_BUTTON,
+				Button.class, null);
+		diagnoseTable.addContainerProperty(PatientView.EDIT_BUTTON,
+				Button.class, null);
+
+		return diagnoseTable;
+	}
+
 	@SuppressWarnings("unchecked")
 	private void updateMedicamentTable() {
 		medicamentGrid.removeAllItems();
 
-		for (Medicament medicament : medicationController.getMedications(patient.getId())) {
+		for (Medicament medicament : medicationController
+				.getMedications(patient.getId())) {
 			Object newItemId = medicamentGrid.addItem();
 			Item row = medicamentGrid.getItem(newItemId);
-			row.getItemProperty(PatientView.MEDICAMENT_NAME).setValue(medicament.getMedicamentName());
-			row.getItemProperty(PatientView.DOSE).setValue(medicament.getDose());
-			row.getItemProperty(PatientView.TAKINGS).setValue(medicament.getTakings());
-			row.getItemProperty(PatientView.DOCTOR_NAME).setValue(medicament.getDoctor().getName());
-			row.getItemProperty(PatientView.ACTIVE).setValue(medicament.getActive());
+
+			row.getItemProperty(PatientView.MEDICAMENT_NAME).setValue(
+					medicament.getMedicamentName());
+			row.getItemProperty(PatientView.DOSE)
+					.setValue(medicament.getDose());
+			row.getItemProperty(PatientView.TAKINGS).setValue(
+					medicament.getTakings());
+			row.getItemProperty(PatientView.DOCTOR_NAME).setValue(
+					medicament.getDoctor().getName());
+			row.getItemProperty(PatientView.ACTIVE).setValue(
+					medicament.getActive());
 
 			Button deleteButton = new Button();
 			deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
 			deleteButton.setCaption("Delete");
 			deleteButton.addClickListener(e -> {
-				medicationController.deleteMedication(patient.getId(), medicament);
+				medicationController.deleteMedication(patient.getId(),
+						medicament);
 				System.out.println(medicament.getId());
 				updateMedicamentTable();
 			});
-			row.getItemProperty(PatientView.Delete_BUTTON).setValue(deleteButton);
+			row.getItemProperty(PatientView.DELETE_BUTTON).setValue(
+					deleteButton);
 			Button editButton = new Button();
 			editButton.setStyleName(BaseTheme.BUTTON_LINK);
 			editButton.setCaption("Edit");
 			editButton.addClickListener(e -> {
-				getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId() +"/" +medicament.getId());
+				getUI().getNavigator().navigateTo(
+						CreateMedicationView.NAME + "/" + patient.getId() + "/"
+								+ medicament.getId());
+			});
+			row.getItemProperty(PatientView.EDIT_BUTTON).setValue(editButton);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void updateDiagnoseTable() {
+		diagnoseGrid.removeAllItems();
+
+		for (Diagnose diagnose : diagnoseController.getDiagnoses(patient
+				.getId())) {
+			Object newItemId = diagnoseGrid.addItem();
+			Item row = diagnoseGrid.getItem(newItemId);
+			row.getItemProperty(PatientView.DIAGNOSE_NAME).setValue(
+					diagnose.getDiagnoseName());
+			row.getItemProperty(PatientView.ACTIVE).setValue(
+					diagnose.getActive());
+
+			Button deleteButton = new Button();
+			deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
+			deleteButton.setCaption("Delete");
+			deleteButton.addClickListener(e -> {
+				diagnoseController.deleteDiagnose(patient.getId(), diagnose);
+				System.out.println(diagnose.getId());
+				updateDiagnoseTable();
+			});
+			row.getItemProperty(PatientView.DELETE_BUTTON).setValue(
+					deleteButton);
+			Button editButton = new Button();
+			editButton.setStyleName(BaseTheme.BUTTON_LINK);
+			editButton.setCaption("Edit");
+			editButton.addClickListener(e -> {
+				getUI().getNavigator().navigateTo(
+						CreateDiagnoseView.NAME + "/" + patient.getId() + "/"
+								+ diagnose.getId());
 			});
 			row.getItemProperty(PatientView.EDIT_BUTTON).setValue(editButton);
 		}
