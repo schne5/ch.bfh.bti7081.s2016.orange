@@ -43,8 +43,10 @@ public class Patient implements Serializable {
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
 	private List<Diagnose> diagnoses;
 
-	// bi-directional many-to-one association to Contact
-	@OneToMany(mappedBy = "patient")
+
+	//bi-directional many-to-one association to Contact
+	@OneToMany(mappedBy="patient",cascade = CascadeType.ALL)
+
 	private List<Contact> contacts;
 
 	// bi-directional many-to-one association to Medicament
