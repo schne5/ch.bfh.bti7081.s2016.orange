@@ -65,7 +65,7 @@ public class CreatePatientView extends VerticalLayout implements View {
 		final Button createButton = new Button("Create patient");
 		createButton.addClickListener(e -> {
 			patient = new Patient();
-			patient.setSurename(firstName.getValue());
+			patient.setSurename(lastName.getValue());
 			patient.setFirstname(firstName.getValue());
 			patient.setAssuranceNr(assuranceNr.getValue());
 			patient.setBirthdate(birthDate.getValue());
