@@ -149,7 +149,7 @@ public class PatientView extends VerticalLayout implements View {
 		
 		Button createMedication = new Button("New Medicament");
 		createMedication.addClickListener(c -> {
-			getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId());
+			getUI().getNavigator().navigateTo(CreateMedicationView.NAME + "/" + patient.getId()+"/"+0);
 		});
 
 		medication.addComponents(labelMedicaments, medicamentGrid,createMedication);
@@ -286,7 +286,7 @@ public class PatientView extends VerticalLayout implements View {
 			row.getItemProperty(PatientView.MEDICAMENT_NAME).setValue(medicament.getMedicamentName());
 			row.getItemProperty(PatientView.DOSE).setValue(medicament.getDose());
 			row.getItemProperty(PatientView.TAKINGS).setValue(medicament.getTakings());
-			//row.getItemProperty(PatientView.DOCTOR_NAME).setValue(medicament.getDoctor().getName());
+			row.getItemProperty(PatientView.DOCTOR_NAME).setValue(medicament.getDoctor().getName());
 			row.getItemProperty(PatientView.ACTIVE).setValue(medicament.getActive());
 
 			Button deleteButton = new Button();
