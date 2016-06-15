@@ -1,15 +1,19 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  * The persistent class for the diagnose database table.
  * 
  */
 @Entity
-@NamedQuery(name="Diagnose.findAll", query="SELECT d FROM Diagnose d")
+@NamedQuery(name = "Diagnose.findAll", query = "SELECT d FROM Diagnose d")
 public class Diagnose implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -18,19 +22,19 @@ public class Diagnose implements Serializable {
 
 	private short active;
 
-	//bi-directional many-to-one association to Icdcdiagnose
+	// bi-directional many-to-one association to Icdcdiagnose
 	@ManyToOne
-	@JoinColumn(name="icdcId")
+	@JoinColumn(name = "icdcId")
 	private Icdcdiagnose icdcdiagnose;
 
-	//bi-directional many-to-one association to Patient
+	// bi-directional many-to-one association to Patient
 	@ManyToOne
-	@JoinColumn(name="patientId")
+	@JoinColumn(name = "patientId")
 	private Patient patient;
 
-	//bi-directional many-to-one association to Doctor
+	// bi-directional many-to-one association to Doctor
 	@ManyToOne
-	@JoinColumn(name="doctorId")
+	@JoinColumn(name = "doctorId")
 	private Doctor doctor;
 
 	public Diagnose() {
@@ -74,6 +78,10 @@ public class Diagnose implements Serializable {
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+
+	public String getDiagnoseName() {
+		return this.icdcdiagnose.getName();
 	}
 
 }
