@@ -1,19 +1,27 @@
 package ch.bfh.bti7081.s2016.orange.mentalhealthcare.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the patient database table.
  * 
  */
 @Entity
-@NamedQueries({ @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
-	@NamedQuery(name = "Patient.findByNameAndSVNrAndGebD", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr and p.birthdate = :birthdate"),
-	@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr"), })
+@NamedQueries({
+		@NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
+		@NamedQuery(name = "Patient.findByNameAndSVNrAndGebD", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr and p.birthdate = :birthdate"),
+		@NamedQuery(name = "Patient.findByNameAndSVNr", query = "SELECT p FROM Patient p WHERE p.surename LIKE :surename and p.firstname LIKE :firstname and p.assuranceNr LIKE :assuranceNr"), })
 public class Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -31,16 +39,16 @@ public class Patient implements Serializable {
 
 	private String surename;
 
-	//bi-directional many-to-one association to Diagnose
-	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL)
+	// bi-directional many-to-one association to Diagnose
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
 	private List<Diagnose> diagnoses;
 
-	//bi-directional many-to-one association to Contact
-	@OneToMany(mappedBy="patient")
+	// bi-directional many-to-one association to Contact
+	@OneToMany(mappedBy = "patient")
 	private List<Contact> contacts;
 
-	//bi-directional many-to-one association to Medicament
-	@OneToMany(mappedBy="patient",cascade = CascadeType.ALL)
+	// bi-directional many-to-one association to Medicament
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
 	private List<Medicament> medicaments;
 
 	public Patient() {
@@ -102,18 +110,18 @@ public class Patient implements Serializable {
 		this.diagnoses = diagnoses;
 	}
 
-	public Diagnose addDiagnos(Diagnose diagnos) {
-		getDiagnoses().add(diagnos);
-		diagnos.setPatient(this);
+	public Diagnose addDiagnose(Diagnose diagnose) {
+		getDiagnoses().add(diagnose);
+		diagnose.setPatient(this);
 
-		return diagnos;
+		return diagnose;
 	}
 
-	public Diagnose removeDiagnos(Diagnose diagnos) {
-		getDiagnoses().remove(diagnos);
-		diagnos.setPatient(null);
+	public Diagnose removeDiagnose(Diagnose diagnose) {
+		getDiagnoses().remove(diagnose);
+		diagnose.setPatient(null);
 
-		return diagnos;
+		return diagnose;
 	}
 
 	public List<Contact> getContacts() {
@@ -159,11 +167,20 @@ public class Patient implements Serializable {
 
 		return medicament;
 	}
-	
-	public Medicament getMedicament(int medicamentId){
-		for(Medicament m :getMedicaments()){
-			if(m.getId() ==medicamentId){
+
+	public Medicament getMedicament(int medicamentId) {
+		for (Medicament m : getMedicaments()) {
+			if (m.getId() == medicamentId) {
 				return m;
+			}
+		}
+		return null;
+	}
+
+	public Diagnose getDiagnose(int diagnoseId) {
+		for (Diagnose d : getDiagnoses()) {
+			if (d.getId() == diagnoseId) {
+				return d;
 			}
 		}
 		return null;
