@@ -3,13 +3,14 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare;
 import javax.servlet.annotation.WebServlet;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.ContactView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateDiagnoseView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateMedicationView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreatePatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.EditPatientView;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.CreateMedicationView;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.LoginView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.PatientView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.StartView;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.TestView;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.LoginView;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -43,7 +44,11 @@ public class MyUI extends UI {
 		navigator.addView(TestView.NAME, TestView.class);
 		navigator.addView(CreatePatientView.NAME, CreatePatientView.class);
 		navigator.addView(LoginView.NAME, LoginView.class);
-		navigator.addView(CreateMedicationView.NAME, CreateMedicationView.class);
+
+		navigator
+				.addView(CreateMedicationView.NAME, CreateMedicationView.class);
+		navigator.addView(CreateDiagnoseView.NAME, CreateDiagnoseView.class);
+
 		navigator.addView(EditPatientView.NAME, EditPatientView.class);
 		navigator.navigateTo(LoginView.NAME);
 
