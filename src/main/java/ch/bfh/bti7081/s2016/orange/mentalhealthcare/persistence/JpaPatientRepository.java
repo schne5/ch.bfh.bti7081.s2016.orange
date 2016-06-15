@@ -10,6 +10,8 @@ import javax.persistence.TypedQuery;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Contact;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Icdcdiagnose;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Medicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Patient;
 
@@ -19,7 +21,8 @@ public class JpaPatientRepository implements PatientRepository {
 
 	public EntityManager getEntityManager() {
 		if (entityManager == null) {
-			EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("my-app");
+			EntityManagerFactory emfactory = Persistence
+					.createEntityManagerFactory("my-app");
 			entityManager = emfactory.createEntityManager();
 			return entityManager;
 		}
@@ -48,7 +51,7 @@ public class JpaPatientRepository implements PatientRepository {
 		em.remove(p);
 		em.getTransaction().commit();
 	}
-	
+
 	public void deleteContact(int contactId) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
@@ -63,14 +66,17 @@ public class JpaPatientRepository implements PatientRepository {
 		return p;
 	}
 
-	public List<Patient> find(String surename, String firstname, Date birthdate, String assuranceNr) {
+	public List<Patient> find(String surename, String firstname,
+			Date birthdate, String assuranceNr) {
 		List<Patient> patienten;
 		EntityManager em = getEntityManager();
 		TypedQuery<Patient> query;
 		if (birthdate == null) {
-			query = em.createNamedQuery("Patient.findByNameAndSVNr", Patient.class);
+			query = em.createNamedQuery("Patient.findByNameAndSVNr",
+					Patient.class);
 		} else {
-			query = em.createNamedQuery("Patient.findByNameAndSVNrAndGebD", Patient.class);
+			query = em.createNamedQuery("Patient.findByNameAndSVNrAndGebD",
+					Patient.class);
 			query.setParameter("birthdate", birthdate);
 		}
 		query.setParameter("surename", surename);
@@ -87,14 +93,16 @@ public class JpaPatientRepository implements PatientRepository {
 		List<Compendiummedicament> compendiumMedications;
 		EntityManager em = getEntityManager();
 		TypedQuery<Compendiummedicament> query;
-		query=em.createNamedQuery("Compendiummedicament.findAll",Compendiummedicament.class);
-		compendiumMedications=query.getResultList();
+		query = em.createNamedQuery("Compendiummedicament.findAll",
+				Compendiummedicament.class);
+		compendiumMedications = query.getResultList();
 		return compendiumMedications;
 	}
-	
+
 	public Compendiummedicament getCompendiumMedicament(int id) {
 		EntityManager em = getEntityManager();
-		Compendiummedicament medication = em.find(Compendiummedicament.class, id);
+		Compendiummedicament medication = em.find(Compendiummedicament.class,
+				id);
 		return medication;
 	}
 
@@ -104,7 +112,7 @@ public class JpaPatientRepository implements PatientRepository {
 		em.getTransaction().begin();
 		Medicament medicament = em.find(Medicament.class, medicamentId);
 		em.remove(medicament);
-		em.getTransaction().commit();	
+		em.getTransaction().commit();
 	}
 
 	@Override
@@ -127,8 +135,59 @@ public class JpaPatientRepository implements PatientRepository {
 	public Medicament persistMedicament(Medicament medicament) {
 		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
-		Medicament m=em.merge(medicament);
+		Medicament m = em.merge(medicament);
 		em.getTransaction().commit();
 		return m;
+	}
+
+	@Override
+	public Diagnose persistDiagnose(Diagnose diagnose) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Diagnose d = em.merge(diagnose);
+		em.getTransaction().commit();
+		return d;
+	}
+
+	@Override
+	public Diagnose updateDiagnose(Diagnose diagnose) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Diagnose d = em.merge(diagnose);
+		em.getTransaction().commit();
+		return d;
+	}
+
+	@Override
+	public void deleteDiagnose(int id) {
+		EntityManager em = getEntityManager();
+		em.getTransaction().begin();
+		Diagnose diagnose = em.find(Diagnose.class, id);
+		em.remove(diagnose);
+		em.getTransaction().commit();
+	}
+
+	@Override
+	public List<Icdcdiagnose> getIcdcDiagnoses() {
+		List<Icdcdiagnose> icdcDiagnoses;
+		EntityManager em = getEntityManager();
+		TypedQuery<Icdcdiagnose> query;
+		query = em.createNamedQuery("Icdcdiagnose.findAll", Icdcdiagnose.class);
+		icdcDiagnoses = query.getResultList();
+		return icdcDiagnoses;
+	}
+
+	@Override
+	public Icdcdiagnose getIcdcDiagnose(int id) {
+		EntityManager em = getEntityManager();
+		Icdcdiagnose diagnose = em.find(Icdcdiagnose.class, id);
+		return diagnose;
+	}
+
+	@Override
+	public Diagnose getDiagnoseById(int diagnoseId) {
+		EntityManager em = getEntityManager();
+		Diagnose diagnose = em.find(Diagnose.class, diagnoseId);
+		return diagnose;
 	}
 }
