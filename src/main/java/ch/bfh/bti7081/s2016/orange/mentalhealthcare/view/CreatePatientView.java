@@ -24,21 +24,19 @@ public class CreatePatientView extends VerticalLayout implements View {
 	public CreatePatientView() {
 		controller = new PatientController();
 		
-		// Add layout for Create
-		
-		
 		//Add back button
 		final Button backButton = new Button("Return to search view");
 		backButton.setStyleName(BaseTheme.BUTTON_LINK);
 		backButton.addClickListener(e -> {
 		getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-		
 		final GridLayout menu = new GridLayout(2,1);
 		menu.setWidth("100%");
 		menu.addComponent(backButton,1,0);
 		menu.setComponentAlignment(backButton, Alignment.TOP_RIGHT);
 		addComponent(menu);
+		
+		// Add layout for Create
 		VerticalLayout layoutCreatePatient = getLayoutCreatePatient();
 		addComponents(hinweis, layoutCreatePatient);
 		setMargin(true);
@@ -87,8 +85,6 @@ public class CreatePatientView extends VerticalLayout implements View {
 		startButton.addClickListener(e -> {
 			getUI().getNavigator().navigateTo(StartView.NAME);
 		});
-
-		//layoutPatientenDaten.addComponents(startButton,title, lastName, firstName, assuranceNr, birthDate, createButton);
 
 		layoutPatientenDaten.addComponents(title, lastName, firstName, assuranceNr, birthDate, createButton);
 
