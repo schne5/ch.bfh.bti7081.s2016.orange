@@ -89,7 +89,6 @@ public class CreateMedicationView extends VerticalLayout implements View {
 			takingsDuration.addItem(t);
 			takingsDuration.setItemCaption(t,t.getText());
 		}
-		System.out.println("HIER" +medicamentId);
 		if(medicamentId>0){
 			
 			Medicament medicament= controller.getMedicamentById(medicamentId);
@@ -109,22 +108,13 @@ public class CreateMedicationView extends VerticalLayout implements View {
 				Compendiummedicament medicament = controller.getCompendiummedicamentById((int) compMedication.getValue());
 				this.hinweis.setCaption("Error: The selected dose is not in the approved Range of the Medicament: "+ medicament.getName() +" Dose: "+medicament.getMaxDose());
 			}else{
-				if (controller.saveMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive,arztId)) {
-					getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
-				} else {
+				if(medicamentId <=0){
+					if (controller.saveMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive,arztId)) {
+						getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+					} else {
 
-					this.hinweis.setCaption("Error: New Medication couldnt be persisted because of invalid Data");
-				}
-			}	
-		});
-		}
-		if(medicamentId>0){
-			createButton.setCaption("Save Changes");
-			createButton.addClickListener(e -> {
-				short isActive = (short)(active.getValue()?1:0);
-				if(controller.validateDose(dose.getValue(), takings.getValue(),(int) compMedication.getValue())==false){
-					Compendiummedicament medicament = controller.getCompendiummedicamentById((int) compMedication.getValue());
-					this.hinweis.setCaption("Error: The selected dose is not in the approved Range of the Medicament: "+ medicament.getName() +" Dose: "+medicament.getMaxDose());
+						this.hinweis.setCaption("Error: New Medication couldnt be persisted because of invalid Data");
+					}
 				}else{
 					if (controller.updateMedication(patientId,(int) compMedication.getValue(), dose.getValue(),takings.getValue(), isActive,medicamentId)) {
 						getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
@@ -132,9 +122,10 @@ public class CreateMedicationView extends VerticalLayout implements View {
 
 						this.hinweis.setCaption("Error: New Medication couldnt be persisted because of invalid Data");
 					}
-				}	
-			});
-			
+				}
+				
+			}	
+		});		
 		}
 
 		layoutMedicationData.addComponents(title, compMedication, dose, takings, takingsDuration,active,createButton);

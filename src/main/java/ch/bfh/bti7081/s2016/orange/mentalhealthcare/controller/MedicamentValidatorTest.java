@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
-import ch.bfh.bti7081.s2016.orange.mentalhealthcare.view.MedicationOvervievView;
+
 
 public class MedicamentValidatorTest {
 
