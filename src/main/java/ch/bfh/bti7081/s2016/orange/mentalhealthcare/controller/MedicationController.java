@@ -95,21 +95,9 @@ public class MedicationController {
 	}
 	
 	public boolean validateDose(String dose, String takings, int compMedId){
-		try{
-			Compendiummedicament compMed = getCompendiummedicamentById(compMedId);
-			double doseDouble = Double.parseDouble(dose);
-			int takingsInt =Integer.parseInt(takings);	
-			double calculatedDose = doseDouble *takingsInt;
-			if(calculatedDose > compMed.getMaxDose().doubleValue()){
-				System.out.println(calculatedDose);
-				System.out.println(compMed.getMaxDose().doubleValue());
-				return false;
-			}
-			
-		}catch(Exception e){
-			return false;
-		}
-		return true;
+		Compendiummedicament compMed = getCompendiummedicamentById(compMedId);
+		return MedicamentValidator.validateDose(dose, takings, compMed);
+
 	}
 	
 	public List<Compendiummedicament> getCompendiumList(){	
