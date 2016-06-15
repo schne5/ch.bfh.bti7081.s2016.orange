@@ -190,11 +190,12 @@ public class PatientView extends VerticalLayout implements View {
 		Button createDiagnose = new Button("Add Diagnose");
 		createDiagnose.addClickListener(c -> {
 			getUI().getNavigator().navigateTo(
-					CreateDiagnoseView.NAME + "/" + patient.getId());
+					CreateDiagnoseView.NAME + "/" + patient.getId()+"/"+0);
 		});
 
 		diagnose.addComponents(labelDiagnoses, diagnoseGrid, createDiagnose);
-
+		diagnose.setMargin(true);
+		diagnose.setSpacing(true);
 		return diagnose;
 	}
 

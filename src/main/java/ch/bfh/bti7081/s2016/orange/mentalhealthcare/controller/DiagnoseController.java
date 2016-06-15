@@ -21,22 +21,12 @@ public class DiagnoseController {
 		return patient.getDiagnoses();
 	}
 
-	public boolean saveDiagnose(int patientId, int icdcDiagnoseId, String dose,
-			String takings, short active, int arztId) {
+	public boolean saveDiagnose(int patientId, int icdcDiagnoseId, short active, int arztId) {
 		Patient patient = repository.get(patientId);
 		Icdcdiagnose icdcDiagnose = getIcdcdiagnoseById(icdcDiagnoseId);
 		Diagnose diagnose = new Diagnose();
 
 		diagnose.setIcdcdiagnose(icdcDiagnose);
-		try {
-			double doseDouble = Double.parseDouble(dose);
-			int takingsInt = Integer.parseInt(takings);
-			BigDecimal doseDecimal = new BigDecimal(doseDouble);
-			diagnose.setActive(active);
-		} catch (Exception e) {
-			System.out.println("Exception could not parse String to int");
-			return false;
-		}
 
 		boolean isValid = validateDiagnose(diagnose);
 		if (isValid) {
@@ -48,14 +38,13 @@ public class DiagnoseController {
 		return isValid;
 	}
 
-	public boolean updateDiagnose(int patientId, int icdcDiagnoseId,
-			String doctorId, short active, int diagnoseId) {
+	public boolean updateDiagnose(int patientId, int icdcDiagnoseId, short active, int diagnoseId) {
 		Patient patient = repository.get(patientId);
 		Icdcdiagnose icdcDiagnose = getIcdcdiagnoseById(icdcDiagnoseId);
 		Diagnose diagnose = patient.getDiagnose(diagnoseId);
 		diagnose.setIcdcdiagnose(icdcDiagnose);
 		try {
-			int doctorIdInt = Integer.parseInt(doctorId);
+			
 			diagnose.setActive(active);
 		} catch (Exception e) {
 			System.out.println("Exception could not parse String to int");

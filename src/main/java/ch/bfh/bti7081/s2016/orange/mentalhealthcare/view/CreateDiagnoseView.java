@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2016.orange.mentalhealthcare.view;
 import java.util.List;
 
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.controller.DiagnoseController;
+import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Compendiummedicament;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Diagnose;
 import ch.bfh.bti7081.s2016.orange.mentalhealthcare.model.Icdcdiagnose;
 
@@ -69,13 +70,30 @@ public class CreateDiagnoseView extends VerticalLayout implements View {
 
 		final Button createButton = new Button("Create Diagnose");
 		createButton.addClickListener(e -> {
-			int arztId = (int) getSession().getAttribute("user");
-			short isActive = (short) (active.getValue() ? 1 : 0);
+			int arztId=(int) getSession().getAttribute("user");
+			short isActive = (short)(active.getValue()?1:0);
+				if(diagnoseId <=0){
+					if (controller.saveDiagnose(patientId, (int) icdcDiagnose.getValue(), isActive, arztId)) {
+						getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+					} else {
+
+						this.hinweis.setCaption("Error: New Diagnose couldnt be persisted because of invalid Data");
+					}
+				}
+				
 		});
 		if (diagnoseId > 0) {
 			createButton.setCaption("Save Changes");
 			createButton.addClickListener(e -> {
 				short isActive = (short) (active.getValue() ? 1 : 0);
+				if(diagnoseId >0){
+					if (controller.updateDiagnose(patientId, (int) icdcDiagnose.getValue(), isActive,diagnoseId)==true) {
+						getUI().getNavigator().navigateTo(PatientView.NAME + "/" + patientId);
+					} else {
+
+						this.hinweis.setCaption("Error: New Diagnose couldnt be persisted because of invalid Data");
+					}
+				}
 			});
 
 		}

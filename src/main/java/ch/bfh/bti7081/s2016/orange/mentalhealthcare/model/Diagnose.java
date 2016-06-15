@@ -7,12 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.ValidationMode;
+
+import org.eclipse.persistence.annotations.IdValidation;
+import org.eclipse.persistence.annotations.PrimaryKey;
 
 /**
  * The persistent class for the diagnose database table.
  * 
  */
 @Entity
+@PrimaryKey(validation=IdValidation.NONE)
 @NamedQuery(name = "Diagnose.findAll", query = "SELECT d FROM Diagnose d")
 public class Diagnose implements Serializable {
 	private static final long serialVersionUID = 1L;
